@@ -10,7 +10,7 @@ intent: >-
 layer: golden
 source:
   kind: probe
-  from: kition-plan baseline A6 error-state review (2026-11-06)
+  from: error-state review, 2026-11-06
   licence: owned
 input: []
 steps:

@@ -8,7 +8,7 @@ intent: >-
 layer: golden
 source:
   kind: probe
-  from: kition-plan reports/2026-11-04-ui-design-review.md (U15); owner decision 2026-11-05 (baseline §18)
+  from: UI design review, 2026-11-04; owner decision 2026-11-05
   licence: owned
 input: []
 steps:

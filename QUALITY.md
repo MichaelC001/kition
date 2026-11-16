@@ -81,11 +81,8 @@ kit-waivers.yaml       owner-approved, dated exceptions to requirement rows
 Outputs of a run go to `target/golden/<case-id>/`, never into `cases/`; a case calls that
 directory `out/`.
 
-- **Weekly report**: the nightly kit matrix and the Monday summary (corpus results, AI task
-  success, rows that turned red or green, waivers) are kept in the KitionAI planning repository
-  (kition-plan). Agents read it on Mondays and pick the failing P0 features first.
-- **Requirements**: the rows every kit must meet are in `kit-requirements.yaml` in kition-plan.
-  A feature names its rows in `requirements`.
+- **Requirements**: a feature may name requirement rows in `requirements`. Keep the
+  applicable requirements alongside the kit that implements them.
 - **Waivers**: `kit-waivers.yaml` at the repository root. A waiver defers a row until a date;
   it never relaxes the row and never permits a compatibility layer. Only the owner approves
   one; agents may propose one with `approved_on: null`.
