@@ -9,9 +9,10 @@
 // Every build is recorded in target/kit-dev-cache.json: the kit's commit, a fingerprint of its
 // checkout, and where its package and executable are. With --cache, a part is rebuilt only when
 // its fingerprint changed or its output is gone or was replaced since. A kit's fingerprint is the
-// content of its files, committed or not: committing what was built rebuilds nothing. Its package also takes the kition-sdk and kition-tessera
-// checkouts its editor links, so it is rebuilt when they change. Its executable does not: the
-// kit pins kition-sdk's crates by revision in its own Cargo.toml. One build runs at a time
+// content of its files, committed or not: committing what was built rebuilds nothing. Its package
+// is also rebuilt when the kition-sdk or kition-tessera checkout changes: kition-sdk's tools check
+// it, and with KITION_LINK=1 its editor links both. Its executable is not: the kit pins
+// kition-sdk's crates by revision in its own Cargo.toml. One build runs at a time
 // (target/kit-dev-build.lock): a second refuses to start while the first runs.
 import { spawnSync } from 'node:child_process'
 import { closeSync, copyFileSync, existsSync, mkdirSync, mkdtempSync, openSync, readFileSync, renameSync, rmSync, statSync, unlinkSync, writeFileSync, writeSync } from 'node:fs'

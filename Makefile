@@ -94,7 +94,8 @@ kit-dev:
 	@$(MAKE) --no-print-directory kit-dev-run
 
 # Rebuilds a kit's package or executable only when its commit, its uncommitted changes, or (for the
-# package) the kition-sdk and kition-tessera checkouts its editor links changed since it was built.
+# package) the kition-sdk and kition-tessera checkouts changed since it was built. A kit's editor
+# links those checkouts only when KITION_LINK=1 is exported (scripts/build-kit-ui.sh).
 kit-dev-cache:
 	@PATH="$(TOOLCHAIN_PATH)" node scripts/kit-dev-build.mjs --cache $(KIT_DEV_KITS)
 	@$(MAKE) --no-print-directory kit-dev-run

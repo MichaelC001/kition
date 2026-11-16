@@ -754,8 +754,9 @@ runtime at the executables (`KITION_KIT_<KIT>_BINARY`). `make kit-dev-cache`
 does the same but builds only what changed (`scripts/kit-dev-build.mjs`). It
 rebuilds a kit's package or executable when the kit's files differ from its
 last build, committed or not: committing what was built rebuilds nothing. A
-package is also rebuilt when the `kition-sdk` or `kition-tessera` checkout its
-editor links changed, and either part is rebuilt when its output is gone or
+package is also rebuilt when the `kition-sdk` or `kition-tessera` checkout
+changed (kition-sdk's tools check the package, and with `KITION_LINK=1` its
+editor links both), and either part is rebuilt when its output is gone or
 was replaced (`make kit-fetch`). Ignored files and tool caches (`.vite/`,
 `__pycache__/`) do not count. Each build is recorded in
 `target/kit-dev-cache.json`: the kit's commit, whether it had uncommitted
@@ -962,13 +963,18 @@ Slide and page kits (Slide):
   repository (`../kition-fonts`), or web builds have no fonts and text is
   invisible. The faces an editor hands to `addFont` come from
   `../kition-fonts` (`KITION_FONTS_DIR`), Kition's own font repository.
-- Kit editors need kition-tessera checked out next to kition-sdk
-  (`../kition-tessera`): kit-editor takes its components, theme tokens, and
-  Tessera Icons from it, and each kit's Vite config allows reading it. Kits
-  draw icons from `@kition/tessera-icons/react` or kit-editor's `TesseraIcons`,
-  never from lucide-react, and name icons for their own engine commands in
-  `web/src/commandIcons.ts` (`registerCommandIcons`). `scripts/publish-kit.sh`
-  clones kition-tessera beside kition-sdk too.
+- Kit editors install the published `@kition/*` packages (kit-editor and the
+  Tessera components, theme tokens, and icons) from npm, pinned by the kit's
+  `web/pnpm-lock.yaml`; `pnpm install --frozen-lockfile` works whether or not
+  other checkouts sit beside the kit. With `KITION_LINK=1`, the kit's
+  `web/.pnpmfile.cjs` links kition-sdk and kition-tessera checkouts instead
+  (`KITION_SDK`, `KITION_TESSERA`; default `../kition-sdk` and
+  `../kition-tessera`) and rewrites the lockfile, which is not committed;
+  `scripts/build-kit-ui.sh` honours it and `scripts/publish-kit.sh` refuses it.
+  Each kit's Vite config allows reading those checkouts. Kits draw icons
+  from `@kition/tessera-icons/react` or kit-editor's `TesseraIcons`, never
+  from lucide-react, and name icons for their own engine commands in
+  `web/src/commandIcons.ts` (`registerCommandIcons`).
 
 Text kits (Doc):
 

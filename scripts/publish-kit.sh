@@ -13,6 +13,10 @@
 # never reach a package. A version
 # is published once; bump `version` in the kit's kit.json to publish a change.
 set -euo pipefail
+# A package is built from the published @kition/* packages the kit's lockfile pins, never against
+# linked checkouts (KITION_LINK=1, see build-kit-ui.sh).
+[[ "${KITION_LINK:-}" != 1 ]] || { echo "KITION_LINK=1 is set: a published package is never built against linked checkouts; unset it" >&2; exit 2; }
+unset KITION_LINK
 kit="${1:?usage: scripts/publish-kit.sh <kit> [--dry-run]}"
 [[ -z "${2:-}" || "${2:-}" == "--dry-run" ]] || { echo "unknown option: $2" >&2; exit 2; }
 dry_run="${2:-}"
@@ -21,7 +25,8 @@ parent="$(dirname "$repo_root")"
 kit_repo="${KIT_REPO:-$parent/kition-$kit}"
 sdk_repo="${KITION_SDK_REPO:-$parent/kition-sdk}"
 fonts_repo="${KITION_FONTS_REPO:-$parent/kition-fonts}"
-# kit-editor links its components, tokens, and icons from a kition-tessera checkout beside kition-sdk.
+# kition-tessera's commit is recorded with the package; the kit's editor installs the published
+# @kition/tessera-* packages its lockfile pins.
 tessera_repo="${KITION_TESSERA_REPO:-$parent/kition-tessera}"
 scratch="${KITION_KIT_SCRATCH:-${TMPDIR:-/tmp}}"; scratch="${scratch%/}/kition-kit-publish/$kit"
 repository="$(node -e "const kit = require('$repo_root/kits/modules.json')['$kit']; if (!kit) process.exit(1); console.log(kit.repository)")" \

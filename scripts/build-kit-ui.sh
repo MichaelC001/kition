@@ -6,8 +6,12 @@
 #   scripts/build-kit-ui.sh slide --ui-only  # reuse an already built, unchanged engine
 #
 # The kit repository defaults to a sibling checkout ../kition-<kit>; set KIT_REPO to use another
-# path. Its web/ app links kition-sdk's @kition/kit-editor from a sibling checkout too, and kit-editor
-# links kition-tessera's components and icons from one beside it (../kition-tessera).
+# path. kition-sdk's tools (tools/check-kit-naming.mjs, tools/check-manifest.mjs) come from a
+# kition-sdk checkout beside the kit repository; set KITION_SDK_REPO to use another path. The kit's
+# web/ app installs the published @kition/* packages its lockfile pins (pnpm install
+# --frozen-lockfile, when web/node_modules is missing). With KITION_LINK=1 exported, it links the
+# kition-sdk and kition-tessera checkouts instead (the kit's web/.pnpmfile.cjs; KITION_SDK and
+# KITION_TESSERA, default ../kition-sdk and ../kition-tessera), for development builds only.
 set -euo pipefail
 kit="${1:?usage: scripts/build-kit-ui.sh <kit>, for example slide}"
 [[ -z "${2:-}" || "${2:-}" == "--ui-only" ]] || { echo "unknown option: $2" >&2; exit 2; }
@@ -19,7 +23,16 @@ sdk_repo="${KITION_SDK_REPO:-$kit_repo/../kition-sdk}"
 node "$sdk_repo/tools/check-kit-naming.mjs" "$kit_repo/kit.json" --key "$kit"
 [[ -f "$web/package.json" ]] || { echo "$web has no kit editor (web/package.json)" >&2; exit 1; }
 command -v pnpm >/dev/null || { echo "pnpm is required" >&2; exit 1; }
-[[ -d "$web/node_modules" ]] || pnpm --dir "$web" install --frozen-lockfile
+if [[ "${KITION_LINK:-}" == 1 ]]; then
+  # A linked install rewrites the lockfile, so it cannot be frozen; do not commit what it writes.
+  echo "KITION_LINK=1: building $kit-ui against linked kition-sdk and kition-tessera checkouts"
+  pnpm --dir "$web" install --no-frozen-lockfile
+elif [[ ! -d "$web/node_modules" ]]; then
+  pnpm --dir "$web" install --frozen-lockfile
+elif grep -Eq 'version: link:.*/kition-(sdk|tessera)/' "$web/node_modules/.pnpm/lock.yaml" 2>/dev/null; then
+  echo "$web/node_modules links kition-sdk or kition-tessera checkouts (a KITION_LINK=1 install); export KITION_LINK=1, or restore web/pnpm-lock.yaml and run pnpm install --frozen-lockfile there" >&2
+  exit 1
+fi
 export CARGO_TARGET_DIR="${CARGO_TARGET_DIR:-$kit_repo/target}"
 export KITION_DIR="${KITION_DIR:-$repo_root}"
 # C code in the engine's dependencies (psm's assembly, through loro) needs a C compiler that can
