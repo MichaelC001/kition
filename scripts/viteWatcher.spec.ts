@@ -17,6 +17,10 @@ it('watches source files without scanning Rust builds and test artifacts', async
     ...loaded!.config,
     configFile: false,
     root,
+    // Vite also watches the four .env files, which the fixture does not have. With Node's fs.watch
+    // (Linux; macOS uses FSEvents) chokidar 3 counts each missing path twice towards `ready`, so
+    // `ready` fired before the root was scanned and nothing under src/ was watched yet.
+    envDir: false,
     publicDir: false,
     plugins: [],
     cacheDir: join(root, 'node_modules/.vite'),
@@ -26,6 +30,7 @@ it('watches source files without scanning Rust builds and test artifacts', async
   try {
     await new Promise<void>((done) => server.watcher.once('ready', done))
     const watched = server.watcher.getWatched()
+    expect(watched[join(root, 'src')]).toContain('fixture.ts')
     const changed: string[] = []
     server.watcher.on('change', (file) => changed.push(file))
     await writeFile(join(root, 'src/fixture.ts'), 'export const fixture = 2\n')
