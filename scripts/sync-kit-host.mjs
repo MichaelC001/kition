@@ -7,8 +7,8 @@
 // replica relay (packages/sync/src/*.ts), in src/lib/sync/, of the object model's page side
 // (@kition/script, packages/script/src and its generated kits), in src/lib/script/, and of the extension
 // host (@kition/extensions, packages/extensions/src with its built worker runtime), in
-// src/lib/extensions/, with its sandbox and panel pages in public/extensions/. kition-sdk is
-// private and Kition is public, so Kition carries the files instead of depending on the packages.
+// src/lib/extensions/, with its sandbox and panel pages in public/extensions/. Kition carries the
+// files instead of depending on the packages (kition-sdk was private when this copy was set up).
 //
 //   node scripts/sync-kit-host.mjs          copy them from ../kition-sdk (or KITION_SDK)
 //   node scripts/sync-kit-host.mjs --check  fail when the copy differs (skipped without kition-sdk)

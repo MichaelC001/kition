@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Publishes a kit's package (its own editor and its engine, public/kits/<kit>-ui) as a GitHub
-# Release asset of the kit's private repository, and pins it in kits/kits.lock.json. Kition's
+# Release asset of the kit's repository, and pins it in kits/kits.lock.json. Kition's
 # release builds download the pinned packages (scripts/fetch-kits.mjs); see docs/kits.md,
 # section 4b.
 #

@@ -131,7 +131,7 @@ own interaction tests live in the kition-table repository and run there.
 
 - Read `docs/kits.md` before any kit work. It is how Kition implements the
   Kit Harness Protocol (KHP, `spec/` in the public `kitharness/khp`
-  repository) and the Kition kit platform (`docs/platform/` in the private
+  repository) and the Kition kit platform (`docs/platform/` in the public
   `KitionAI/kition-sdk` repository), which are normative: kits, the host, and
   the agent conform to them, and contract changes go there first. The
   checklist in `docs/kits.md` is the definition of done for a new kit, and
@@ -150,8 +150,9 @@ own interaction tests live in the kition-table repository and run there.
   self-contained (platform rule UI-K1) so other applications can embed it. Kition
   ships every kit's package inside the app, as published by
   `scripts/publish-kit.sh` on a developer machine and pinned in
-  `kits/kits.lock.json`. Never add builds or workflows to the private kit
-  repositories' CI; their Actions minutes are limited. Register a kit in
+  `kits/kits.lock.json`. Never add builds or workflows to the kit
+  repositories' CI; most of them are still private, where Actions minutes are
+  limited. Register a kit in
   `src/features/workspace/components/kits/kitEditors.ts` and
   `kits/modules.json`; see `docs/kits.md`.
 - If the upstream app draws something in its own UI, port it into the kit's
@@ -160,7 +161,7 @@ own interaction tests live in the kition-table repository and run there.
   files with it): it must never import the rest of Kition (`pnpm check:deps`
   enforces it). Shared strings under `workspace:kitEditor.*` must never name a
   kit.
-- A kit module implements `KitDocument` from the private `KitionAI/kition-sdk`
+- A kit module implements `KitDocument` from the public `KitionAI/kition-sdk`
   crate (Apache-2.0), exports it with `export_kit_document!`, and passes
   `kition_kit::testing::check_contract` in its tests and `pnpm check:kit-modules`
   once built. Contract changes happen in kition-sdk and bump the version there
