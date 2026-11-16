@@ -18,11 +18,11 @@ kits' own repositories, shipped as packages in `public/kits/<kit>-ui/`
 
 ## Kition Tessera
 
-`@kition/tessera-ui` (components) and `@kition/tessera-icons` (icons) are git dependencies pinned to
-one commit of the public `KitionAI/kition-tessera` repository in `package.json`; `pnpm.overrides`
-points the packages' own Tessera dependencies (`@kition/tessera-icons`,
-`@kition/tessera-tokens`) at the same commit. Move all four together with
-`node scripts/pin-tessera.mjs <commit>`.
+`@kition/tessera-ui` (components) and `@kition/tessera-icons` (icons) are npm packages, built from
+the public `KitionAI/kition-tessera` repository and pinned to one exact version in `package.json`;
+`pnpm.overrides` holds the packages' own Tessera dependencies (`@kition/tessera-icons`,
+`@kition/tessera-tokens`) at the same version. Move all four together with
+`node scripts/pin-tessera.mjs <version>`; `pnpm run check:tessera` fails when they differ.
 
 - **Styles.** `src/app/styles.css` imports `@kition/tessera-ui/styles.css` into the `tessera` cascade
   layer, above Tailwind's reset (`reset` layer) and below everything unlayered, so a Tailwind class
