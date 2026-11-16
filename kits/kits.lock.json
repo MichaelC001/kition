@@ -173,11 +173,11 @@
     "version": "0.3.0",
     "tag": "package-v0.3.0",
     "asset": "kition-table-0.3.0.tgz",
-    "size": 14612409,
-    "sha256": "7851024c07c0bd230901e3664738a0d21dd2cc4e541ac7b470f11e4578a5d1d4",
-    "commit": "039f24a96dac1b442246cf701dfc19a50bcac9a4",
-    "sdkCommit": "c9708628d6627ff570ad5375d1f40367983e233d",
-    "tesseraCommit": "d57182f27db977c243d358ecc29f7683475c1bc5",
+    "size": 15279852,
+    "sha256": "bf7ba9a7dc5f75b3f23ae495ad6db7f8b76a3e06d02e0bd55adcdbff09c43cf8",
+    "commit": "09d9585bb763d9cda19cf4d7f4f3910fb9b4b712",
+    "sdkCommit": "48eab74e9ad1a38b69d8973bb2303482b37ad622",
+    "tesseraCommit": "b112bdbfcdb24462d0615a3f5b1a4ff57f1a1871",
     "fontsCommit": "3ec72be7ffcc8b88fab081f9e0b01401a96d5eec"
   },
   "vector": {

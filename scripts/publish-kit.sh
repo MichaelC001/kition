@@ -64,6 +64,10 @@ fonts_commit="$(clone "$fonts_repo" kition-fonts "${FONTS_REF:-origin/main}")"
 kit_dir="$scratch/kition-$kit"
 pnpm --dir "$scratch/kition-tessera" install --frozen-lockfile
 pnpm --dir "$scratch/kition-sdk" install --frozen-lockfile
+# A published engine must not carry this machine's paths (panic locations name every source file):
+# map the home folder, the Cargo home and the scratch clones to neutral prefixes. Later flags win.
+cargo_home="${CARGO_HOME:-$HOME/.cargo}"
+export RUSTFLAGS="${RUSTFLAGS:+$RUSTFLAGS }--remap-path-prefix=$HOME=/home --remap-path-prefix=$cargo_home=/cargo --remap-path-prefix=$scratch=/src"
 # The kit checkout's build cache, so only the kit's own crates compile again. The engine's SQLite
 # needs a C compiler that targets wasm32 (build-kit-ui.sh uses Homebrew's LLVM when it is there).
 CARGO_TARGET_DIR="$kit_repo/target" KIT_REPO="$kit_dir" "$repo_root/scripts/build-kit-ui.sh" "$kit"
