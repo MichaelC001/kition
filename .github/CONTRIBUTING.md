@@ -2,7 +2,7 @@
 
 Thank you for contributing to Kition.
 
-All changes should follow the [Kition Development Standard](docs/development-standard.md).
+All changes should follow the [Kition Development Standard](../docs/development-standard.md).
 It includes the recommended worktree workflow for contributors developing in
 Orca.
 
@@ -16,7 +16,7 @@ black-box tests.
 A change that crosses the renderer and the runtime updates the contract in
 `contracts/runtime/`, the renderer mock, and the runtime together. Kits are
 developed in separate repositories; Kition ships their published packages,
-pinned in `kits/kits.lock.json` (see [docs/kits.md](docs/kits.md)).
+pinned in `kits/kits.lock.json` (see [docs/kits.md](../docs/kits.md)).
 
 ## Local Setup
 
@@ -34,7 +34,7 @@ pnpm dev
 
 `pnpm dev` starts the desktop app. The Rust runtime in `crates/` is compiled
 into the Tauri shell and runs in-process; see
-[docs/runtime-development.md](docs/runtime-development.md).
+[docs/runtime-development.md](../docs/runtime-development.md).
 
 For renderer, component, editor, and style work that does not require the
 desktop runtime:
@@ -53,7 +53,7 @@ KITION_API_TARGET=http://127.0.0.1:18101 pnpm dev:web
 ```
 
 Runtime crates, checks, and rules are documented in
-[Runtime development](docs/runtime-development.md).
+[Runtime development](../docs/runtime-development.md).
 
 ## Development Identities
 
@@ -140,4 +140,4 @@ Tags with a prerelease component, such as `v0.2.0-beta.1` or `v1.1.0-rc.1`,
 produce `rc` builds and GitHub prereleases. Plain tags such as `v1.1.0` produce
 `stable` builds. There is no manual test/production selector.
 
-Security reports must follow [.github/SECURITY.md](.github/SECURITY.md).
+Security reports must follow [SECURITY.md](SECURITY.md).

@@ -1,9 +1,9 @@
 <h1 align="center">
-  <a href="https://kition.ai"><img src="public/logo-mark.png" alt="Logotipo de Kition" width="64" valign="middle" /></a> Kition
+  <a href="https://kition.ai"><img src="../../public/logo-mark.png" alt="Logotipo de Kition" width="64" valign="middle" /></a> Kition
 </h1>
 
 <p align="center">
-  <a href="README.md">English</a> ·
+  <a href="../../README.md">English</a> ·
   <a href="README.zh-CN.md">简体中文</a> ·
   <a href="README.ru-RU.md">Русский</a> ·
   <a href="README.ja-JP.md">日本語</a> ·
@@ -21,7 +21,7 @@
 <p align="center">
   <a href="https://github.com/KitionAI/kition/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/KitionAI/kition/ci.yml?branch=main&amp;style=flat-square&amp;logo=githubactions&amp;logoColor=white&amp;label=CI" alt="Estado de CI" /></a>
   <a href="https://github.com/KitionAI/kition/releases/latest"><img src="https://img.shields.io/github/v/release/KitionAI/kition?include_prereleases&amp;sort=semver&amp;style=flat-square&amp;color=5645d4" alt="Última versión" /></a>
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/KitionAI/kition?style=flat-square&amp;color=5645d4" alt="Licencia Apache 2.0" /></a>
+  <a href="../../LICENSE"><img src="https://img.shields.io/github/license/KitionAI/kition?style=flat-square&amp;color=5645d4" alt="Licencia Apache 2.0" /></a>
 </p>
 
 <h3 align="center"><a href="https://github.com/KitionAI/kition/releases/latest"><ins>Descargar Kition</ins></a></h3>
@@ -29,12 +29,12 @@
 <p align="center">
   <a href="https://kition.ai">Sitio web</a> ·
   <a href="https://github.com/KitionAI/kition/releases">Versiones</a> ·
-  <a href="CONTRIBUTING.md">Contribuir</a> ·
-  <a href=".github/SUPPORT.md">Soporte</a> ·
-  <a href=".github/SECURITY.md">Seguridad</a>
+  <a href="../../.github/CONTRIBUTING.md">Contribuir</a> ·
+  <a href="../../.github/SUPPORT.md">Soporte</a> ·
+  <a href="../../.github/SECURITY.md">Seguridad</a>
 </p>
 
-<p align="center"><img src="docs/readme/kition-overview.webp" alt="Vista general de Kition con documentos, tablas estructuradas e investigación del agente" width="100%" /></p>
+<p align="center"><img src="kition-overview.webp" alt="Vista general de Kition con documentos, tablas estructuradas e investigación del agente" width="100%" /></p>
 
 Kition reúne documentos Markdown, tablas estructuradas, un agente de IA capaz de usar herramientas e investigación web. El agente trabaja con archivos de proyecto editables, registros tipados y adjuntos, lo que facilita revisar, corregir y repetir los resultados.
 
@@ -52,13 +52,13 @@ Kition reúne documentos Markdown, tablas estructuradas, un agente de IA capaz d
 En lugar de devolver otra sugerencia para copiar y pegar, el agente de Kition puede leer el documento Markdown activo, realizar cambios concretos y escribir el resultado de nuevo en el espacio de trabajo. El documento y el historial completo de la tarea permanecen visibles mientras el agente trabaja.
 
 <p align="center">
-  <img src="docs/readme/agent-document-edit.webp" alt="El agente de IA de código abierto Kition lee y edita el documento Markdown activo junto al registro visible de ejecución de herramientas" width="100%" />
+  <img src="agent-document-edit.webp" alt="El agente de IA de código abierto Kition lee y edita el documento Markdown activo junto al registro visible de ejecución de herramientas" width="100%" />
 </p>
 
 Cuando un archivo cambia fuera del editor, Kition abre una vista de revisión que resalta las adiciones, eliminaciones y reescrituras. Cada cambio se puede aceptar o rechazar por separado, o toda la edición se puede revisar como un único conjunto.
 
 <p align="center">
-  <img src="docs/readme/agent-document-diff-review.webp" alt="Revisión de diferencias de documentos en Kition con adiciones y eliminaciones de la IA y controles para aceptar o rechazar cada cambio" width="100%" />
+  <img src="agent-document-diff-review.webp" alt="Revisión de diferencias de documentos en Kition con adiciones y eliminaciones de la IA y controles para aceptar o rechazar cada cambio" width="100%" />
 </p>
 
 Así se crea un flujo documental controlado: describe el objetivo en lenguaje natural, deja que el agente edite el archivo real, revisa las diferencias y decide exactamente qué permanece en el documento final.
@@ -71,19 +71,19 @@ Kition conserva el contexto en documentos, campos de tabla, registros y plantill
 
 A partir de un mensaje clave y un retrato, genera miniaturas relacionadas en formatos 16:9 y 9:16 para cada registro.
 
-<p align="center"><img src="docs/readme/scenarios/thumbnail-generator.webp" alt="Tabla de generación de miniaturas de Kition" width="100%" /></p>
+<p align="center"><img src="scenarios/thumbnail-generator.webp" alt="Tabla de generación de miniaturas de Kition" width="100%" /></p>
 
 ### Convertir recibos en registros consultables
 
 Los campos de visión extraen el comercio, la dirección, la categoría, JSON estructurado y texto OCR directamente en la misma fila.
 
-<p align="center"><img src="docs/readme/scenarios/receipt-ocr.webp" alt="Tabla OCR de recibos de Kition" width="100%" /></p>
+<p align="center"><img src="scenarios/receipt-ocr.webp" alt="Tabla OCR de recibos de Kition" width="100%" /></p>
 
 ### Ampliar una descripción de producto a una cadena completa de recursos
 
 Genera propuestas de diseño, vistas ortográficas, imágenes de características, escenas de uso, paneles de estilo y textos de lanzamiento, manteniendo cada resultado vinculado al registro original.
 
-<p align="center"><img src="docs/readme/scenarios/batch-product-designer.webp" alt="Tabla de diseño de productos por lotes de Kition" width="100%" /></p>
+<p align="center"><img src="scenarios/batch-product-designer.webp" alt="Tabla de diseño de productos por lotes de Kition" width="100%" /></p>
 
 ## Funciones principales
 
@@ -110,11 +110,11 @@ pnpm install --frozen-lockfile
 pnpm dev
 ```
 
-Para desarrollar únicamente la interfaz sin integración con el runtime, usa `pnpm dev:web`. Consulta [desarrollo del runtime](docs/runtime-development.md).
+Para desarrollar únicamente la interfaz sin integración con el runtime, usa `pnpm dev:web`. Consulta [desarrollo del runtime](../runtime-development.md).
 
 ## Límite del código abierto
 
-Toda la aplicación de escritorio es de código abierto en este repositorio: el renderizador React (`src/`), el shell de escritorio Tauri (`src-tauri/`), el runtime en Rust (`crates/`), que el shell ejecuta en el mismo proceso, los contratos del runtime en [`contracts/runtime/`](contracts/runtime/), mocks, pruebas y empaquetado. Los kits se desarrollan en repositorios separados; Kition incluye sus paquetes publicados, fijados por versión y suma de comprobación en [`kits/kits.lock.json`](kits/kits.lock.json).
+Toda la aplicación de escritorio es de código abierto en este repositorio: el renderizador React (`src/`), el shell de escritorio Tauri (`src-tauri/`), el runtime en Rust (`crates/`), que el shell ejecuta en el mismo proceso, los contratos del runtime en [`contracts/runtime/`](../../contracts/runtime/), mocks, pruebas y empaquetado. Los kits se desarrollan en repositorios separados; Kition incluye sus paquetes publicados, fijados por versión y suma de comprobación en [`kits/kits.lock.json`](../../kits/kits.lock.json).
 
 ## Tecnología
 
@@ -128,8 +128,8 @@ Toda la aplicación de escritorio es de código abierto en este repositorio: el 
 
 ## Contribuir
 
-Se aceptan Issues y Pull Requests. Lee [CONTRIBUTING.md](CONTRIBUTING.md) y el [estándar de desarrollo de Kition](docs/development-standard.md). Cuando un cambio afecte al renderizador y al runtime, actualiza juntos el contrato en `contracts/runtime/`, el mock del renderizador y el runtime.
+Se aceptan Issues y Pull Requests. Lee [CONTRIBUTING.md](../../.github/CONTRIBUTING.md) y el [estándar de desarrollo de Kition](../development-standard.md). Cuando un cambio afecte al renderizador y al runtime, actualiza juntos el contrato en `contracts/runtime/`, el mock del renderizador y el runtime.
 
 ## Licencia
 
-Kition, incluido su runtime en `crates/`, se distribuye bajo la [Apache License 2.0](LICENSE).
+Kition, incluido su runtime en `crates/`, se distribuye bajo la [Apache License 2.0](../../LICENSE).

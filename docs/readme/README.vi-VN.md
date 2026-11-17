@@ -1,9 +1,9 @@
 <h1 align="center">
-  <a href="https://kition.ai"><img src="public/logo-mark.png" alt="Biểu trưng Kition" width="64" valign="middle" /></a> Kition
+  <a href="https://kition.ai"><img src="../../public/logo-mark.png" alt="Biểu trưng Kition" width="64" valign="middle" /></a> Kition
 </h1>
 
 <p align="center">
-  <a href="README.md">English</a> ·
+  <a href="../../README.md">English</a> ·
   <a href="README.zh-CN.md">简体中文</a> ·
   <a href="README.ru-RU.md">Русский</a> ·
   <a href="README.ja-JP.md">日本語</a> ·
@@ -21,7 +21,7 @@
 <p align="center">
   <a href="https://github.com/KitionAI/kition/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/KitionAI/kition/ci.yml?branch=main&amp;style=flat-square&amp;logo=githubactions&amp;logoColor=white&amp;label=CI" alt="Trạng thái CI" /></a>
   <a href="https://github.com/KitionAI/kition/releases/latest"><img src="https://img.shields.io/github/v/release/KitionAI/kition?include_prereleases&amp;sort=semver&amp;style=flat-square&amp;color=5645d4" alt="Bản phát hành mới nhất" /></a>
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/KitionAI/kition?style=flat-square&amp;color=5645d4" alt="Giấy phép Apache 2.0" /></a>
+  <a href="../../LICENSE"><img src="https://img.shields.io/github/license/KitionAI/kition?style=flat-square&amp;color=5645d4" alt="Giấy phép Apache 2.0" /></a>
 </p>
 
 <h3 align="center"><a href="https://github.com/KitionAI/kition/releases/latest"><ins>Tải Kition</ins></a></h3>
@@ -29,12 +29,12 @@
 <p align="center">
   <a href="https://kition.ai">Trang web</a> ·
   <a href="https://github.com/KitionAI/kition/releases">Bản phát hành</a> ·
-  <a href="CONTRIBUTING.md">Đóng góp</a> ·
-  <a href=".github/SUPPORT.md">Hỗ trợ</a> ·
-  <a href=".github/SECURITY.md">Bảo mật</a>
+  <a href="../../.github/CONTRIBUTING.md">Đóng góp</a> ·
+  <a href="../../.github/SUPPORT.md">Hỗ trợ</a> ·
+  <a href="../../.github/SECURITY.md">Bảo mật</a>
 </p>
 
-<p align="center"><img src="docs/readme/kition-overview.webp" alt="Tổng quan Kition với tài liệu, bảng dữ liệu và nghiên cứu của tác nhân" width="100%" /></p>
+<p align="center"><img src="kition-overview.webp" alt="Tổng quan Kition với tài liệu, bảng dữ liệu và nghiên cứu của tác nhân" width="100%" /></p>
 
 Kition kết hợp tài liệu Markdown, bảng có cấu trúc, tác nhân AI có thể dùng công cụ và nghiên cứu web trong một không gian làm việc. Tác nhân làm việc với tệp dự án có thể chỉnh sửa, bản ghi có kiểu và tệp đính kèm, giúp kết quả dễ kiểm tra, sửa đổi và lặp lại.
 
@@ -52,13 +52,13 @@ Kition kết hợp tài liệu Markdown, bảng có cấu trúc, tác nhân AI c
 Tác nhân Kition không chỉ trả về một gợi ý cần sao chép và dán. Nó có thể đọc tài liệu Markdown đang mở, thực hiện các thay đổi đúng phạm vi và ghi kết quả trở lại không gian làm việc. Tài liệu cùng toàn bộ quá trình thực hiện tác vụ vẫn hiển thị trong khi tác nhân làm việc.
 
 <p align="center">
-  <img src="docs/readme/agent-document-edit.webp" alt="Tác nhân AI mã nguồn mở Kition đọc và chỉnh sửa tài liệu Markdown đang mở bên cạnh nhật ký thực thi công cụ" width="100%" />
+  <img src="agent-document-edit.webp" alt="Tác nhân AI mã nguồn mở Kition đọc và chỉnh sửa tài liệu Markdown đang mở bên cạnh nhật ký thực thi công cụ" width="100%" />
 </p>
 
 Khi tệp được thay đổi bên ngoài trình chỉnh sửa, Kition mở giao diện xem xét tài liệu, làm nổi bật nội dung thêm, xóa và viết lại. Bạn có thể chấp nhận hoặc từ chối từng thay đổi, hoặc xem xét toàn bộ lần chỉnh sửa cùng lúc.
 
 <p align="center">
-  <img src="docs/readme/agent-document-diff-review.webp" alt="Giao diện xem xét khác biệt tài liệu của Kition hiển thị phần AI thêm và xóa cùng nút chấp nhận hoặc từ chối từng thay đổi" width="100%" />
+  <img src="agent-document-diff-review.webp" alt="Giao diện xem xét khác biệt tài liệu của Kition hiển thị phần AI thêm và xóa cùng nút chấp nhận hoặc từ chối từng thay đổi" width="100%" />
 </p>
 
 Quy trình tài liệu trở nên có kiểm soát: mô tả mục tiêu bằng ngôn ngữ tự nhiên, để tác nhân sửa tệp thật, xem lại phần khác biệt và quyết định chính xác nội dung nào được giữ trong tài liệu cuối cùng.
@@ -71,19 +71,19 @@ Kition lưu ngữ cảnh trong tài liệu, trường bảng, bản ghi và mẫ
 
 Từ thông điệp chính và ảnh chân dung, tạo các biến thể hình thu nhỏ 16:9 và 9:16 cho từng bản ghi.
 
-<p align="center"><img src="docs/readme/scenarios/thumbnail-generator.webp" alt="Bảng tạo hình thu nhỏ Kition" width="100%" /></p>
+<p align="center"><img src="scenarios/thumbnail-generator.webp" alt="Bảng tạo hình thu nhỏ Kition" width="100%" /></p>
 
 ### Chuyển ảnh hóa đơn thành bản ghi có thể tìm kiếm
 
 Các trường thị giác trích xuất nhà cung cấp, địa chỉ, danh mục, JSON có cấu trúc và văn bản OCR ngay trong cùng một hàng.
 
-<p align="center"><img src="docs/readme/scenarios/receipt-ocr.webp" alt="Bảng OCR hóa đơn Kition" width="100%" /></p>
+<p align="center"><img src="scenarios/receipt-ocr.webp" alt="Bảng OCR hóa đơn Kition" width="100%" /></p>
 
 ### Mở rộng một bản mô tả sản phẩm thành chuỗi nội dung hoàn chỉnh
 
 Tạo phương án thiết kế, hình chiếu, ảnh tính năng, ảnh phong cách sống, bảng phong cách và nội dung ra mắt, đồng thời giữ mọi kết quả gắn với bản ghi nguồn.
 
-<p align="center"><img src="docs/readme/scenarios/batch-product-designer.webp" alt="Bảng thiết kế sản phẩm hàng loạt Kition" width="100%" /></p>
+<p align="center"><img src="scenarios/batch-product-designer.webp" alt="Bảng thiết kế sản phẩm hàng loạt Kition" width="100%" /></p>
 
 ## Tính năng chính
 
@@ -110,11 +110,11 @@ pnpm install --frozen-lockfile
 pnpm dev
 ```
 
-Để phát triển giao diện mà không cần tích hợp runtime, dùng `pnpm dev:web`. Xem thêm tại [phát triển runtime](docs/runtime-development.md).
+Để phát triển giao diện mà không cần tích hợp runtime, dùng `pnpm dev:web`. Xem thêm tại [phát triển runtime](../runtime-development.md).
 
 ## Phạm vi mã nguồn mở
 
-Toàn bộ ứng dụng máy tính là mã nguồn mở trong kho này: trình kết xuất React (`src/`), vỏ ứng dụng Tauri (`src-tauri/`), runtime Rust (`crates/`) mà vỏ ứng dụng chạy trong cùng tiến trình, hợp đồng runtime trong [`contracts/runtime/`](contracts/runtime/), mock, kiểm thử và quy trình đóng gói. Các kit được phát triển trong các kho riêng; Kition đi kèm các gói đã phát hành của chúng, được cố định theo phiên bản và mã kiểm tra trong [`kits/kits.lock.json`](kits/kits.lock.json).
+Toàn bộ ứng dụng máy tính là mã nguồn mở trong kho này: trình kết xuất React (`src/`), vỏ ứng dụng Tauri (`src-tauri/`), runtime Rust (`crates/`) mà vỏ ứng dụng chạy trong cùng tiến trình, hợp đồng runtime trong [`contracts/runtime/`](../../contracts/runtime/), mock, kiểm thử và quy trình đóng gói. Các kit được phát triển trong các kho riêng; Kition đi kèm các gói đã phát hành của chúng, được cố định theo phiên bản và mã kiểm tra trong [`kits/kits.lock.json`](../../kits/kits.lock.json).
 
 ## Công nghệ
 
@@ -128,8 +128,8 @@ Toàn bộ ứng dụng máy tính là mã nguồn mở trong kho này: trình k
 
 ## Đóng góp
 
-Chúng tôi hoan nghênh Issue và Pull Request. Hãy đọc [CONTRIBUTING.md](CONTRIBUTING.md) và [tiêu chuẩn phát triển Kition](docs/development-standard.md). Khi thay đổi liên quan cả trình kết xuất và runtime, hãy cập nhật đồng thời hợp đồng trong `contracts/runtime/`, mock của trình kết xuất và runtime.
+Chúng tôi hoan nghênh Issue và Pull Request. Hãy đọc [CONTRIBUTING.md](../../.github/CONTRIBUTING.md) và [tiêu chuẩn phát triển Kition](../development-standard.md). Khi thay đổi liên quan cả trình kết xuất và runtime, hãy cập nhật đồng thời hợp đồng trong `contracts/runtime/`, mock của trình kết xuất và runtime.
 
 ## Giấy phép
 
-Kition, bao gồm runtime trong `crates/`, được cấp phép theo [Apache License 2.0](LICENSE).
+Kition, bao gồm runtime trong `crates/`, được cấp phép theo [Apache License 2.0](../../LICENSE).

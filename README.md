@@ -4,13 +4,13 @@
 
 <p align="center">
   <strong>English</strong> ·
-  <a href="README.zh-CN.md">简体中文</a> ·
-  <a href="README.ru-RU.md">Русский</a> ·
-  <a href="README.ja-JP.md">日本語</a> ·
-  <a href="README.vi-VN.md">Tiếng Việt</a> ·
-  <a href="README.fr-FR.md">Français</a> ·
-  <a href="README.de-DE.md">Deutsch</a> ·
-  <a href="README.es-ES.md">Español</a>
+  <a href="docs/readme/README.zh-CN.md">简体中文</a> ·
+  <a href="docs/readme/README.ru-RU.md">Русский</a> ·
+  <a href="docs/readme/README.ja-JP.md">日本語</a> ·
+  <a href="docs/readme/README.vi-VN.md">Tiếng Việt</a> ·
+  <a href="docs/readme/README.fr-FR.md">Français</a> ·
+  <a href="docs/readme/README.de-DE.md">Deutsch</a> ·
+  <a href="docs/readme/README.es-ES.md">Español</a>
 </p>
 
 <p align="center">
@@ -35,7 +35,7 @@
   <a href="https://kition.ai">Website</a> ·
   <a href="https://github.com/KitionAI/kition/releases">Releases</a> ·
   <a href="https://github.com/KitionAI/kition/discussions">Discussions</a> ·
-  <a href="CONTRIBUTING.md">Contributing</a> ·
+  <a href=".github/CONTRIBUTING.md">Contributing</a> ·
   <a href=".github/SUPPORT.md">Support</a> ·
   <a href=".github/SECURITY.md">Security</a>
 </p>
@@ -320,7 +320,7 @@ package, pinned by version and checksum in
 
 Issues and pull requests are welcome.
 
-1. Read [CONTRIBUTING.md](CONTRIBUTING.md) for setup, scope, and required checks.
+1. Read [CONTRIBUTING.md](.github/CONTRIBUTING.md) for setup, scope, and required checks.
 2. Follow the [Kition Development Standard](docs/development-standard.md),
    including the recommended Orca worktree workflow.
 3. When a change crosses the renderer and the runtime, update the contract in
@@ -341,7 +341,6 @@ For product questions, account help, and private workspace concerns, see
 ├── docs/                    # Product, contributor, design, and runtime docs
 ├── e2e/                     # Playwright black-box tests
 ├── kits/                    # Kit pins (kits.lock.json) and kit module registry
-├── packages/                # Source packages that also run outside Kition
 ├── public/                  # Static assets, onboarding files, and kit packages
 ├── scripts/                 # Repository checks and inspection entry points
 ├── src/                     # React application organized by feature domain

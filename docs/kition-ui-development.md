@@ -15,9 +15,11 @@ src/
   services/     Runtime integration, desktop helpers, side-effect services
   lib/          Shared low-level utilities
   types/        Shared TypeScript types
-
-packages/       Source packages run outside Kition too (none at the moment; packages/README.md)
 ```
+
+Shared controls come from Kition Tessera (see [Kition Tessera](#kition-tessera) below), and kit
+editors live in the kits' own repositories, shipped as packages in `public/kits/<kit>-ui/`
+([kits.md](kits.md)). Kition has no source packages of its own.
 
 Editor workspace layout should follow a consistent chrome:
 
@@ -85,6 +87,24 @@ Examples:
 - Let workspace screen components own editor-page composition, portal consumption, and feature orchestration.
 - Do not place new Agent presentation logic back into `src/app/Shell.tsx`.
 - Shared controls come from Kition Tessera (`@kition/tessera-ui`): buttons, form fields, Modal, Popover, Sheet, Switch, Confirm, Command. Add a missing generic control to Tessera, not to Kition; keep app-level business UI in `src/`.
+
+## Kition Tessera
+
+`@kition/tessera-ui` (components) and `@kition/tessera-icons` (icons) are npm packages, built from
+the public `KitionAI/kition-tessera` repository and pinned to one exact version in `package.json`;
+`pnpm.overrides` holds the packages' own Tessera dependencies (`@kition/tessera-icons`,
+`@kition/tessera-tokens`) at the same version. Move all four together with
+`node scripts/pin-tessera.mjs <version>`; `pnpm run check:tessera` fails when they differ.
+
+- **Styles.** `src/app/styles.css` imports `@kition/tessera-ui/styles.css` into the `tessera` cascade
+  layer, above Tailwind's reset (`reset` layer) and below everything unlayered, so a Tailwind class
+  at a call site adjusts a Tessera control. The same file maps Tessera's theme tokens (`--kit-*`)
+  to Kition's variables, light and dark.
+- **Strings.** `src/app/TesseraStrings.tsx` gives Tessera's components their labels (Close,
+  Confirm, Cancel, Show password, the sheet's name) from Kition's `common` namespace, in every
+  locale.
+- **Sizes.** Tessera's controls share one scale: `sm` 32px, `md` 36px, `lg` 40px; Kition's form
+  fields use `lg`.
 
 ## Size And Split Rules
 

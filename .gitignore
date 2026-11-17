@@ -76,8 +76,7 @@ test-workspace-desktop/
 *.tsbuildinfo
 
 .agents
-/build/*
-!/build/entitlements.mac.plist
+/build/
 
 # Implementation plans and design specs are kept outside this public repository.
 /docs/superpowers/

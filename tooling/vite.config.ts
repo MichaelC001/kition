@@ -91,7 +91,6 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: [
       { find: '@', replacement: resolve(repositoryDir, 'src') },
-      // The packages under packages/ are imported by path alias, not installed (packages/README.md).
       // kition-sdk's @kition/kdm, which Kition carries as src/lib/kdm (scripts/sync-kit-host.mjs).
       { find: /^@kition\/kdm$/, replacement: resolve(repositoryDir, 'src/lib/kdm/index.ts') },
       // loro-crdt's default browser entry downloads and compiles its WebAssembly synchronously on

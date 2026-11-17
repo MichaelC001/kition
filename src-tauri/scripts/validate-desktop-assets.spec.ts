@@ -15,8 +15,7 @@ async function createFixture() {
   const rootDir = await fs.mkdtemp(path.join(os.tmpdir(), 'kition-desktop-assets-'))
   cleanupPaths.push(rootDir)
   await fs.mkdir(path.join(rootDir, 'src-tauri', 'icons'), { recursive: true })
-  await fs.mkdir(path.join(rootDir, 'build'), { recursive: true })
-  const files = ['src-tauri/icons/icon.icns', 'src-tauri/icons/icon.ico', 'src-tauri/icons/32x32.png', 'build/entitlements.plist']
+  const files = ['src-tauri/icons/icon.icns', 'src-tauri/icons/icon.ico', 'src-tauri/icons/32x32.png', 'src-tauri/entitlements.plist']
   await Promise.all(files.map((file) => fs.writeFile(path.join(rootDir, file), file)))
   return {
     rootDir,
@@ -26,7 +25,7 @@ async function createFixture() {
       version: '../package.json',
       bundle: {
         icon: ['icons/32x32.png', 'icons/icon.icns', 'icons/icon.ico'],
-        macOS: { entitlements: '../build/entitlements.plist' },
+        macOS: { entitlements: 'entitlements.plist' },
       },
       plugins: { 'deep-link': { desktop: { schemes: ['kition'] } } },
     },
@@ -41,7 +40,7 @@ describe('validateDesktopAssets', () => {
 
   it('reports missing configured files', async () => {
     const fixture = await createFixture()
-    fixture.config.bundle.macOS.entitlements = '../build/missing.plist'
+    fixture.config.bundle.macOS.entitlements = 'missing.plist'
     await expect(validateDesktopAssets(fixture)).rejects.toThrow('macOS entitlements is missing')
   })
 

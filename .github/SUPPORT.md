@@ -32,5 +32,5 @@ Do not open a public issue for a suspected vulnerability. Follow the
 ## Contribution Help
 
 Questions about local setup, repository scope, testing, or pull requests should
-start with [CONTRIBUTING.md](../CONTRIBUTING.md) and the
+start with [CONTRIBUTING.md](CONTRIBUTING.md) and the
 [development standard](../docs/development-standard.md).

@@ -2,7 +2,7 @@
 // Pins Kition to one release of Kition Tessera (the `@kition/tessera-*` packages on npm, built from
 // the public KitionAI/kition-tessera repository): the `@kition/tessera-ui` and `@kition/tessera-icons`
 // dependencies and the `pnpm.overrides` that hold those packages' own `@kition/tessera-icons` and
-// `@kition/tessera-tokens` at the same version. See packages/README.md.
+// `@kition/tessera-tokens` at the same version. See docs/kition-ui-development.md, Kition Tessera.
 //
 //   node scripts/pin-tessera.mjs <version>  pin all four to <version> (exact, for example 0.1.0); then pnpm install
 //   node scripts/pin-tessera.mjs --check    fail when they name different versions

@@ -1,9 +1,9 @@
 <h1 align="center">
-  <a href="https://kition.ai"><img src="public/logo-mark.png" alt="Kition ロゴ" width="64" valign="middle" /></a> Kition
+  <a href="https://kition.ai"><img src="../../public/logo-mark.png" alt="Kition ロゴ" width="64" valign="middle" /></a> Kition
 </h1>
 
 <p align="center">
-  <a href="README.md">English</a> ·
+  <a href="../../README.md">English</a> ·
   <a href="README.zh-CN.md">简体中文</a> ·
   <a href="README.ru-RU.md">Русский</a> ·
   <strong>日本語</strong> ·
@@ -21,7 +21,7 @@
 <p align="center">
   <a href="https://github.com/KitionAI/kition/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/KitionAI/kition/ci.yml?branch=main&amp;style=flat-square&amp;logo=githubactions&amp;logoColor=white&amp;label=CI" alt="CI ステータス" /></a>
   <a href="https://github.com/KitionAI/kition/releases/latest"><img src="https://img.shields.io/github/v/release/KitionAI/kition?include_prereleases&amp;sort=semver&amp;style=flat-square&amp;color=5645d4" alt="最新リリース" /></a>
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/KitionAI/kition?style=flat-square&amp;color=5645d4" alt="ライセンス: Apache 2.0" /></a>
+  <a href="../../LICENSE"><img src="https://img.shields.io/github/license/KitionAI/kition?style=flat-square&amp;color=5645d4" alt="ライセンス: Apache 2.0" /></a>
 </p>
 
 <h3 align="center"><a href="https://github.com/KitionAI/kition/releases/latest"><ins>Kition をダウンロード</ins></a></h3>
@@ -29,12 +29,12 @@
 <p align="center">
   <a href="https://kition.ai">ウェブサイト</a> ·
   <a href="https://github.com/KitionAI/kition/releases">リリース</a> ·
-  <a href="CONTRIBUTING.md">コントリビューション</a> ·
-  <a href=".github/SUPPORT.md">サポート</a> ·
-  <a href=".github/SECURITY.md">セキュリティ</a>
+  <a href="../../.github/CONTRIBUTING.md">コントリビューション</a> ·
+  <a href="../../.github/SUPPORT.md">サポート</a> ·
+  <a href="../../.github/SECURITY.md">セキュリティ</a>
 </p>
 
-<p align="center"><img src="docs/readme/kition-overview.webp" alt="ドキュメント、構造化テーブル、エージェント調査を備えた Kition" width="100%" /></p>
+<p align="center"><img src="kition-overview.webp" alt="ドキュメント、構造化テーブル、エージェント調査を備えた Kition" width="100%" /></p>
 
 Kition は Markdown ドキュメント、構造化テーブル、ツールを利用する AI エージェント、ウェブ調査を一つのデスクトップワークスペースに統合します。編集可能なプロジェクトファイル、型付きレコード、添付ファイルをエージェントに提供することで、AI の操作を確認・修正・再実行しやすくします。
 
@@ -52,13 +52,13 @@ Kition は Markdown ドキュメント、構造化テーブル、ツールを利
 Kition エージェントは、コピー＆ペーストが必要な提案を返すだけではありません。現在の Markdown ドキュメントを読み、必要な範囲を直接変更して、結果をワークスペースへ書き戻せます。作業中もドキュメントとタスクの実行過程を並べて確認できます。
 
 <p align="center">
-  <img src="docs/readme/agent-document-edit.webp" alt="オープンソースの Kition AI エージェントが現在の Markdown ドキュメントを読み取り、ツール実行履歴の横で直接編集している画面" width="100%" />
+  <img src="agent-document-edit.webp" alt="オープンソースの Kition AI エージェントが現在の Markdown ドキュメントを読み取り、ツール実行履歴の横で直接編集している画面" width="100%" />
 </p>
 
 エディター外でファイルが変更されると、Kition は追加・削除・書き換えを強調した差分レビュー画面を開きます。変更は一つずつ承認または却下でき、編集全体をまとめて確認することもできます。
 
 <p align="center">
-  <img src="docs/readme/agent-document-diff-review.webp" alt="AI による追加と削除、および変更ごとの承認・却下操作を表示する Kition のドキュメント差分レビュー" width="100%" />
+  <img src="agent-document-diff-review.webp" alt="AI による追加と削除、および変更ごとの承認・却下操作を表示する Kition のドキュメント差分レビュー" width="100%" />
 </p>
 
 自然言語で目的を伝え、エージェントに実ファイルを編集させ、差分を確認し、最終ドキュメントに残す内容を決めるという、制御可能なドキュメント作業が実現します。
@@ -71,19 +71,19 @@ Kition はタスクの文脈をドキュメント、テーブル、レコード�
 
 主要メッセージと人物写真から、各レコードに 16:9 と 9:16 のサムネイル案を生成します。
 
-<p align="center"><img src="docs/readme/scenarios/thumbnail-generator.webp" alt="Kition サムネイル生成テーブル" width="100%" /></p>
+<p align="center"><img src="scenarios/thumbnail-generator.webp" alt="Kition サムネイル生成テーブル" width="100%" /></p>
 
 ### レシート画像を検索可能なレコードへ変換
 
 添付フィールドにレシートを追加すると、店舗、住所、カテゴリ、構造化 JSON、OCR テキストを同じ行へ抽出できます。
 
-<p align="center"><img src="docs/readme/scenarios/receipt-ocr.webp" alt="Kition レシート OCR テーブル" width="100%" /></p>
+<p align="center"><img src="scenarios/receipt-ocr.webp" alt="Kition レシート OCR テーブル" width="100%" /></p>
 
 ### 一つの商品概要から素材パイプラインを展開
 
 商品コンセプトから、デザイン案、正投影図、機能画像、ライフスタイル画像、スタイルボード、発売コピーを生成し、元レコードと関連付けて保持します。
 
-<p align="center"><img src="docs/readme/scenarios/batch-product-designer.webp" alt="Kition 商品デザインテーブル" width="100%" /></p>
+<p align="center"><img src="scenarios/batch-product-designer.webp" alt="Kition 商品デザインテーブル" width="100%" /></p>
 
 ## 主な機能
 
@@ -110,11 +110,11 @@ pnpm install --frozen-lockfile
 pnpm dev
 ```
 
-ランタイム統合を必要としない UI 開発では `pnpm dev:web` を利用できます。詳細は[ランタイム開発](docs/runtime-development.md)を参照してください。
+ランタイム統合を必要としない UI 開発では `pnpm dev:web` を利用できます。詳細は[ランタイム開発](../runtime-development.md)を参照してください。
 
 ## オープンソースの範囲
 
-デスクトップアプリ全体がこのリポジトリでオープンソースとして公開されています。React レンダラー（`src/`）、Tauri デスクトップシェル（`src-tauri/`）、シェルが同じプロセス内で実行する Rust ランタイム（`crates/`）、[`contracts/runtime/`](contracts/runtime/) のランタイム契約、モック、テスト、パッケージング処理が含まれます。キットは別のリポジトリで開発され、Kition は公開済みのパッケージを [`kits/kits.lock.json`](kits/kits.lock.json) でバージョンとチェックサムを固定して同梱します。
+デスクトップアプリ全体がこのリポジトリでオープンソースとして公開されています。React レンダラー（`src/`）、Tauri デスクトップシェル（`src-tauri/`）、シェルが同じプロセス内で実行する Rust ランタイム（`crates/`）、[`contracts/runtime/`](../../contracts/runtime/) のランタイム契約、モック、テスト、パッケージング処理が含まれます。キットは別のリポジトリで開発され、Kition は公開済みのパッケージを [`kits/kits.lock.json`](../../kits/kits.lock.json) でバージョンとチェックサムを固定して同梱します。
 
 ## 技術スタック
 
@@ -128,8 +128,8 @@ pnpm dev
 
 ## コントリビューション
 
-Issue と Pull Request を歓迎します。[CONTRIBUTING.md](CONTRIBUTING.md) と [Kition 開発標準](docs/development-standard.md)を確認してください。レンダラーとランタイムにまたがる変更では、`contracts/runtime/` の契約、レンダラーのモック、ランタイムを同時に更新してください。
+Issue と Pull Request を歓迎します。[CONTRIBUTING.md](../../.github/CONTRIBUTING.md) と [Kition 開発標準](../development-standard.md)を確認してください。レンダラーとランタイムにまたがる変更では、`contracts/runtime/` の契約、レンダラーのモック、ランタイムを同時に更新してください。
 
 ## ライセンス
 
-Kition（`crates/` 内のランタイムを含む）は [Apache License 2.0](LICENSE) の下で提供されます。
+Kition（`crates/` 内のランタイムを含む）は [Apache License 2.0](../../LICENSE) の下で提供されます。

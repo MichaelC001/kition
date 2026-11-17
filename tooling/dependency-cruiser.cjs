@@ -3,10 +3,8 @@
  *
  * Features under src/features/<name> may depend on shared layers
  * (src/components, src/api, src/services, src/lib, src/types, src/i18n,
- * src/styles), on the packages under packages/ through their entries, and on
- * other features only through that feature's public entry
- * (src/features/<other>/public.ts). Packages import nothing from src/. Import
- * cycles are forbidden everywhere. Known violations live in tooling/dependency-cruiser.known.json
+ * src/styles), and on other features only through that feature's public entry
+ * (src/features/<other>/public.ts). Import cycles are forbidden everywhere. Known violations live in tooling/dependency-cruiser.known.json
  * and are checked with --ignore-known so the count can only go down.
  */
 module.exports = {
@@ -44,16 +42,6 @@ module.exports = {
       severity: 'error',
       from: { path: '^src/features/kits/engine/' },
       to: { path: '^src/', pathNot: '^src/features/kits/engine/' },
-    },
-    {
-      name: 'packages-import-nothing-from-the-app',
-      severity: 'error',
-      comment:
-        'A package under packages/ runs outside Kition too, so it imports nothing from src/ but the KDM copy (as @kition/kdm).',
-      from: { path: '^packages/' },
-      // src/lib/kdm is kition-sdk's @kition/kdm, which Kition carries (scripts/sync-kit-host.mjs);
-      // packages import it by that name, which a kit's build takes from kition-sdk.
-      to: { path: '^src/', pathNot: '^src/lib/kdm/' },
     },
     {
       name: 'shared-layers-do-not-import-features',

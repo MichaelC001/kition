@@ -63,7 +63,7 @@ Codex has no blocking Stop hook. Before you report a task as done:
 ```text
 features.yaml          the feature catalogue (the only source; edit this)
 FEATURES.md            generated from features.yaml; never edit by hand
-QUALITY.md             this file
+docs/quality.md        this file
 cases/
   <feature-id>/
     <case-slug>/
@@ -73,9 +73,9 @@ cases/
   regressions/
     issue-<n>/         a case from an issue in this repository
     issue-<repo>-<n>/  a case from an issue in another repository
+  waivers.yaml         owner-approved, dated exceptions to requirement rows
 conformance/           the agent conformance fixtures (cases refer to them, never copy them)
 corpus/                the corpus (gitignored; fetched at pinned commits)
-kit-waivers.yaml       owner-approved, dated exceptions to requirement rows
 ```
 
 Outputs of a run go to `target/golden/<case-id>/`, never into `cases/`; a case calls that
@@ -83,9 +83,9 @@ directory `out/`.
 
 - **Requirements**: a feature may name requirement rows in `requirements`. Keep the
   applicable requirements alongside the kit that implements them.
-- **Waivers**: `kit-waivers.yaml` at the repository root. A waiver defers a row until a date;
-  it never relaxes the row and never permits a compatibility layer. Only the owner approves
-  one; agents may propose one with `approved_on: null`.
+- **Waivers**: `cases/waivers.yaml`. A waiver defers a row until a date; it never relaxes the
+  row and never permits a compatibility layer. Only the owner approves one; agents may propose
+  one with `approved_on: null`.
 
 ## How to add a case
 

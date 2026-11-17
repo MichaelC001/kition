@@ -29,13 +29,13 @@ TEXT_SCAN_EXEMPT_PATHS = {
     "crates/kition-core/locales/zh-CN.json",
     "docs/legal/THIRD_PARTY_NOTICES.txt",
     "README.md",
-    "README.de-DE.md",
-    "README.es-ES.md",
-    "README.fr-FR.md",
-    "README.ja-JP.md",
-    "README.ru-RU.md",
-    "README.vi-VN.md",
-    "README.zh-CN.md",
+    "docs/readme/README.de-DE.md",
+    "docs/readme/README.es-ES.md",
+    "docs/readme/README.fr-FR.md",
+    "docs/readme/README.ja-JP.md",
+    "docs/readme/README.ru-RU.md",
+    "docs/readme/README.vi-VN.md",
+    "docs/readme/README.zh-CN.md",
 }
 TEXT_SCAN_EXEMPT_PREFIXES = (
     "src/i18n/locales/zh-CN/",
@@ -171,7 +171,7 @@ def locale_parity_violations_for(locale_root: Path) -> list[tuple[str, int, str]
 def raw_ui_strings() -> dict[str, tuple[str, int]]:
     """Every raw JSX text node or aria-label literal in a component, keyed by `path|kind|text`."""
     found: dict[str, tuple[str, int]] = {}
-    paths = [*(REPO_ROOT / "src").rglob("*.tsx"), *(REPO_ROOT / "packages").glob("*/src/**/*.tsx")]
+    paths = list((REPO_ROOT / "src").rglob("*.tsx"))
     for path in sorted(paths):
         relative_path = path.relative_to(REPO_ROOT).as_posix()
         if ".spec." in path.name:
@@ -225,7 +225,7 @@ def scan() -> list[tuple[str, int, str]]:
         except UnicodeDecodeError:
             continue
 
-        is_component = relative_path.startswith(("src/", "packages/")) and relative_path.endswith(".tsx") and ".spec." not in relative_path
+        is_component = relative_path.startswith("src/") and relative_path.endswith(".tsx") and ".spec." not in relative_path
         for line_number, line in enumerate(text.splitlines(), 1):
             if is_component and HARDCODED_LOADING_PATTERN.search(line):
                 violations.append((relative_path, line_number, "hardcoded loading text in JSX; use SkeletonRows or an i18n key"))

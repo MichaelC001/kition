@@ -2,7 +2,7 @@
  * The Kition Server (`kition-server`, a private sibling checkout `../kition-server`, or
  * `KITION_SERVER_REPO`) for co-editing end-to-end tests: built once with cargo, run in memory on a
  * free port with its development tokens, and stopped after the test. kition-server is a private
- * tool (not open source; QUALITY.md, Private tools): specs skip when its checkout is missing
+ * tool (not open source; docs/quality.md, Private tools): specs skip when its checkout is missing
  * (`kitionServerSkipReason`). A missing Rust toolchain is not a skip: starting the server fails.
  */
 import { execFileSync, spawn, type ChildProcess } from 'node:child_process'

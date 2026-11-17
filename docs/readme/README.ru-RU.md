@@ -1,9 +1,9 @@
 <h1 align="center">
-  <a href="https://kition.ai"><img src="public/logo-mark.png" alt="Логотип Kition" width="64" valign="middle" /></a> Kition
+  <a href="https://kition.ai"><img src="../../public/logo-mark.png" alt="Логотип Kition" width="64" valign="middle" /></a> Kition
 </h1>
 
 <p align="center">
-  <a href="README.md">English</a> ·
+  <a href="../../README.md">English</a> ·
   <a href="README.zh-CN.md">简体中文</a> ·
   <strong>Русский</strong> ·
   <a href="README.ja-JP.md">日本語</a> ·
@@ -21,7 +21,7 @@
 <p align="center">
   <a href="https://github.com/KitionAI/kition/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/KitionAI/kition/ci.yml?branch=main&amp;style=flat-square&amp;logo=githubactions&amp;logoColor=white&amp;label=CI" alt="Статус CI" /></a>
   <a href="https://github.com/KitionAI/kition/releases/latest"><img src="https://img.shields.io/github/v/release/KitionAI/kition?include_prereleases&amp;sort=semver&amp;style=flat-square&amp;color=5645d4" alt="Последний выпуск" /></a>
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/KitionAI/kition?style=flat-square&amp;color=5645d4" alt="Лицензия Apache 2.0" /></a>
+  <a href="../../LICENSE"><img src="https://img.shields.io/github/license/KitionAI/kition?style=flat-square&amp;color=5645d4" alt="Лицензия Apache 2.0" /></a>
 </p>
 
 <h3 align="center"><a href="https://github.com/KitionAI/kition/releases/latest"><ins>Скачать Kition</ins></a></h3>
@@ -29,12 +29,12 @@
 <p align="center">
   <a href="https://kition.ai">Сайт</a> ·
   <a href="https://github.com/KitionAI/kition/releases">Выпуски</a> ·
-  <a href="CONTRIBUTING.md">Участие</a> ·
-  <a href=".github/SUPPORT.md">Поддержка</a> ·
-  <a href=".github/SECURITY.md">Безопасность</a>
+  <a href="../../.github/CONTRIBUTING.md">Участие</a> ·
+  <a href="../../.github/SUPPORT.md">Поддержка</a> ·
+  <a href="../../.github/SECURITY.md">Безопасность</a>
 </p>
 
-<p align="center"><img src="docs/readme/kition-overview.webp" alt="Обзор Kition: документы, структурированные таблицы и исследования агента" width="100%" /></p>
+<p align="center"><img src="kition-overview.webp" alt="Обзор Kition: документы, структурированные таблицы и исследования агента" width="100%" /></p>
 
 Kition объединяет Markdown-документы, структурированные таблицы, AI-агента с инструментами и веб-исследования. Агент работает с редактируемыми файлами проекта, типизированными записями и вложениями, поэтому результат легче проверить, исправить и повторить.
 
@@ -52,13 +52,13 @@ Kition объединяет Markdown-документы, структуриро�
 Вместо очередного совета, который нужно копировать и вставлять, агент Kition может прочитать активный Markdown-документ, внести точечные изменения и записать результат обратно в рабочее пространство. Документ и полный ход выполнения задачи остаются видимыми во время работы агента.
 
 <p align="center">
-  <img src="docs/readme/agent-document-edit.webp" alt="AI-агент Kition с открытым исходным кодом читает и редактирует активный Markdown-документ рядом с журналом выполнения инструментов" width="100%" />
+  <img src="agent-document-edit.webp" alt="AI-агент Kition с открытым исходным кодом читает и редактирует активный Markdown-документ рядом с журналом выполнения инструментов" width="100%" />
 </p>
 
 Когда файл изменяется вне редактора, Kition открывает режим проверки документа, где выделены добавления, удаления и переписанные фрагменты. Каждое изменение можно принять или отклонить отдельно либо проверить весь набор целиком.
 
 <p align="center">
-  <img src="docs/readme/agent-document-diff-review.webp" alt="Проверка различий документа в Kition с добавлениями и удалениями AI и элементами управления для принятия или отклонения каждого изменения" width="100%" />
+  <img src="agent-document-diff-review.webp" alt="Проверка различий документа в Kition с добавлениями и удалениями AI и элементами управления для принятия или отклонения каждого изменения" width="100%" />
 </p>
 
 Так возникает управляемый процесс работы с документом: опишите цель на естественном языке, разрешите агенту изменить настоящий файл, проверьте различия и точно решите, что останется в итоговом документе.
@@ -71,19 +71,19 @@ Kition объединяет Markdown-документы, структуриро�
 
 Создавайте связанные варианты миниатюр 16:9 и 9:16 для каждой записи на основе ключевого сообщения и фотографии.
 
-<p align="center"><img src="docs/readme/scenarios/thumbnail-generator.webp" alt="Таблица генерации миниатюр Kition" width="100%" /></p>
+<p align="center"><img src="scenarios/thumbnail-generator.webp" alt="Таблица генерации миниатюр Kition" width="100%" /></p>
 
 ### Преобразование чеков в доступные для поиска записи
 
 Поля компьютерного зрения извлекают продавца, адрес, категорию, JSON и OCR-текст непосредственно в строку таблицы.
 
-<p align="center"><img src="docs/readme/scenarios/receipt-ocr.webp" alt="Таблица распознавания чеков Kition" width="100%" /></p>
+<p align="center"><img src="scenarios/receipt-ocr.webp" alt="Таблица распознавания чеков Kition" width="100%" /></p>
 
 ### Полный конвейер материалов из одного описания продукта
 
 Создавайте варианты дизайна, ортографические виды, изображения, стилевые доски и тексты запуска, сохраняя связь с исходной записью.
 
-<p align="center"><img src="docs/readme/scenarios/batch-product-designer.webp" alt="Таблица пакетного дизайна продукта Kition" width="100%" /></p>
+<p align="center"><img src="scenarios/batch-product-designer.webp" alt="Таблица пакетного дизайна продукта Kition" width="100%" /></p>
 
 ## Основные возможности
 
@@ -110,11 +110,11 @@ pnpm install --frozen-lockfile
 pnpm dev
 ```
 
-Для работы только с интерфейсом используйте `pnpm dev:web`. Дополнительные сведения: [разработка среды выполнения](docs/runtime-development.md).
+Для работы только с интерфейсом используйте `pnpm dev:web`. Дополнительные сведения: [разработка среды выполнения](../runtime-development.md).
 
 ## Граница открытого исходного кода
 
-Всё настольное приложение открыто в этом репозитории: рендерер React (`src/`), настольная оболочка Tauri (`src-tauri/`), среда выполнения на Rust (`crates/`), которую оболочка запускает в том же процессе, контракты среды выполнения в [`contracts/runtime/`](contracts/runtime/), моки, тесты и упаковка. Киты разрабатываются в отдельных репозиториях; Kition поставляет их опубликованные пакеты, закреплённые по версии и контрольной сумме в [`kits/kits.lock.json`](kits/kits.lock.json).
+Всё настольное приложение открыто в этом репозитории: рендерер React (`src/`), настольная оболочка Tauri (`src-tauri/`), среда выполнения на Rust (`crates/`), которую оболочка запускает в том же процессе, контракты среды выполнения в [`contracts/runtime/`](../../contracts/runtime/), моки, тесты и упаковка. Киты разрабатываются в отдельных репозиториях; Kition поставляет их опубликованные пакеты, закреплённые по версии и контрольной сумме в [`kits/kits.lock.json`](../../kits/kits.lock.json).
 
 ## Технологии
 
@@ -128,8 +128,8 @@ pnpm dev
 
 ## Участие в разработке
 
-Мы приветствуем Issue и Pull Request. Ознакомьтесь с [CONTRIBUTING.md](CONTRIBUTING.md) и [стандартом разработки Kition](docs/development-standard.md). Если изменение затрагивает и рендерер, и среду выполнения, обновляйте вместе контракт в `contracts/runtime/`, мок рендерера и среду выполнения.
+Мы приветствуем Issue и Pull Request. Ознакомьтесь с [CONTRIBUTING.md](../../.github/CONTRIBUTING.md) и [стандартом разработки Kition](../development-standard.md). Если изменение затрагивает и рендерер, и среду выполнения, обновляйте вместе контракт в `contracts/runtime/`, мок рендерера и среду выполнения.
 
 ## Лицензия
 
-Kition, включая среду выполнения в `crates/`, распространяется по лицензии [Apache License 2.0](LICENSE).
+Kition, включая среду выполнения в `crates/`, распространяется по лицензии [Apache License 2.0](../../LICENSE).

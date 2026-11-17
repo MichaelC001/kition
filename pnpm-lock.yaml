@@ -27,7 +27,7 @@ overrides:
 patchedDependencies:
   brace-expansion@5.0.12:
     hash: 372eb5af887ed3a1d7efb73566ce529158aaaa83191875c8bd64d974b5bc68e8
-    path: patches/brace-expansion@5.0.12.patch
+    path: tooling/patches/brace-expansion@5.0.12.patch
 
 importers:
 

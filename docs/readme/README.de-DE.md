@@ -1,9 +1,9 @@
 <h1 align="center">
-  <a href="https://kition.ai"><img src="public/logo-mark.png" alt="Kition-Logo" width="64" valign="middle" /></a> Kition
+  <a href="https://kition.ai"><img src="../../public/logo-mark.png" alt="Kition-Logo" width="64" valign="middle" /></a> Kition
 </h1>
 
 <p align="center">
-  <a href="README.md">English</a> ·
+  <a href="../../README.md">English</a> ·
   <a href="README.zh-CN.md">简体中文</a> ·
   <a href="README.ru-RU.md">Русский</a> ·
   <a href="README.ja-JP.md">日本語</a> ·
@@ -21,7 +21,7 @@
 <p align="center">
   <a href="https://github.com/KitionAI/kition/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/KitionAI/kition/ci.yml?branch=main&amp;style=flat-square&amp;logo=githubactions&amp;logoColor=white&amp;label=CI" alt="CI-Status" /></a>
   <a href="https://github.com/KitionAI/kition/releases/latest"><img src="https://img.shields.io/github/v/release/KitionAI/kition?include_prereleases&amp;sort=semver&amp;style=flat-square&amp;color=5645d4" alt="Neueste Version" /></a>
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/KitionAI/kition?style=flat-square&amp;color=5645d4" alt="Lizenz Apache 2.0" /></a>
+  <a href="../../LICENSE"><img src="https://img.shields.io/github/license/KitionAI/kition?style=flat-square&amp;color=5645d4" alt="Lizenz Apache 2.0" /></a>
 </p>
 
 <h3 align="center"><a href="https://github.com/KitionAI/kition/releases/latest"><ins>Kition herunterladen</ins></a></h3>
@@ -29,12 +29,12 @@
 <p align="center">
   <a href="https://kition.ai">Website</a> ·
   <a href="https://github.com/KitionAI/kition/releases">Versionen</a> ·
-  <a href="CONTRIBUTING.md">Mitwirken</a> ·
-  <a href=".github/SUPPORT.md">Support</a> ·
-  <a href=".github/SECURITY.md">Sicherheit</a>
+  <a href="../../.github/CONTRIBUTING.md">Mitwirken</a> ·
+  <a href="../../.github/SUPPORT.md">Support</a> ·
+  <a href="../../.github/SECURITY.md">Sicherheit</a>
 </p>
 
-<p align="center"><img src="docs/readme/kition-overview.webp" alt="Kition-Übersicht mit Dokumenten, strukturierten Tabellen und Agentenrecherche" width="100%" /></p>
+<p align="center"><img src="kition-overview.webp" alt="Kition-Übersicht mit Dokumenten, strukturierten Tabellen und Agentenrecherche" width="100%" /></p>
 
 Kition vereint Markdown-Dokumente, strukturierte Tabellen, einen werkzeugfähigen KI-Agenten und Webrecherche. Der Agent arbeitet mit bearbeitbaren Projektdateien, typisierten Datensätzen und Anhängen. Dadurch lassen sich Ergebnisse leichter prüfen, korrigieren und wiederholen.
 
@@ -52,13 +52,13 @@ Kition vereint Markdown-Dokumente, strukturierte Tabellen, einen werkzeugfähige
 Statt einen weiteren Vorschlag zum Kopieren und Einfügen zurückzugeben, kann der Kition-Agent das aktive Markdown-Dokument lesen, gezielte Änderungen vornehmen und das Ergebnis in den Arbeitsbereich zurückschreiben. Dokument und vollständiger Aufgabenverlauf bleiben während der Bearbeitung gemeinsam sichtbar.
 
 <p align="center">
-  <img src="docs/readme/agent-document-edit.webp" alt="Der quelloffene Kition-KI-Agent liest und bearbeitet das aktive Markdown-Dokument neben der sichtbaren Werkzeugausführung" width="100%" />
+  <img src="agent-document-edit.webp" alt="Der quelloffene Kition-KI-Agent liest und bearbeitet das aktive Markdown-Dokument neben der sichtbaren Werkzeugausführung" width="100%" />
 </p>
 
 Wenn eine Datei außerhalb des Editors geändert wird, öffnet Kition eine Dokumentprüfung, die Ergänzungen, Löschungen und umgeschriebene Stellen hervorhebt. Jede Änderung lässt sich einzeln annehmen oder ablehnen; alternativ kann die gesamte Bearbeitung als Einheit geprüft werden.
 
 <p align="center">
-  <img src="docs/readme/agent-document-diff-review.webp" alt="Kition-Dokumentvergleich mit KI-Ergänzungen und Löschungen sowie Steuerelementen zum Annehmen oder Ablehnen jeder Änderung" width="100%" />
+  <img src="agent-document-diff-review.webp" alt="Kition-Dokumentvergleich mit KI-Ergänzungen und Löschungen sowie Steuerelementen zum Annehmen oder Ablehnen jeder Änderung" width="100%" />
 </p>
 
 So entsteht ein kontrollierter Dokumentablauf: Beschreiben Sie das Ziel in natürlicher Sprache, lassen Sie den Agenten die echte Datei bearbeiten, prüfen Sie den Unterschied und entscheiden Sie genau, was im endgültigen Dokument verbleibt.
@@ -71,19 +71,19 @@ Kition hält den Aufgabenkontext in Dokumenten, Tabellenfeldern, Datensätzen un
 
 Erstellen Sie aus einer Kernbotschaft und einem Porträt verknüpfte Miniaturvarianten im Format 16:9 und 9:16 für jeden Datensatz.
 
-<p align="center"><img src="docs/readme/scenarios/thumbnail-generator.webp" alt="Kition-Tabelle zur Erzeugung von Miniaturen" width="100%" /></p>
+<p align="center"><img src="scenarios/thumbnail-generator.webp" alt="Kition-Tabelle zur Erzeugung von Miniaturen" width="100%" /></p>
 
 ### Belegbilder in durchsuchbare Datensätze umwandeln
 
 Bildfelder extrahieren Händler, Adresse, Kategorie, strukturiertes JSON und OCR-Text direkt in dieselbe Tabellenzeile.
 
-<p align="center"><img src="docs/readme/scenarios/receipt-ocr.webp" alt="Kition-Tabelle für Beleg-OCR" width="100%" /></p>
+<p align="center"><img src="scenarios/receipt-ocr.webp" alt="Kition-Tabelle für Beleg-OCR" width="100%" /></p>
 
 ### Aus einem Produktbriefing eine vollständige Materialkette erstellen
 
 Erzeugen Sie Designvarianten, orthografische Ansichten, Funktionsbilder, Lifestyle-Szenen, Stiltafeln und Einführungstexte, während alle Ergebnisse mit dem Quelldatensatz verbunden bleiben.
 
-<p align="center"><img src="docs/readme/scenarios/batch-product-designer.webp" alt="Kition-Tabelle für stapelweise Produktgestaltung" width="100%" /></p>
+<p align="center"><img src="scenarios/batch-product-designer.webp" alt="Kition-Tabelle für stapelweise Produktgestaltung" width="100%" /></p>
 
 ## Hauptfunktionen
 
@@ -110,11 +110,11 @@ pnpm install --frozen-lockfile
 pnpm dev
 ```
 
-Für reine Oberflächenentwicklung ohne Runtime-Integration verwenden Sie `pnpm dev:web`. Weitere Informationen: [Runtime-Entwicklung](docs/runtime-development.md).
+Für reine Oberflächenentwicklung ohne Runtime-Integration verwenden Sie `pnpm dev:web`. Weitere Informationen: [Runtime-Entwicklung](../runtime-development.md).
 
 ## Open-Source-Grenze
 
-Die gesamte Desktop-App ist in diesem Repository quelloffen: der React-Renderer (`src/`), die Tauri-Desktop-Shell (`src-tauri/`), die Rust-Runtime (`crates/`), die die Shell im selben Prozess ausführt, die Runtime-Verträge in [`contracts/runtime/`](contracts/runtime/), Mocks, Tests und Paketierung. Kits werden in separaten Repositories entwickelt; Kition liefert ihre veröffentlichten Pakete aus, mit Version und Prüfsumme festgelegt in [`kits/kits.lock.json`](kits/kits.lock.json).
+Die gesamte Desktop-App ist in diesem Repository quelloffen: der React-Renderer (`src/`), die Tauri-Desktop-Shell (`src-tauri/`), die Rust-Runtime (`crates/`), die die Shell im selben Prozess ausführt, die Runtime-Verträge in [`contracts/runtime/`](../../contracts/runtime/), Mocks, Tests und Paketierung. Kits werden in separaten Repositories entwickelt; Kition liefert ihre veröffentlichten Pakete aus, mit Version und Prüfsumme festgelegt in [`kits/kits.lock.json`](../../kits/kits.lock.json).
 
 ## Technologie
 
@@ -128,8 +128,8 @@ Die gesamte Desktop-App ist in diesem Repository quelloffen: der React-Renderer 
 
 ## Mitwirken
 
-Issues und Pull Requests sind willkommen. Lesen Sie [CONTRIBUTING.md](CONTRIBUTING.md) und den [Kition-Entwicklungsstandard](docs/development-standard.md). Ändern Sie bei Änderungen über Renderer und Runtime hinweg den Vertrag in `contracts/runtime/`, das Renderer-Mock und die Runtime gemeinsam.
+Issues und Pull Requests sind willkommen. Lesen Sie [CONTRIBUTING.md](../../.github/CONTRIBUTING.md) und den [Kition-Entwicklungsstandard](../development-standard.md). Ändern Sie bei Änderungen über Renderer und Runtime hinweg den Vertrag in `contracts/runtime/`, das Renderer-Mock und die Runtime gemeinsam.
 
 ## Lizenz
 
-Kition, einschließlich der Runtime in `crates/`, steht unter der [Apache License 2.0](LICENSE).
+Kition, einschließlich der Runtime in `crates/`, steht unter der [Apache License 2.0](../../LICENSE).

@@ -49,10 +49,7 @@
     "src/i18n/**/*.tsx",
     "src/i18n/**/*.json",
     "src/utils/**/*.ts",
-    "src/utils/**/*.tsx",
-    "packages/*/src/**/*.ts",
-    "packages/*/src/**/*.tsx",
-    "packages/*/src/**/*.json"
+    "src/utils/**/*.tsx"
   ],
   "references": [{ "path": "./tooling/tsconfig.node.json" }]
 }
