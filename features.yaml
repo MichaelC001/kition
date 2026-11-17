@@ -330,7 +330,10 @@ features:
       - scripts/generate-third-party-notices.mjs
       - scripts/lib/rustCrateNotices.mjs
       - scripts/lib/rustCrateNotices.spec.ts
+      - scripts/lib/npmLicenseOverrides.mjs
+      - scripts/lib/npmLicenseOverrides.spec.ts
       - scripts/licenses/*.txt
+      - scripts/licenses/packages/*.txt
       - docs/legal/THIRD_PARTY_NOTICES.txt
       - src/features/settings/sections/AboutSettings.tsx
       - src/features/settings/sections/OpenSourceLicenses.tsx
@@ -342,6 +345,7 @@ features:
       - kition.platform.open-source-notices/notices-current
       - kition.platform.open-source-notices/rust-crates
       - kition.platform.open-source-notices/licenses-view
+      - regressions/issue-notices-license-texts
     since: "2026-10-31"
   - id: kition.kits.table-host
     title: Host features (scenarios, triggers, attachments) read and write table files through the Table kit's commands

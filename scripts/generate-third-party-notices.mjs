@@ -3,6 +3,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
+import { npmLicenseOverride, overrideLicenseText } from './lib/npmLicenseOverrides.mjs'
 import { loadShippedCrates, renderRustNotices } from './lib/rustCrateNotices.mjs'
 
 const repositoryDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
@@ -103,22 +104,30 @@ function findLicenseFiles(packagePath) {
     .sort(compareText)
 }
 
-function readLicenseTexts(entry, installedPackageIndex) {
+function normalizeLicenseText(text) {
+  return text
+    .replace(/\r\n?/g, '\n')
+    .split('\n')
+    .map((line) => line.trimEnd())
+    .join('\n')
+    .trim()
+}
+
+/** The licence texts the installed package ships, or the one scripts/lib/npmLicenseOverrides.mjs supplies. */
+function readLicenseTexts(entry, installedPackageIndex, override) {
   const packagePaths = entry.versions.flatMap((version) => (
     installedPackageIndex.get(packageIndexKey(entry.name, version)) || []
   ))
   const seen = new Set()
   for (const packagePath of packagePaths) {
     for (const licensePath of findLicenseFiles(packagePath)) {
-      const text = fs.readFileSync(licensePath, 'utf8')
-        .replace(/\r\n?/g, '\n')
-        .split('\n')
-        .map((line) => line.trimEnd())
-        .join('\n')
-        .trim()
+      if (override?.files && !override.files.includes(path.basename(licensePath))) continue
+      const text = normalizeLicenseText(fs.readFileSync(licensePath, 'utf8'))
       if (text) seen.add(text)
     }
   }
+  const supplied = seen.size ? null : overrideLicenseText(override)
+  if (supplied) seen.add(normalizeLicenseText(supplied))
   return [...seen].sort(compareText)
 }
 
@@ -126,21 +135,25 @@ function renderNotices(inventory, installedPackageIndex, rustNotices) {
   const entries = Object.entries(inventory)
     .flatMap(([license, packages]) => packages.map((entry) => ({ ...entry, license })))
     .sort((left, right) => compareText(left.name, right.name) || compareText(left.versions.join(','), right.versions.join(',')))
+  const missing = []
 
   const licenseTexts = []
   const textIndexes = new Map()
   const packagesByText = []
   const inventoryLines = entries.flatMap((entry) => {
+    const override = npmLicenseOverride(entry.name)
     const lines = [
       `${entry.name} ${entry.versions.join(', ')}`,
-      `License: ${entry.license}`,
+      `License: ${override?.license ?? entry.license}`,
     ]
+    if (override?.usedUnder) lines.push(`Used under: ${override.usedUnder}`)
+    if (override?.note) lines.push(`Note: ${override.note}`)
     if (entry.homepage) {
       lines.push(`Homepage: ${entry.homepage}`)
     }
-    const texts = readLicenseTexts(entry, installedPackageIndex)
+    const texts = readLicenseTexts(entry, installedPackageIndex, override)
     if (texts.length === 0) {
-      lines.push('License text: not present in the installed package')
+      missing.push(`${entry.name} ${entry.versions.join(', ')}`)
     } else {
       const indexes = []
       for (const text of texts) {
@@ -159,6 +172,10 @@ function renderNotices(inventory, installedPackageIndex, rustNotices) {
     lines.push('')
     return lines
   })
+
+  if (missing.length) {
+    throw new Error(`these npm packages ship no licence text; add their upstream text to scripts/lib/npmLicenseOverrides.mjs:\n  ${missing.join('\n  ')}`)
+  }
 
   const textSections = licenseTexts.map((licenseText, index) => [
     `License text ${index + 1}`,
@@ -185,6 +202,9 @@ function renderNotices(inventory, installedPackageIndex, rustNotices) {
     'platforms Kition releases for, with the license texts each crate ships. Crates used under',
     'the Mozilla Public License 2.0 are used unmodified; their source code is available from',
     'crates.io at the address given with each crate.',
+    '',
+    'Packages that publish no licence file are listed with the licence text of their upstream project.',
+    'DOMPurify is offered under MPL-2.0 OR Apache-2.0; Kition uses it under the Apache License 2.0.',
     '',
     'Kit packages bundled with the app carry their own LICENSE and NOTICE files.',
     '',
