@@ -176,7 +176,7 @@ Mỗi hình là một tệp do một kit tạo bằng chính các lệnh của n
 | Văn phòng | [Note](https://github.com/KitionAI/kition-note) | Ghi chú Markdown, lưu chính xác từng byte | `.md` `.markdown` | `.md` |
 | Văn phòng | [Table](https://github.com/KitionAI/kition-table) | Bảng, chế độ xem và bảng điều khiển trong một tệp | `.ktable` | `.ktable` |
 | Văn phòng | [Board](https://github.com/KitionAI/kition-board) | Bảng trắng vô hạn cho sơ đồ, sơ đồ tư duy và bản phác thảo | `.kboard` | `.kboard` |
-| Văn phòng | [Doc](https://github.com/KitionAI/kition-doc) | Tài liệu Word (`.docx`) | `.docx` `.html` `.htm` | `.docx` |
+| Văn phòng | [Doc](https://github.com/KitionAI/kition-doc) | Tài liệu văn bản (`.docx`) | `.docx` `.html` `.htm` | `.docx` |
 | Văn phòng | [Sheet](https://github.com/KitionAI/kition-sheet) | Bảng tính (`.xlsx`) có công thức | `.xlsx` `.xlsm` `.xltx` `.xltm` `.xls` `.xlt` `.et` `.ett` `.xlsb` `.ods` `.csv` | `.xlsx` |
 | Văn phòng | [Slide](https://github.com/KitionAI/kition-slide) | Trang trình chiếu, bao gồm tệp `.pptx` | `.kslide` `.pptx` | `.kslide` |
 | Văn phòng | [PDF](https://github.com/KitionAI/kition-pdf) | Đọc và chỉnh sửa tệp PDF | `.pdf` | `.pdf` |

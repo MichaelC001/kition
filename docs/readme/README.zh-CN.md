@@ -176,7 +176,7 @@ Kition 智能体不只是再给出一条需要复制粘贴的建议。它可以�
 | 办公 | [Note](https://github.com/KitionAI/kition-note) | Markdown 笔记，逐字节原样保存 | `.md` `.markdown` | `.md` |
 | 办公 | [Table](https://github.com/KitionAI/kition-table) | 表格、视图和仪表盘，集中在一个文件中 | `.ktable` | `.ktable` |
 | 办公 | [Board](https://github.com/KitionAI/kition-board) | 用于图表、思维导图和草图的无限白板 | `.kboard` | `.kboard` |
-| 办公 | [Doc](https://github.com/KitionAI/kition-doc) | Word 文档（`.docx`） | `.docx` `.html` `.htm` | `.docx` |
+| 办公 | [Doc](https://github.com/KitionAI/kition-doc) | 文字处理文档（`.docx`） | `.docx` `.html` `.htm` | `.docx` |
 | 办公 | [Sheet](https://github.com/KitionAI/kition-sheet) | 带公式的电子表格（`.xlsx`） | `.xlsx` `.xlsm` `.xltx` `.xltm` `.xls` `.xlt` `.et` `.ett` `.xlsb` `.ods` `.csv` | `.xlsx` |
 | 办公 | [Slide](https://github.com/KitionAI/kition-slide) | 幻灯片，包括 `.pptx` 文件 | `.kslide` `.pptx` | `.kslide` |
 | 办公 | [PDF](https://github.com/KitionAI/kition-pdf) | 阅读和编辑 PDF 文件 | `.pdf` | `.pdf` |

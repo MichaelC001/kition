@@ -229,7 +229,7 @@ own engine; more of them are in
 | Office | [Note](https://github.com/KitionAI/kition-note) | Markdown notes, saved byte for byte | `.md` `.markdown` | `.md` |
 | Office | [Table](https://github.com/KitionAI/kition-table) | Tables, views and dashboards in one file | `.ktable` | `.ktable` |
 | Office | [Board](https://github.com/KitionAI/kition-board) | An infinite whiteboard for diagrams, mind maps and sketches | `.kboard` | `.kboard` |
-| Office | [Doc](https://github.com/KitionAI/kition-doc) | Word documents (`.docx`) | `.docx` `.html` `.htm` | `.docx` |
+| Office | [Doc](https://github.com/KitionAI/kition-doc) | Word-processing documents (`.docx`) | `.docx` `.html` `.htm` | `.docx` |
 | Office | [Sheet](https://github.com/KitionAI/kition-sheet) | Spreadsheets (`.xlsx`) with formulas | `.xlsx` `.xlsm` `.xltx` `.xltm` `.xls` `.xlt` `.et` `.ett` `.xlsb` `.ods` `.csv` | `.xlsx` |
 | Office | [Slide](https://github.com/KitionAI/kition-slide) | Slides, including `.pptx` files | `.kslide` `.pptx` | `.kslide` |
 | Office | [PDF](https://github.com/KitionAI/kition-pdf) | Read and edit PDF files | `.pdf` | `.pdf` |

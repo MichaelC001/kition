@@ -240,7 +240,7 @@ con su propio motor; hay más en
 | Ofimática | [Note](https://github.com/KitionAI/kition-note) | Notas Markdown, guardadas byte a byte | `.md` `.markdown` | `.md` |
 | Ofimática | [Table](https://github.com/KitionAI/kition-table) | Tablas, vistas y paneles en un solo archivo | `.ktable` | `.ktable` |
 | Ofimática | [Board](https://github.com/KitionAI/kition-board) | Una pizarra infinita para diagramas, mapas mentales y bocetos | `.kboard` | `.kboard` |
-| Ofimática | [Doc](https://github.com/KitionAI/kition-doc) | Documentos de Word (`.docx`) | `.docx` `.html` `.htm` | `.docx` |
+| Ofimática | [Doc](https://github.com/KitionAI/kition-doc) | Documentos de texto (`.docx`) | `.docx` `.html` `.htm` | `.docx` |
 | Ofimática | [Sheet](https://github.com/KitionAI/kition-sheet) | Hojas de cálculo (`.xlsx`) con fórmulas | `.xlsx` `.xlsm` `.xltx` `.xltm` `.xls` `.xlt` `.et` `.ett` `.xlsb` `.ods` `.csv` | `.xlsx` |
 | Ofimática | [Slide](https://github.com/KitionAI/kition-slide) | Diapositivas, incluidos archivos `.pptx` | `.kslide` `.pptx` | `.kslide` |
 | Ofimática | [PDF](https://github.com/KitionAI/kition-pdf) | Lectura y edición de archivos PDF | `.pdf` | `.pdf` |

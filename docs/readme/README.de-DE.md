@@ -247,7 +247,7 @@ mit seiner eigenen Engine gerendert hat; weitere finden Sie in
 | Büro | [Note](https://github.com/KitionAI/kition-note) | Markdown-Notizen, Byte für Byte gespeichert | `.md` `.markdown` | `.md` |
 | Büro | [Table](https://github.com/KitionAI/kition-table) | Tabellen, Ansichten und Dashboards in einer Datei | `.ktable` | `.ktable` |
 | Büro | [Board](https://github.com/KitionAI/kition-board) | Ein unendliches Whiteboard für Diagramme, Mindmaps und Skizzen | `.kboard` | `.kboard` |
-| Büro | [Doc](https://github.com/KitionAI/kition-doc) | Word-Dokumente (`.docx`) | `.docx` `.html` `.htm` | `.docx` |
+| Büro | [Doc](https://github.com/KitionAI/kition-doc) | Textdokumente (`.docx`) | `.docx` `.html` `.htm` | `.docx` |
 | Büro | [Sheet](https://github.com/KitionAI/kition-sheet) | Tabellenkalkulationen (`.xlsx`) mit Formeln | `.xlsx` `.xlsm` `.xltx` `.xltm` `.xls` `.xlt` `.et` `.ett` `.xlsb` `.ods` `.csv` | `.xlsx` |
 | Büro | [Slide](https://github.com/KitionAI/kition-slide) | Folien, einschließlich `.pptx`-Dateien | `.kslide` `.pptx` | `.kslide` |
 | Büro | [PDF](https://github.com/KitionAI/kition-pdf) | PDF-Dateien lesen und bearbeiten | `.pdf` | `.pdf` |

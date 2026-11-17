@@ -176,7 +176,7 @@ Kition エージェントに、ドキュメントの読み取りと更新、テ�
 | オフィス | [Note](https://github.com/KitionAI/kition-note) | バイト単位でそのまま保存される Markdown ノート | `.md` `.markdown` | `.md` |
 | オフィス | [Table](https://github.com/KitionAI/kition-table) | テーブル、ビュー、ダッシュボードを一つのファイルに | `.ktable` | `.ktable` |
 | オフィス | [Board](https://github.com/KitionAI/kition-board) | 図、マインドマップ、スケッチのための無限のホワイトボード | `.kboard` | `.kboard` |
-| オフィス | [Doc](https://github.com/KitionAI/kition-doc) | Word 文書（`.docx`） | `.docx` `.html` `.htm` | `.docx` |
+| オフィス | [Doc](https://github.com/KitionAI/kition-doc) | ワープロ文書（`.docx`） | `.docx` `.html` `.htm` | `.docx` |
 | オフィス | [Sheet](https://github.com/KitionAI/kition-sheet) | 数式付きのスプレッドシート（`.xlsx`） | `.xlsx` `.xlsm` `.xltx` `.xltm` `.xls` `.xlt` `.et` `.ett` `.xlsb` `.ods` `.csv` | `.xlsx` |
 | オフィス | [Slide](https://github.com/KitionAI/kition-slide) | スライド（`.pptx` ファイルを含む） | `.kslide` `.pptx` | `.kslide` |
 | オフィス | [PDF](https://github.com/KitionAI/kition-pdf) | PDF ファイルの閲覧と編集 | `.pdf` | `.pdf` |

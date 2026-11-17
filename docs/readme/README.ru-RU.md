@@ -176,7 +176,7 @@ Kition объединяет в одном настольном рабочем п
 | Офис | [Note](https://github.com/KitionAI/kition-note) | Заметки Markdown, сохраняемые байт в байт | `.md` `.markdown` | `.md` |
 | Офис | [Table](https://github.com/KitionAI/kition-table) | Таблицы, представления и дашборды в одном файле | `.ktable` | `.ktable` |
 | Офис | [Board](https://github.com/KitionAI/kition-board) | Бесконечная доска для диаграмм, интеллект-карт и набросков | `.kboard` | `.kboard` |
-| Офис | [Doc](https://github.com/KitionAI/kition-doc) | Документы Word (`.docx`) | `.docx` `.html` `.htm` | `.docx` |
+| Офис | [Doc](https://github.com/KitionAI/kition-doc) | Текстовые документы (`.docx`) | `.docx` `.html` `.htm` | `.docx` |
 | Офис | [Sheet](https://github.com/KitionAI/kition-sheet) | Электронные таблицы (`.xlsx`) с формулами | `.xlsx` `.xlsm` `.xltx` `.xltm` `.xls` `.xlt` `.et` `.ett` `.xlsb` `.ods` `.csv` | `.xlsx` |
 | Офис | [Slide](https://github.com/KitionAI/kition-slide) | Слайды, включая файлы `.pptx` | `.kslide` `.pptx` | `.kslide` |
 | Офис | [PDF](https://github.com/KitionAI/kition-pdf) | Чтение и редактирование PDF-файлов | `.pdf` | `.pdf` |

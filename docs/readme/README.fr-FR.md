@@ -176,7 +176,7 @@ Chaque image est un fichier qu’un kit a construit avec ses propres commandes e
 | Bureautique | [Note](https://github.com/KitionAI/kition-note) | Notes Markdown, enregistrées à l’octet près | `.md` `.markdown` | `.md` |
 | Bureautique | [Table](https://github.com/KitionAI/kition-table) | Tableaux, vues et tableaux de bord dans un seul fichier | `.ktable` | `.ktable` |
 | Bureautique | [Board](https://github.com/KitionAI/kition-board) | Un tableau blanc infini pour les diagrammes, les cartes mentales et les croquis | `.kboard` | `.kboard` |
-| Bureautique | [Doc](https://github.com/KitionAI/kition-doc) | Documents Word (`.docx`) | `.docx` `.html` `.htm` | `.docx` |
+| Bureautique | [Doc](https://github.com/KitionAI/kition-doc) | Documents de traitement de texte (`.docx`) | `.docx` `.html` `.htm` | `.docx` |
 | Bureautique | [Sheet](https://github.com/KitionAI/kition-sheet) | Feuilles de calcul (`.xlsx`) avec formules | `.xlsx` `.xlsm` `.xltx` `.xltm` `.xls` `.xlt` `.et` `.ett` `.xlsb` `.ods` `.csv` | `.xlsx` |
 | Bureautique | [Slide](https://github.com/KitionAI/kition-slide) | Diapositives, y compris les fichiers `.pptx` | `.kslide` `.pptx` | `.kslide` |
 | Bureautique | [PDF](https://github.com/KitionAI/kition-pdf) | Lecture et modification de fichiers PDF | `.pdf` | `.pdf` |
