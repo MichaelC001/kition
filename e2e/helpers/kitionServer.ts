@@ -1,8 +1,9 @@
 /**
  * The Kition Server (`kition-server`, a private sibling checkout `../kition-server`, or
  * `KITION_SERVER_REPO`) for co-editing end-to-end tests: built once with cargo, run in memory on a
- * free port with its development tokens, and stopped after the test. Specs skip when the
- * checkout or the Rust toolchain is missing (`kitionServerSkipReason`).
+ * free port with its development tokens, and stopped after the test. kition-server is a private
+ * tool (not open source; QUALITY.md, Private tools): specs skip when its checkout is missing
+ * (`kitionServerSkipReason`). A missing Rust toolchain is not a skip: starting the server fails.
  */
 import { execFileSync, spawn, type ChildProcess } from 'node:child_process'
 import { existsSync, readFileSync } from 'node:fs'
@@ -30,11 +31,12 @@ function cargo() {
   return null
 }
 
-/** Why the server cannot run here, or `null` when it can. */
+/** Why the spec skips here, or `null` when it runs; a skip prints `SKIP: <reason>`. */
 export function kitionServerSkipReason() {
-  if (!existsSync(path.join(repo, 'Cargo.toml'))) return `no kition-server checkout at ${path.relative(process.cwd(), repo) || repo} (set KITION_SERVER_REPO)`
-  if (!cargo()) return 'no Rust toolchain (cargo) to build kition-server'
-  return null
+  if (existsSync(path.join(repo, 'Cargo.toml'))) return null
+  const reason = `the private kition-server is missing: no checkout at ${path.relative(process.cwd(), repo) || repo} (set KITION_SERVER_REPO)`
+  console.log(`SKIP: ${reason}`)
+  return reason
 }
 
 let built: string | null = null
@@ -43,7 +45,9 @@ let built: string | null = null
 function build() {
   if (built) return built
   const target = process.env.CARGO_TARGET_DIR || path.join(repo, 'target')
-  execFileSync(cargo()!, ['build', '-p', 'kition-server'], { cwd: repo, stdio: 'inherit', timeout: 600_000 })
+  const bin = cargo()
+  if (!bin) throw new Error('no Rust toolchain (cargo) to build kition-server')
+  execFileSync(bin, ['build', '-p', 'kition-server'], { cwd: repo, stdio: 'inherit', timeout: 600_000 })
   built = path.join(target, 'debug', 'kition-server')
   return built
 }

@@ -126,8 +126,24 @@ Tool tokens: `WPS`, `WORD`, `EXCEL`, `POWERPOINT`, `ACROBAT`, `PHOTOSHOP`, `M365
 | `tolerance` | map | no | Defaults per compare kind for this case (see Tolerance); an expectation may override its own |
 | `tags` | list<string> | no | Free labels for selection: `cjk`, `rtl`, `large`, `browser`, `slow`, `security`, `platform-macos` … |
 | `since` | string, `YYYY-MM-DD` (quoted) | yes | Date the case was added (or the expected result last approved) |
-| `requires` | list<string> | no | External tools the runner needs (`ooxml-validator`, `poppler`, `qpdf`, `verapdf`, `chromium`, `webkit`). In a `golden` case a missing tool is a failure, never a skip |
+| `requires` | list<string> | no | External tools the runner needs (`ooxml-validator`, `poppler`, `qpdf`, `verapdf`, `chromium`, `webkit`, `kition-server`). In a `golden` case a missing tool is a failure, never a skip, except a private tool (see Private tools) |
 | `timeout_s` | int | no | Default 20; hard cap 60 for `golden` |
+
+### Private tools
+
+The private tools are `kition-server`, Kition's sync server, which is not open source, and the
+sync server it provides through the environment, such as `KITION_SYNC_SERVER`. A case or test
+that needs a private tool and does not find it is skipped, not passed and not failed: it must
+print `SKIP: <reason>`, where the reason names the missing private tool, and be counted as
+skipped. Any other missing tool in a `golden` case is still a failure.
+
+- A case names the private tool in `requires` (`requires: [kition-server]`). When the tool is
+  missing, the runner prints the `SKIP:` line and counts the case as skipped without running
+  its steps.
+- A test reports the skip through its harness (Playwright's or Vitest's skipped state, which
+  the run's summary counts), never as a pass.
+- A script that finds a private tool missing prints the `SKIP:` line and exits with status 77,
+  the skip status of the Automake and Meson test harnesses, never 0.
 
 ### Steps
 
@@ -202,7 +218,7 @@ Larger files belong to the corpus.
 - Golden cases run in-process by default; the headless executable is exercised by the conformance suite and a few `golden` cases tagged `headless`.
 - At most about ten `flow` cases per kit are `golden`; the rest are `corpus` (weekly).
 - No `golden` case measures performance against a tight time budget on this shared machine; performance budgets (Q9) use generous limits in `golden` and the real numbers in the weekly report.
-- Film exports in `golden` are a few frames, not a full export (the probe's 30-second 1080p export took 286 s).
+- Film exports in `golden` are a few frames, not a full export.
 
 ## The feature catalogue: `features.yaml`
 
@@ -256,6 +272,6 @@ Rules: a `P0` feature with `status: has` needs 1–3 `golden` cases (requirement
 
 kition-sdk's `tools/check-expected.mjs` lists, for a range of commits, every added, changed or
 deleted expected result and every weakened test (deleted assertions or tests, added
-`#[ignore]`, `.skip`, `.only` or `.todo`). The review executor runs it on every candidate;
+`#[ignore]`, `.skip`, `.only` or `.todo`). Reviewers run it on every candidate;
 anything it lists goes to the owner and is never merged automatically.
 <!-- kition-quality:end -->
