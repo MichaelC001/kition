@@ -12,10 +12,9 @@ publish.workspace = true
 workspace = true
 
 [dependencies]
-loro = "=1.16.2"
-# Loro exposes internal types; 1.17 is not source-compatible with the 1.16 facade.
-# A library consumer does not inherit this workspace's Cargo.lock.
-loro-internal = "=1.16.2"
+# Loro from KitionPkg/loro, branch `kition`: upstream Loro 1.16 without the MPL-2.0 `im`
+# crate. The rev pins loro-internal too (a path dependency inside that repository).
+loro = { git = "https://github.com/KitionPkg/loro", rev = "c0f64d39c2125415c6fb21c7fcf344c32e360886" }
 serde = { workspace = true }
 serde_json = { workspace = true }
 sha2 = "0.10"
