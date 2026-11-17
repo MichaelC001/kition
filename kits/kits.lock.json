@@ -98,15 +98,15 @@
   },
   "note": {
     "repository": "KitionAI/kition-note",
-    "version": "0.1.1",
-    "tag": "package-v0.1.1",
-    "asset": "kition-note-0.1.1.tgz",
-    "size": 12696073,
-    "sha256": "6bdc1d63c8d4a1c21c897620705742cbf2004d711c5df354c0b283e6c3255ed4",
-    "commit": "f9e0368e244cce1d2f8141eab9a8fdc0fd947bff",
-    "sdkCommit": "45bf9625f95e5e13a926e2174d5fdd11c57e0817",
-    "tesseraCommit": "b112bdbfcdb24462d0615a3f5b1a4ff57f1a1871",
-    "fontsCommit": "403e4882cef0a85717dae6dac7d1d268c827d5e4"
+    "version": "0.1.0",
+    "tag": "package-v0.1.0",
+    "asset": "kition-note-0.1.0.tgz",
+    "size": 12816734,
+    "sha256": "8cec7e39b72c650f13ddd620098286ea688176c3c51b95c449d18fc792a3c70d",
+    "commit": "fe934785abcbd0166cfbbe4781b10eb41ec02255",
+    "sdkCommit": "30e2350a826b6f36888f058eb1eef8658489e3e6",
+    "tesseraCommit": "ed0a5aa6eee8d57b5c9c99bc554f48fe43498556",
+    "fontsCommit": "c01cc9cb9069001375627204d105d3cff96ed690"
   },
   "pdf": {
     "repository": "KitionAI/kition-pdf",
@@ -170,15 +170,15 @@
   },
   "table": {
     "repository": "KitionAI/kition-table",
-    "version": "0.3.1",
-    "tag": "package-v0.3.1",
-    "asset": "kition-table-0.3.1.tgz",
-    "size": 15283081,
-    "sha256": "9c40d200712bf164ffe1ca27f36522a44486f42626dee6593eab8a4135acb535",
-    "commit": "672238749776281f3c1c63bccfc180854039c13b",
-    "sdkCommit": "45bf9625f95e5e13a926e2174d5fdd11c57e0817",
-    "tesseraCommit": "b112bdbfcdb24462d0615a3f5b1a4ff57f1a1871",
-    "fontsCommit": "403e4882cef0a85717dae6dac7d1d268c827d5e4"
+    "version": "0.1.0",
+    "tag": "package-v0.1.0",
+    "asset": "kition-table-0.1.0.tgz",
+    "size": 15380601,
+    "sha256": "d05ba5f023bb9914ce8b57b0020b5ffe6f85c12d595c3cd2b4d82b8c818d6711",
+    "commit": "ee1100867395ef9631891362ca67b24f33e9ac71",
+    "sdkCommit": "30e2350a826b6f36888f058eb1eef8658489e3e6",
+    "tesseraCommit": "ed0a5aa6eee8d57b5c9c99bc554f48fe43498556",
+    "fontsCommit": "c01cc9cb9069001375627204d105d3cff96ed690"
   },
   "vector": {
     "repository": "KitionAI/kition-vector",

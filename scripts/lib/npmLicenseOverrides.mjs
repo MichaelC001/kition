@@ -19,8 +19,13 @@ const RADIX = { text: 'radix-ui-primitives.txt', source: 'https://github.com/rad
 const OVERRIDES = {
   // Radix publishes some packages without the monorepo's LICENSE, which its siblings ship.
   '@radix-ui/number': RADIX,
+  '@radix-ui/react-compose-refs': RADIX,
+  '@radix-ui/react-context': RADIX,
   '@radix-ui/react-direction': RADIX,
+  '@radix-ui/react-id': RADIX,
+  '@radix-ui/react-use-callback-ref': RADIX,
   '@radix-ui/react-use-escape-keydown': RADIX,
+  '@radix-ui/react-use-layout-effect': RADIX,
   '@radix-ui/react-use-previous': RADIX,
   '@radix-ui/react-use-rect': RADIX,
   '@radix-ui/react-use-size': RADIX,
