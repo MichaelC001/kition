@@ -19934,32 +19934,32 @@ License text: R189
 
 loro 1.16.2
 License: MIT
-Repository: https://github.com/loro-dev/loro/
+Repository: https://github.com/KitionPkg/loro
 License text: R190
 
 loro-common 1.16.0
 License: MIT
-Repository: https://github.com/loro-dev/loro
+Repository: https://github.com/KitionPkg/loro
 License text: R190
 
 loro-delta 1.13.0
 License: MIT
-Repository: https://github.com/loro-dev/loro/
+Repository: https://github.com/KitionPkg/loro
 License text: R191
 
 loro-internal 1.16.2
 License: MIT
-Repository: https://github.com/loro-dev/loro/
+Repository: https://github.com/KitionPkg/loro
 License text: R192
 
 loro-kv-store 1.16.0
 License: MIT
-Repository: https://github.com/loro-dev/loro/
+Repository: https://github.com/KitionPkg/loro
 License text: R193
 
 loro-rle 1.6.0
 License: MIT
-Repository: https://github.com/loro-dev/loro/
+Repository: https://github.com/KitionPkg/loro
 License text: R190
 
 loro-thunderdome 0.6.2
@@ -19970,7 +19970,7 @@ License text: R194, R195
 
 loro_fractional_index 1.13.0
 License: MIT
-Repository: https://github.com/loro-dev/loro/
+Repository: https://github.com/KitionPkg/loro
 License text: R196
 
 lru-slab 0.1.3

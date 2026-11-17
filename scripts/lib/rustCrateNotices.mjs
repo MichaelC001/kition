@@ -86,6 +86,12 @@ const CRATE_LICENSE_EXTRAS = {
   'jpeg-encoder': { templates: ['IJG'] },
 }
 
+/**
+ * Git repositories whose crates' manifests still name upstream's repository (KitionPkg/loro is
+ * Loro without the MPL-2.0 im): a crate built from one shows that repository instead.
+ */
+const BUILT_FROM_REPOSITORIES = ['https://github.com/KitionPkg/loro']
+
 /** The statement the IJG licence asks of a binary that includes IJG code. */
 export const IJG_STATEMENT = 'This software is based in part on the work of the Independent JPEG Group.'
 
@@ -285,6 +291,11 @@ export function loadShippedCrates(repositoryDir, targets = RELEASE_TARGETS, root
   return [...crates.values()].sort((left, right) => compareText(left.name, right.name) || compareText(left.version, right.version))
 }
 
+function crateRepository(crate) {
+  const built = crate.source?.startsWith('git+') ? crate.source.slice(4).replace(/[?#].*$/, '') : null
+  return BUILT_FROM_REPOSITORIES.includes(built) ? built : crate.repository
+}
+
 function mplSourceLine(crate) {
   if (!crate.source) return MPL_PATH_SOURCE_STATEMENT
   if (crate.source.startsWith('git+')) return `${MPL_GIT_SOURCE_STATEMENT} ${crate.source.replace(/^git\+/, '')}`
@@ -313,7 +324,8 @@ export function renderRustNotices(crates, divider, subject = `the Kition desktop
     const label = `${crate.name} ${crate.version}`
     const lines = [label, `License: ${expression}`]
     if (licenses.join(' AND ') !== expression) lines.push(`Used under: ${licenses.join(' AND ')}`)
-    if (crate.repository) lines.push(`Repository: ${crate.repository}`)
+    const repository = crateRepository(crate)
+    if (repository) lines.push(`Repository: ${repository}`)
     if (licenses.includes('MPL-2.0')) lines.push(mplSourceLine(crate))
     if (licenses.includes('IJG')) lines.push(IJG_STATEMENT)
     const indexes = []

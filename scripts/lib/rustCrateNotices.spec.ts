@@ -76,6 +76,14 @@ describe('renderRustNotices', () => {
     expect(text).toContain('2 third-party crates are compiled into a kit engine.')
   })
 
+  it('names KitionPkg/loro, not the upstream its manifests name, for the crates built from it', async () => {
+    const loro = { ...await crate('loro', '1.16.2', 'MIT', {}, [], 'git+https://github.com/KitionPkg/loro?rev=c0f64d39#c0f64d39'), repository: 'https://github.com/loro-dev/loro/' }
+    const other = { ...await crate('epsilon', '0.1.0', 'MIT', {}, [], 'git+https://github.com/example/epsilon?rev=abc#abc'), repository: 'https://github.com/upstream/epsilon' }
+    const { text } = renderRustNotices([loro, other], divider)
+    expect(text).toContain('loro 1.16.2\nLicense: MIT\nRepository: https://github.com/KitionPkg/loro\n')
+    expect(text).toContain('epsilon 0.1.0\nLicense: MIT\nRepository: https://github.com/upstream/epsilon\n')
+  })
+
   it('adds the licence texts a crate keeps elsewhere, and the IJG statement', async () => {
     const { text } = renderRustNotices([
       await crate('jpeg-encoder', '0.6.1', '(MIT OR Apache-2.0) AND IJG', { 'LICENSE-MIT': 'Encoder MIT terms' }),
@@ -129,5 +137,8 @@ describe('docs/legal/THIRD_PARTY_NOTICES.txt', () => {
     expect(notices).toMatch(/^tauri \d+\.\d+\.\d+\nLicense: Apache-2\.0 OR MIT/m)
     expect(notices).toMatch(/^serde \d+\.\d+\.\d+\nLicense: MIT OR Apache-2\.0/m)
     expect(notices).not.toMatch(/^License: .*\bA?GPL-/m)
+    expect(notices).toMatch(/^loro 1\.16\.2\nLicense: MIT\nRepository: https:\/\/github\.com\/KitionPkg\/loro\n/m)
+    expect(notices).toMatch(/^loro-internal 1\.16\.2\nLicense: MIT\nRepository: https:\/\/github\.com\/KitionPkg\/loro\n/m)
+    expect(notices).not.toContain('Repository: https://github.com/loro-dev/loro')
   })
 })

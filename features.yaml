@@ -352,6 +352,7 @@ features:
       - kition.platform.open-source-notices/licenses-view
       - regressions/issue-kit-package-notices
       - regressions/issue-notices-license-texts
+      - regressions/issue-notices-loro-repository
     since: "2026-10-31"
   - id: kition.kits.table-host
     title: Host features (scenarios, triggers, attachments) read and write table files through the Table kit's commands
