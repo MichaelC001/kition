@@ -46,15 +46,27 @@ if [[ "${2:-}" == "--ui-only" ]]; then
 else
   pnpm --dir "$web" run engine
 fi
-pnpm --dir "$web" run build
+# The editor: web/package.json's `build` (`tsc --noEmit && vite build`), with Vite run through
+# scripts/build-kit-editor.mjs so the build records the npm packages its bundles contain.
+build_script="$(node -p "require('$web/package.json').scripts?.build ?? ''")"
+[[ "$build_script" == 'tsc --noEmit && vite build' ]] || {
+  echo "$web/package.json's build is \"$build_script\"; build-kit-ui.sh runs \"tsc --noEmit && vite build\" (recording the bundled npm packages), so teach it the new steps first" >&2
+  exit 1
+}
+bundled="$(mktemp "${TMPDIR:-/tmp}/kition-$kit-bundled.XXXXXX")"
+trap 'rm -f "$bundled"' EXIT
+pnpm --dir "$web" exec tsc --noEmit
+(cd "$web" && node "$repo_root/scripts/build-kit-editor.mjs" "$bundled")
 node "$sdk_repo/tools/check-manifest.mjs" "$kit_repo/kit.json" --module "$web/public/engine"
 rm -rf "$out"
 mkdir -p "$out"
 # The editor and its engine; not the development host or its sample.
 cp -R "$web/dist/." "$out/"
 rm -rf "$out/dev.html" "$out/sample"
-# The kit's licence and notices travel with the package (Apache-2.0 section 4).
+# The kit's licence and notices travel with the package (Apache-2.0 section 4), and so do the
+# licence texts of every npm package the editor bundles and every crate the engine links.
 cp "$kit_repo/LICENSE" "$kit_repo/NOTICE" "$out/"
+node "$repo_root/scripts/kit-package-notices.mjs" "$kit_repo" "$out" "$bundled"
 # The kit's KDM schema (kit.json `model.schema`, platform rule K12) travels with the package as
 # model/schema.json: the schema its engine was built with, which hosts and @kition/script read.
 schema="$(node -p "require('$kit_repo/kit.json').model?.schema ?? ''")"

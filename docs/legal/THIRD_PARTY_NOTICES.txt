@@ -8,7 +8,7 @@ because browser bundles may contain code from packages declared as development
 dependencies. Platform-specific optional build packages are omitted because they are not
 distributed in the application bundle.
 
-The Rust inventory lists every crates.io crate the desktop shell and runtime link on the
+The Rust inventory lists every third-party crate the desktop shell and runtime link on the
 platforms Kition releases for, with the license texts each crate ships. Crates used under
 the Mozilla Public License 2.0 are used unmodified; their source code is available from
 crates.io at the address given with each crate.
@@ -16,7 +16,9 @@ crates.io at the address given with each crate.
 Packages that publish no licence file are listed with the licence text of their upstream project.
 DOMPurify is offered under MPL-2.0 OR Apache-2.0; Kition uses it under the Apache License 2.0.
 
-Kit packages bundled with the app carry their own LICENSE and NOTICE files.
+Kit packages bundled with the app carry their own LICENSE, NOTICE and
+THIRD_PARTY_NOTICES.txt: the licence texts of the npm packages each kit's editor bundles and
+of the crates its WebAssembly engine links.
 
 ================================================================================
 
@@ -18303,7 +18305,7 @@ SOFTWARE.
 
 Rust Crate Inventory
 
-673 crates from crates.io are compiled into the Kition desktop app for aarch64-apple-darwin, x86_64-apple-darwin, x86_64-pc-windows-msvc, x86_64-unknown-linux-gnu.
+673 third-party crates are compiled into the Kition desktop app for aarch64-apple-darwin, x86_64-apple-darwin, x86_64-pc-windows-msvc, x86_64-unknown-linux-gnu.
 Licences used: MIT: 612, Unicode-3.0: 20, Apache-2.0: 13, MPL-2.0: 11, BSD-3-Clause: 7, ISC: 7, BSL-1.0: 3, Zlib: 3, CC0-1.0: 2, CDLA-Permissive-2.0: 1, MIT-0: 1.
 
 adler2 2.0.1

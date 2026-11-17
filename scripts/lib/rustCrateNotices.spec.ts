@@ -1,19 +1,22 @@
 import { mkdir, mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { readFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
-import { join, resolve } from 'node:path'
+import { dirname, join, resolve } from 'node:path'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
-import { chooseLicenses, linkedCrates, MPL_SOURCE_STATEMENT, renderRustNotices } from './rustCrateNotices.mjs'
+import { chooseLicenses, IJG_STATEMENT, linkedCrates, MPL_GIT_SOURCE_STATEMENT, MPL_PATH_SOURCE_STATEMENT, MPL_SOURCE_STATEMENT, renderRustNotices } from './rustCrateNotices.mjs'
 
 const divider = '='.repeat(80)
 let registry: string
 
-async function crate(name: string, version: string, license: string | null, files: Record<string, string> = {}, authors: string[] = []) {
+async function crate(name: string, version: string, license: string | null, files: Record<string, string> = {}, authors: string[] = [], source: string | null = 'registry+https://github.com/rust-lang/crates.io-index') {
   const dir = join(registry, `${name}-${version}`)
   await mkdir(dir, { recursive: true })
   await writeFile(join(dir, 'Cargo.toml'), `[package]\nname = "${name}"\n`)
-  for (const [file, text] of Object.entries(files)) await writeFile(join(dir, file), text)
-  return { id: `${name} ${version}`, name, version, license, license_file: null, authors, repository: null, source: 'registry+https://github.com/rust-lang/crates.io-index', manifest_path: join(dir, 'Cargo.toml') }
+  for (const [file, text] of Object.entries(files)) {
+    await mkdir(dirname(join(dir, file)), { recursive: true })
+    await writeFile(join(dir, file), text)
+  }
+  return { id: `${name} ${version}`, name, version, license, license_file: null, authors, repository: null, source, manifest_path: join(dir, 'Cargo.toml') }
 }
 
 beforeEach(async () => {
@@ -61,6 +64,30 @@ describe('renderRustNotices', () => {
     expect(text).toContain('Mozilla Public License Version 2.0')
   })
 
+  it('does not call a git or vendored MPL-2.0 crate unmodified, and names what links the crates', async () => {
+    const git = 'git+https://github.com/example/gamma?rev=abc#abc'
+    const { text } = renderRustNotices([
+      await crate('gamma', '3.1.0', 'MPL-2.0', {}, [], git),
+      await crate('delta', '0.1.0', 'MPL-2.0', {}, [], null),
+    ], divider, 'a kit engine')
+    expect(text).toContain(`${MPL_GIT_SOURCE_STATEMENT} https://github.com/example/gamma?rev=abc#abc`)
+    expect(text).toContain(MPL_PATH_SOURCE_STATEMENT)
+    expect(text).not.toContain(MPL_SOURCE_STATEMENT)
+    expect(text).toContain('2 third-party crates are compiled into a kit engine.')
+  })
+
+  it('adds the licence texts a crate keeps elsewhere, and the IJG statement', async () => {
+    const { text } = renderRustNotices([
+      await crate('jpeg-encoder', '0.6.1', '(MIT OR Apache-2.0) AND IJG', { 'LICENSE-MIT': 'Encoder MIT terms' }),
+      await crate('epaint_default_fonts', '0.36.2', '(MIT OR Apache-2.0) AND OFL-1.1 AND Ubuntu-font-1.0', { 'fonts/UFL.txt': 'Ubuntu font terms', 'fonts/OFL.txt': 'OFL terms' }),
+    ], divider)
+    expect(text).toContain(`License: (MIT OR Apache-2.0) AND IJG\nUsed under: MIT AND IJG\n${IJG_STATEMENT}`)
+    expect(text).toContain('Encoder MIT terms')
+    expect(text).toContain('Independent JPEG Group License')
+    expect(text).toContain('Ubuntu font terms')
+    expect(text).toContain('OFL terms')
+  })
+
   it('fails on a GPL crate', async () => {
     const crates = [await crate('alpha', '1.0.0', 'MIT', { LICENSE: 'MIT terms' }), await crate('copyleft', '2.0.0', 'GPL-3.0-only', { COPYING: 'GPL terms' })]
     expect(() => renderRustNotices(crates, divider)).toThrow(/copyleft 2\.0\.0 \(GPL-3\.0-only\)/)
@@ -68,17 +95,22 @@ describe('renderRustNotices', () => {
 })
 
 describe('linkedCrates', () => {
-  it('follows normal dependencies only', () => {
+  it('follows normal dependencies only, and leaves out the workspace\'s own crates but not vendored ones', () => {
     const registryCrate = (name: string) => ({ id: name, name, version: '1.0.0', source: 'registry+https://github.com/rust-lang/crates.io-index' })
+    const pathCrate = (name: string) => ({ id: name, name, version: '0.1.0', source: null })
     const metadata = {
-      packages: [{ id: 'app', name: 'kition-app', version: '0.0.0', source: null }, registryCrate('linked'), registryCrate('nested'), registryCrate('dev-only'), registryCrate('build-only')],
+      packages: [pathCrate('app'), pathCrate('member'), pathCrate('vendored'), registryCrate('linked'), registryCrate('nested'), registryCrate('dev-only'), registryCrate('build-only')],
+      workspace_members: ['app', 'member'],
       resolve: {
         nodes: [
           { id: 'app', deps: [
             { pkg: 'linked', dep_kinds: [{ kind: null }] },
+            { pkg: 'member', dep_kinds: [{ kind: null }] },
             { pkg: 'dev-only', dep_kinds: [{ kind: 'dev' }] },
             { pkg: 'build-only', dep_kinds: [{ kind: 'build' }] },
           ] },
+          { id: 'member', deps: [{ pkg: 'vendored', dep_kinds: [{ kind: null }] }] },
+          { id: 'vendored', deps: [] },
           { id: 'linked', deps: [{ pkg: 'nested', dep_kinds: [{ kind: null }] }] },
           { id: 'nested', deps: [] },
           { id: 'dev-only', deps: [] },
@@ -86,7 +118,7 @@ describe('linkedCrates', () => {
         ],
       },
     }
-    expect(linkedCrates(metadata).map((entry) => entry.name).sort()).toEqual(['linked', 'nested'])
+    expect(linkedCrates(metadata, 'app').map((entry) => entry.name).sort()).toEqual(['linked', 'nested', 'vendored'])
   })
 })
 

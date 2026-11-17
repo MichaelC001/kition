@@ -302,7 +302,13 @@ items with `primary`.
 - `scripts/build-kit-ui.sh <kit>` builds the kit's engine and editor into
   `public/kits/<kit>-ui/` with a `kit-ui.json` marker (`make kit-ui-<kit>`;
   `make kit-uis` for all of `KIT_UIS`). The package keeps its own fonts and
-  assets (UI-K1), so it stays embeddable without Kition. A kit whose
+  assets (UI-K1), so it stays embeddable without Kition, and its licence
+  texts: the kit's `LICENSE` and `NOTICE`, and `THIRD_PARTY_NOTICES.txt`
+  with the licence and notice files of every npm package the editor's Vite
+  build bundled (`scripts/build-kit-editor.mjs` records them, so the kit's
+  `build` script must stay `tsc --noEmit && vite build`) and every crate its
+  engine links for wasm32 (`scripts/kit-package-notices.mjs`). The build fails
+  when one of them ships no licence text. A kit whose
   `kit.json` names `model.schema` (K12) ships that file as
   `model/schema.json`: the schema its engine was built with. `@kition/embed`
   reads it for draft review and the agent's object-model calls, and

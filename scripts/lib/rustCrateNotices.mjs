@@ -1,6 +1,8 @@
-// The Rust half of docs/legal/THIRD_PARTY_NOTICES.txt: every crates.io crate linked into the
-// desktop app (the `kition-app` package in src-tauri and the runtime crates it pulls in), with the
-// licence texts the crate ships, for every platform a release builds.
+// The Rust half of the third-party notices: every crate a shipped artefact links that is not one
+// of the workspace's own crates (crates.io and git crates, and vendored path crates), with the
+// licence texts the crate ships. docs/legal/THIRD_PARTY_NOTICES.txt covers the desktop app (the
+// `kition-app` package in src-tauri and the runtime crates it pulls in) on every platform a
+// release builds; scripts/kit-package-notices.mjs covers a kit's WebAssembly engine.
 import { spawnSync } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'
@@ -32,11 +34,17 @@ const ACCEPTED_LICENSES = new Set([
   'BSL-1.0',
   'CC0-1.0',
   'CDLA-Permissive-2.0',
+  // The Independent JPEG Group's licence (jpeg-encoder, in the Photo and Vector engines): a
+  // binary must say it is based in part on the IJG's work, which those kits' NOTICE does.
+  'IJG',
   'ISC',
   'MIT',
   'MIT-0',
   'MPL-2.0',
   'OFL-1.1',
+  // Ubuntu Light (epaint_default_fonts, in the Sheet and Slide engines): free to redistribute,
+  // with its licence text.
+  'Ubuntu-font-1.0',
   'Unicode-3.0',
   'Unicode-DFS-2016',
   'Unlicense',
@@ -60,16 +68,33 @@ const PREFERENCE = [
   'CC0-1.0',
   'Unlicense',
   'CDLA-Permissive-2.0',
+  'IJG',
   'OFL-1.1',
+  'Ubuntu-font-1.0',
   'MPL-2.0',
 ]
 
 /** Canonical texts (scripts/licenses/, from SPDX license-list-data) for crates that ship no licence file. */
-const TEMPLATE_LICENSES = ['MIT', 'Apache-2.0', 'BSD-3-Clause', 'Zlib', 'BSL-1.0', 'MPL-2.0']
+const TEMPLATE_LICENSES = ['MIT', 'Apache-2.0', 'BSD-3-Clause', 'Zlib', 'BSL-1.0', 'MPL-2.0', 'IJG']
+
+/**
+ * Licence texts a crate keeps outside its root folder (`files`, relative to the crate), or does
+ * not ship for one term of its licence (`templates`, from scripts/licenses/).
+ */
+const CRATE_LICENSE_EXTRAS = {
+  epaint_default_fonts: { files: ['fonts/OFL.txt', 'fonts/UFL.txt', 'fonts/Hack-Regular.txt', 'fonts/emoji-icon-font-mit-license.txt'] },
+  'jpeg-encoder': { templates: ['IJG'] },
+}
+
+/** The statement the IJG licence asks of a binary that includes IJG code. */
+export const IJG_STATEMENT = 'This software is based in part on the work of the Independent JPEG Group.'
 
 const LICENSE_FILE = /^(licen[cs]e|copying|copyright|notice|unlicense)(?:[._-].*)?$/i
 
 export const MPL_SOURCE_STATEMENT = 'Source: used unmodified; its source code is available from crates.io at'
+/** An MPL-2.0 crate taken from git or vendored: where its source is depends on the artefact's own NOTICE. */
+export const MPL_GIT_SOURCE_STATEMENT = 'Source: built from'
+export const MPL_PATH_SOURCE_STATEMENT = "Source: vendored in the shipping repository; its NOTICE says where the source code and any modifications are published"
 
 function compareText(left, right) {
   if (left < right) return -1
@@ -189,18 +214,20 @@ function listLicenseFiles(dir) {
  */
 function crateLicenseTexts(crate, licenses) {
   const dir = path.dirname(crate.manifest_path)
+  const extras = CRATE_LICENSE_EXTRAS[crate.name] ?? {}
   const files = listLicenseFiles(dir)
   if (crate.license_file) files.push(path.resolve(dir, crate.license_file))
   const texts = new Set()
-  for (const file of files) {
+  for (const file of [...files, ...(extras.files ?? []).map((file) => path.join(dir, file))]) {
     if (!fs.existsSync(file)) continue
     const text = normalizeText(fs.readFileSync(file, 'utf8'))
     if (text) texts.add(text)
   }
-  if (texts.size) return [...texts].sort(compareText)
   const holders = crate.authors?.length
     ? crate.authors.map((author) => author.replace(/\s*<[^>]*>/, '')).join(', ')
     : `The ${crate.name} authors`
+  for (const id of extras.templates ?? []) texts.add(readTemplate(id, holders))
+  if (texts.size) return [...texts].sort(compareText)
   for (const id of licenses) {
     if (!TEMPLATE_LICENSES.includes(id)) {
       throw new Error(`${crate.name} ${crate.version} ships no licence file and scripts/licenses/ has no ${id} text`)
@@ -210,7 +237,7 @@ function crateLicenseTexts(crate, licenses) {
   return [...texts]
 }
 
-function loadMetadata(repositoryDir, target) {
+export function loadMetadata(repositoryDir, target) {
   const result = spawnSync('cargo', ['metadata', '--format-version', '1', '--locked', '--filter-platform', target], {
     cwd: repositoryDir,
     encoding: 'utf8',
@@ -223,13 +250,15 @@ function loadMetadata(repositoryDir, target) {
 }
 
 /**
- * The crates.io crates `rootName` links for one target: its normal dependencies, transitively.
- * Development dependencies never ship and build dependencies run only while compiling.
+ * The third-party crates `rootName` links for one target: its normal dependencies, transitively,
+ * except the workspace's own crates. Development dependencies never ship and build dependencies
+ * run only while compiling.
  */
 export function linkedCrates(metadata, rootName = SHIPPED_PACKAGE) {
   const packages = new Map(metadata.packages.map((entry) => [entry.id, entry]))
   const nodes = new Map(metadata.resolve.nodes.map((node) => [node.id, node]))
-  const root = metadata.packages.find((entry) => entry.name === rootName && !entry.source)
+  const members = new Set(metadata.workspace_members ?? [])
+  const root = metadata.packages.find((entry) => entry.name === rootName && members.has(entry.id))
   if (!root) throw new Error(`cargo metadata has no workspace package ${rootName}`)
   const seen = new Set([root.id])
   const pending = [root.id]
@@ -242,22 +271,31 @@ export function linkedCrates(metadata, rootName = SHIPPED_PACKAGE) {
       pending.push(dependency.pkg)
     }
   }
-  return [...seen].map((id) => packages.get(id)).filter((entry) => entry?.source)
+  return [...seen].filter((id) => !members.has(id)).map((id) => packages.get(id)).filter(Boolean)
 }
 
-/** Every crate the release targets link, once per name and version. */
-export function loadShippedCrates(repositoryDir, targets = RELEASE_TARGETS) {
+/** Every crate `rootName` links on `targets`, once per name and version. */
+export function loadShippedCrates(repositoryDir, targets = RELEASE_TARGETS, rootName = SHIPPED_PACKAGE) {
   const crates = new Map()
   for (const target of targets) {
-    for (const crate of linkedCrates(loadMetadata(repositoryDir, target))) {
+    for (const crate of linkedCrates(loadMetadata(repositoryDir, target), rootName)) {
       crates.set(`${crate.name}\0${crate.version}`, crate)
     }
   }
   return [...crates.values()].sort((left, right) => compareText(left.name, right.name) || compareText(left.version, right.version))
 }
 
-/** The crates' inventory and licence texts; throws when a crate's licence is not accepted. */
-export function renderRustNotices(crates, divider) {
+function mplSourceLine(crate) {
+  if (!crate.source) return MPL_PATH_SOURCE_STATEMENT
+  if (crate.source.startsWith('git+')) return `${MPL_GIT_SOURCE_STATEMENT} ${crate.source.replace(/^git\+/, '')}`
+  return `${MPL_SOURCE_STATEMENT} https://crates.io/crates/${crate.name}/${crate.version}`
+}
+
+/**
+ * The crates' inventory and licence texts; throws when a crate's licence is not accepted.
+ * `subject` names what links them ("the Kition desktop app for <targets>" by default).
+ */
+export function renderRustNotices(crates, divider, subject = `the Kition desktop app for ${RELEASE_TARGETS.join(', ')}`) {
   const refused = []
   const texts = []
   const textIndexes = new Map()
@@ -276,9 +314,8 @@ export function renderRustNotices(crates, divider) {
     const lines = [label, `License: ${expression}`]
     if (licenses.join(' AND ') !== expression) lines.push(`Used under: ${licenses.join(' AND ')}`)
     if (crate.repository) lines.push(`Repository: ${crate.repository}`)
-    if (licenses.includes('MPL-2.0')) {
-      lines.push(`${MPL_SOURCE_STATEMENT} https://crates.io/crates/${crate.name}/${crate.version}`)
-    }
+    if (licenses.includes('MPL-2.0')) lines.push(mplSourceLine(crate))
+    if (licenses.includes('IJG')) lines.push(IJG_STATEMENT)
     const indexes = []
     for (const text of crateLicenseTexts(crate, licenses)) {
       let index = textIndexes.get(text)
@@ -295,7 +332,7 @@ export function renderRustNotices(crates, divider) {
     inventory.push(lines.join('\n'))
   }
   if (refused.length) {
-    throw new Error(`crates linked into the desktop app have licences that are not accepted:\n  ${refused.join('\n  ')}`)
+    throw new Error(`crates linked into ${subject} have licences that are not accepted:\n  ${refused.join('\n  ')}`)
   }
   const textSections = texts.map((text, index) => [
     `License text R${index + 1}`,
@@ -312,7 +349,7 @@ export function renderRustNotices(crates, divider) {
     text: [
       'Rust Crate Inventory',
       '',
-      `${crates.length} crates from crates.io are compiled into the Kition desktop app for ${RELEASE_TARGETS.join(', ')}.`,
+      `${crates.length} third-party crates are compiled into ${subject}.`,
       `Licences used: ${summary.join(', ')}.`,
       '',
       inventory.join('\n'),

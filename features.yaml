@@ -332,6 +332,11 @@ features:
       - scripts/lib/rustCrateNotices.spec.ts
       - scripts/lib/npmLicenseOverrides.mjs
       - scripts/lib/npmLicenseOverrides.spec.ts
+      - scripts/lib/kitPackageNotices.mjs
+      - scripts/lib/kitPackageNotices.spec.ts
+      - scripts/kit-package-notices.mjs
+      - scripts/build-kit-editor.mjs
+      - scripts/build-kit-ui.sh
       - scripts/licenses/*.txt
       - scripts/licenses/packages/*.txt
       - docs/legal/THIRD_PARTY_NOTICES.txt
@@ -345,6 +350,7 @@ features:
       - kition.platform.open-source-notices/notices-current
       - kition.platform.open-source-notices/rust-crates
       - kition.platform.open-source-notices/licenses-view
+      - regressions/issue-kit-package-notices
       - regressions/issue-notices-license-texts
     since: "2026-10-31"
   - id: kition.kits.table-host

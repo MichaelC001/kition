@@ -29,7 +29,8 @@ describe('docs/legal/THIRD_PARTY_NOTICES.txt', () => {
     expect(notices).toMatch(/^khroma 2\.1\.0\nLicense: MIT\n/m)
   })
 
-  it('says which licence DOMPurify is used under', () => {
+  it('says which licence DOMPurify is used under, and that kit packages carry their own notices', () => {
     expect(notices).toMatch(/^dompurify [\d.]+\nLicense: \(MPL-2\.0 OR Apache-2\.0\)\nUsed under: Apache-2\.0\n/m)
+    expect(notices).toContain('Kit packages bundled with the app carry their own LICENSE, NOTICE and\nTHIRD_PARTY_NOTICES.txt')
   })
 })
