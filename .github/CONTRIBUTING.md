@@ -6,6 +6,24 @@ All changes should follow the [Kition Development Standard](../docs/development-
 It includes the recommended worktree workflow for contributors developing in
 Orca.
 
+## Where the Code Is
+
+| Path | What it holds |
+| --- | --- |
+| `src/` | The React renderer, organized by feature domain (`src/features/<domain>`) |
+| `src-tauri/` | The Tauri desktop shell, its bundle configuration, icons, and macOS entitlements |
+| `crates/` | The Rust runtime: `kition-api` and its feature crates, which the shell runs in-process |
+| `contracts/` | JSON schemas of the interfaces Kition uses: the runtime HTTP API (`contracts/runtime/`), kits, accounts, analytics, and cloud |
+| `kits/` | The kit packages Kition ships, pinned in `kits.lock.json`; the kit module registry; the kit colors |
+| `features.yaml`, `cases/` | The feature catalogue and its golden cases ([docs/quality.md](../docs/quality.md)) |
+| `e2e/` | Playwright black-box tests |
+| `docs/` | Product, contributor, design, and runtime documentation; the README's images and translations (`docs/readme/`) |
+| `public/` | Static assets and onboarding files; kit packages are fetched into `public/kits/` |
+| `scripts/` | Repository checks, kit packaging, and inspection entry points |
+| `tooling/` | Build, lint, and test configuration, and the pnpm patch (`tooling/patches/`) |
+| `.github/` | Community health files and CI workflows |
+| `index.html`, `package.json`, `Makefile`, `Cargo.toml` | The renderer's page, the development and test commands, the kit build targets, and the Cargo workspace |
+
 ## Scope
 
 This repository contains the whole desktop app: the React renderer (`src/`),
@@ -18,7 +36,19 @@ A change that crosses the renderer and the runtime updates the contract in
 developed in separate repositories; Kition ships their published packages,
 pinned in `kits/kits.lock.json` (see [docs/kits.md](../docs/kits.md)).
 
-## Local Setup
+## Technology
+
+| Area | Stack |
+| --- | --- |
+| Desktop | Tauri 2 (Rust) |
+| Runtime | Rust, SQLite |
+| Interface | React, TypeScript, Vite |
+| Kits | WebAssembly engines in Web Workers, editors in iframes |
+| Documents | Marked, Mermaid, KaTeX |
+| Data and state | IndexedDB, TanStack Query, Zod |
+| Testing | Vitest, Playwright |
+
+## Run From Source
 
 Requirements:
 
@@ -26,15 +56,20 @@ Requirements:
 - pnpm 10.33.0
 - Rust (stable) and the
   [Tauri system prerequisites](https://v2.tauri.app/start/prerequisites/)
+  for your platform
 
 ```bash
 pnpm install --frozen-lockfile
+make kit-fetch
 pnpm dev
 ```
 
-`pnpm dev` starts the desktop app. The Rust runtime in `crates/` is compiled
-into the Tauri shell and runs in-process; see
-[docs/runtime-development.md](../docs/runtime-development.md).
+`make kit-fetch` downloads the kit packages pinned in `kits/kits.lock.json`
+into `public/kits/` with the GitHub CLI (`gh release download`) and checks each
+one's size and SHA-256; the kit editors run from there. `pnpm dev` runs
+`tauri dev`, which compiles the Tauri desktop shell together with the Rust
+runtime in `crates/` and starts the desktop client. The runtime runs
+in-process; see [docs/runtime-development.md](../docs/runtime-development.md).
 
 For renderer, component, editor, and style work that does not require the
 desktop runtime:
@@ -43,10 +78,11 @@ desktop runtime:
 pnpm dev:web
 ```
 
-It starts in a backendless preview mode,
-so optional runtime-backed startup requests are skipped while document editing
-and visual development remain available. To use an already-running API instead,
-set `KITION_API_TARGET` before the same command:
+The web preview runs the renderer against a mocked runtime and is the fastest
+path for most client-side contributions. It starts in a backendless preview
+mode, so optional runtime-backed startup requests are skipped while document
+editing and visual development remain available. To use an already-running API
+instead, set `KITION_API_TARGET` before the same command:
 
 ```bash
 KITION_API_TARGET=http://127.0.0.1:18101 pnpm dev:web
