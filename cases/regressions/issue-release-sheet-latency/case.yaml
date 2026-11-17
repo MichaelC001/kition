@@ -5,12 +5,12 @@ intent: >-
   A row insertion reaches the other workbook replica within 1000 ms of clicking the
   Insert Sheet Rows command. Preparing the cell selection and opening its menu precede
   that command; formula references and offline merge assertions remain mandatory.
-layer: golden
+layer: gate
 source:
   kind: probe
   from: e2e/collab-sheet.spec.ts
-  licence: owned
-  note: The owner approved the reviewed timing-origin adjustment before it was applied.
+  license: owned
+  note: A maintainer approved the reviewed timing-origin adjustment before it was applied.
 input: []
 steps:
   - exec:

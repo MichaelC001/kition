@@ -6,12 +6,12 @@ intent: >-
   rename Kition's page, navigate its top window, write its storage or cookies, spoof the kit
   handshake, call the runtime API or send data to another site reaches none of them, and the kit
   keeps working.
-layer: golden
-direction: security
+layer: gate
+dimension: security
 source:
   kind: synthetic
   from: e2e/html-embedded.spec.ts
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

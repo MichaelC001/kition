@@ -4,11 +4,11 @@ feature: kition.platform.release-checks
 intent: >-
   The update toggles in Settings → About (auto-check, beta channel) are the same switch control
   as every other on/off setting, not native checkboxes.
-layer: golden
+layer: gate
 source:
   kind: probe
   from: UI design review, 2026-11-04
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

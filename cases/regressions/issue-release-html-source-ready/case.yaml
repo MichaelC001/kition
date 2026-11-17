@@ -4,11 +4,11 @@ feature: kition.kits.html-preview
 intent: >-
   After the engine accepts an edited HTML source, canvas clicks must activate its
   label and save only source text. Old pixels cannot establish source readiness.
-layer: golden
+layer: gate
 source:
   kind: probe
   from: e2e/html-embedded.spec.ts
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

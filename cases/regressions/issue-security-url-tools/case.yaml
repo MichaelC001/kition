@@ -8,11 +8,11 @@ intent: >-
   approval. So an injected document cannot send workspace content out through an article save or an
   image download either.
 layer: unit
-direction: security
+dimension: security
 source:
   kind: probe
   from: commercial security review 2026-11-06 (follow-up to regressions/issue-security-web-fetch; web_article_save and save_image_asset reached any public address without approval)
-  licence: owned
+  license: owned
 input: []
 steps:
   - cargo-test: { package: kition-agent, test: agent_flow, filter: "url_tools" }

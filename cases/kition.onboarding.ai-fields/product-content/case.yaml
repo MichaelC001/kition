@@ -6,11 +6,11 @@ intent: >-
   concept: only those cells run, text asks for text and images for images from the same concept,
   the image cell keeps its configured three pictures and a rerun replaces them, and a refused run
   keeps what was generated.
-layer: golden
+layer: gate
 source:
   kind: synthetic
   from: docs/kition-onboarding-core-scenarios.csv (AI-SCENE-006)
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

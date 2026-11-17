@@ -7,11 +7,11 @@ intent: >-
   licence Unknown although its licence file is MIT, and did not say which of DOMPurify's two
   licences Kition uses. Every package now has its upstream text, khroma is MIT, DOMPurify is used
   under Apache-2.0, and the generator fails when a package has no text.
-layer: golden
+layer: gate
 source:
   kind: issue
   from: "license audit 2026-11-17 (npm F6 and the dompurify note)"
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

@@ -4,11 +4,11 @@ feature: kition.extensions.kit-scripts
 intent: >-
   The bundled Scene scripting types must match the SDK generator, including its source
   header, so host synchronization checks pass for the released kit catalogue.
-layer: golden
+layer: gate
 source:
   kind: probe
   from: scripts/sync-kit-host.mjs
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

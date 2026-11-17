@@ -5,11 +5,11 @@ intent: >-
   Kition's registered object-model schema for each kit has the schema version of the pinned
   kit package, so the agent's describe and batch requests open new documents instead of being
   refused ("the document needs schema version 4; this kit reads schema versions up to 3" on Design).
-layer: golden
+layer: gate
 source:
   kind: probe
   from: e2e/interaction/agent-adaptation.spec.ts
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

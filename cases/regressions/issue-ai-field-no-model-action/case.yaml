@@ -7,11 +7,11 @@ intent: >-
   (`section: ai`), which opens Settings at Account when Kition Cloud needs a sign-in and at Models
   otherwise; a kit may open no other section. Before, the person saw only "Sign in to Kition
   before using Kition Cloud models" with nothing to press.
-layer: golden
+layer: gate
 source:
   kind: probe
   from: error-state review, 2026-11-06
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

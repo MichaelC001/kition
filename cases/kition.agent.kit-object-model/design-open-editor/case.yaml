@@ -7,12 +7,12 @@ intent: >-
   takes back the person's rectangle and not the agent's newer text layer, the agent's undo (scope
   agent) takes back only that text, and the saved file and Kition's replica store (.kition/docs/)
   hold the result.
-layer: golden
-direction: ai
+layer: gate
+dimension: ai
 source:
   kind: synthetic
   from: e2e/collab-design.spec.ts
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

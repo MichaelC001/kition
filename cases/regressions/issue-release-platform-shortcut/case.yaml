@@ -4,11 +4,11 @@ feature: kition.platform.release-checks
 intent: >-
   The tab-close shortcut must use Command on macOS and Control elsewhere, close
   the active tab from a kit frame, and reject additional Shift or Alt modifiers.
-layer: golden
+layer: gate
 source:
   kind: probe
   from: e2e/shortcuts.spec.ts
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

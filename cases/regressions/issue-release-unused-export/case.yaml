@@ -4,11 +4,11 @@ feature: kition.platform.release-checks
 intent: >-
   Model catalogue defaults must remain internal when no consumer imports them, so the
   unused-code gate reaches the remaining release checks without expanding its baseline.
-layer: golden
+layer: gate
 source:
   kind: issue
   from: https://github.com/KitionAI/kition/actions/runs/41211372604
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

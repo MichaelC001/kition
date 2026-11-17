@@ -6,12 +6,12 @@ intent: >-
   reads the layer tree, design_batch renames a layer and runs a command and saves (a batch with a
   failing op keeps nothing and names the op), the agent's undo and redo take its command back and
   forward, and the saved .kdesign carries its replica, so the layers keep their object ids when opened again.
-layer: golden
-direction: ai
+layer: gate
+dimension: ai
 source:
   kind: synthetic
   from: crates/kition-kits/tests/fixtures/Screen.kdesign
-  licence: owned
+  license: owned
 input:
   - repo:crates/kition-kits/tests/fixtures/Screen.kdesign
 steps:

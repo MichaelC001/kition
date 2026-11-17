@@ -5,11 +5,11 @@ intent: >-
   A fresh install follows the system's appearance from the first frame (dark on a dark system,
   light on a light one), and a theme the person saved wins over the system; the app used to start
   light even on a dark system.
-layer: golden
+layer: gate
 source:
   kind: probe
-  from: UI design review, 2026-11-04; owner decision 2026-11-05
-  licence: owned
+  from: UI design review, 2026-11-04; maintainer decision 2026-11-05
+  license: owned
 input: []
 steps:
   - exec:

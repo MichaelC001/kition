@@ -4,11 +4,11 @@ feature: kition.extensions.kit-scripts
 intent: >-
   An open command palette must show script and extension commands when the kit
   finishes opening, refresh installed commands, and remove entries when it closes.
-layer: golden
+layer: gate
 source:
   kind: probe
   from: e2e/extensions.spec.ts
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

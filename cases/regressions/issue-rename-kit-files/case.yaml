@@ -7,11 +7,11 @@ intent: >-
   any file, binary ones included. A file open in its kit with unsaved edits is left where it is,
   with a message to save it first. The menu used to offer Rename and Move for notes, web pages
   and boards only, and the shell refused every file but a note.
-layer: golden
+layer: gate
 source:
   kind: issue
-  from: owner report 2026-11-10 (many kits have no Rename in the right-click menu)
-  licence: owned
+  from: maintainer report 2026-11-10 (many kits have no Rename in the right-click menu)
+  license: owned
 input: []
 steps:
   - exec:

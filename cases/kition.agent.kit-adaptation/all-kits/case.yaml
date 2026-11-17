@@ -6,11 +6,11 @@ intent: >-
   its real packaged editor and engine; missing packages fail, including optional
   kits in this explicitly requested full run. No model or external service is called.
 layer: corpus
-direction: ai
+dimension: ai
 source:
   kind: synthetic
   from: e2e/interaction/agent-adaptation.spec.ts
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

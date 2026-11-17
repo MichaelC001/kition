@@ -9,11 +9,11 @@ intent: >-
   agent, and a save over a file that changed after the kit read it is refused file_conflict,
   leaves the file as it is, and puts the document in conflict. The mock kit passes every check.
 layer: unit
-direction: security
+dimension: security
 source:
   kind: synthetic
   from: crates/kition-kit-conformance/tests/mock.rs
-  licence: owned
+  license: owned
 input: []
 steps:
   - cargo-test: { package: kition-kit-conformance, test: mock, filter: mock_kit_passes_every_check }

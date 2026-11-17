@@ -6,11 +6,11 @@ intent: >-
   the article's title and link, and Product Content Studio's LinkedIn and Twitter copy name the
   concept and its brief. The seeded prompts had no {{field}} placeholders, so the model saw only
   the instruction and could not summarize or write about the selected row.
-layer: golden
+layer: gate
 source:
   kind: probe
   from: docs/kition-onboarding-core-scenarios.csv (AI-SCENE-004, AI-SCENE-006)
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

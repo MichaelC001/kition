@@ -7,11 +7,11 @@ intent: >-
   ::1), on the local network, or with any scheme but http and https is refused not-allowed before
   any request, so a pasted web page cannot reach the local API or the person's network through a kit.
 layer: unit
-direction: security
+dimension: security
 source:
   kind: synthetic
   from: crates/kition-api/src/app.rs, crates/kition-agent/src/tools/web.rs
-  licence: owned
+  license: owned
 input: []
 steps:
   - cargo-test: { package: kition-api, filter: "app::tests::callers_without_the_launch_token_reach_nothing" }

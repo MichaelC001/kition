@@ -5,11 +5,11 @@ intent: >-
   When setting up the Getting Started files fails on first run, the toast says so in plain words,
   never shows the internal error text (that goes to the log), and offers Retry, which runs the
   workspace's first-run setup again.
-layer: golden
+layer: gate
 source:
   kind: probe
   from: UI design review, 2026-11-04
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

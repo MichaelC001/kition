@@ -4,7 +4,7 @@
 ## Quality rules (read first)
 
 - Tests are the spec. Read `docs/quality.md` and the feature catalogue (`features.yaml`)
-  before changing behaviour. When code and a case disagree, the case wins unless the owner
+  before changing behaviour. When code and a case disagree, the case wins unless a maintainer
   approves changing the case.
 - Before you finish any task, run `pnpm -s typecheck && pnpm -s lint`. If it fails, the task is not done. Claude Code
   runs it for you through the Stop hook; agents without hooks (Codex) run it by hand and
@@ -12,17 +12,17 @@
 - Never edit expected results to make a test pass: files under `cases/**/expected/`, paths
   listed under `protected` in `features.yaml`, and the `expected`, `tolerance`, `reference`,
   `input` and `steps` of an existing `case.yaml`. If you believe an expected result is wrong,
-  stop and explain why in the task's findings; only the owner approves expected-result changes.
+  stop and explain why in the task's findings; only a maintainer approves expected-result changes.
 - Never weaken a test to make it pass: no deleted or loosened assertions, no added
   `#[ignore]`, `.skip`, `.only` or `.todo`, no raised tolerances. kition-sdk's
-  `tools/check-expected.mjs` lists every such change for the owner.
+  `tools/check-expected.mjs` lists every such change for the maintainers.
 - Every bug fix starts with a failing case under `cases/regressions/issue-<n>/`, then the fix.
-- Every new feature adds an entry to `features.yaml` and at least one golden case.
+- Every new feature adds an entry to `features.yaml` and at least one gate case.
 - Put the task id and the case ids in the commit message.
 - Stage only your own files: `git add` them by name; never `git commit -a` or `git add -A`.
   Other sessions may have uncommitted work in the same checkout.
 - Work on `kition-slide` only in its main checkout; never change, build, or commit in its worktrees (`kition-slide-wt/*`, `kition-*-wt`, `kition-naming-work`).
-- Never start `cargo xtask ai` (the real-model `layer: ai` cases): only the owner starts it (F-QA-16). Write ai cases and check them with `--dry-run`, which calls no model.
+- Never start `cargo xtask eval` (the real-model `layer: eval` cases): only a maintainer starts it (F-QA-16). Write eval cases and check them with `--dry-run`, which calls no model.
 - No compatibility layers: no aliases, old names, old file suffixes, migrations, or readers for
   old formats. Delete a replaced path in the same change.
 <!-- kition-quality:end -->

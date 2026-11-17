@@ -6,12 +6,12 @@ intent: >-
   workspace's .kdesign files (not the design, not Kition's store, no import) and copies nothing; the
   design names the library as ../libraries/Design System.kdesign, places its component, and when the
   library file is published again on disk it shows the update, which accepting puts in the saved design.
-layer: golden
-direction: function
+layer: gate
+dimension: function
 source:
   kind: synthetic
   from: e2e/design-embedded.spec.ts
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

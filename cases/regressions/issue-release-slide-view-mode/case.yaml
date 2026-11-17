@@ -5,11 +5,11 @@ intent: >-
   A shared slide viewer must see remote changes without acquiring editing rights. The
   viewer hides editing controls and the Home tab, and refuses changes through both
   shortcuts and the canvas while preserving remote updates and navigation.
-layer: golden
+layer: gate
 source:
   kind: probe
   from: e2e/collab-slide.spec.ts
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

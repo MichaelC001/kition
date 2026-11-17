@@ -4,11 +4,11 @@ feature: kition.kit-collab.slide
 intent: >-
   Role changes must preserve every slide and its unsaved title edits. The reader
   must find title placeholders through the current Shape.look map in schema 7.
-layer: golden
+layer: gate
 source:
   kind: probe
   from: e2e/kit-role-change.spec.ts
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

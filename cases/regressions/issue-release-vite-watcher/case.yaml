@@ -4,11 +4,11 @@ feature: kition.platform.development-server
 intent: >-
   The development server must watch source changes without traversing Rust build outputs
   or browser test artifacts, which otherwise stall page loading during release checks.
-layer: golden
+layer: gate
 source:
   kind: probe
   from: scripts/viteWatcher.spec.ts
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

@@ -5,11 +5,11 @@ intent: >-
   Asked to summarize the open onboarding guide and add a checklist, every agent turn is bound to
   that guide, the write it reports changes only that file, a summary-only turn writes nothing, and a
   failed write is shown while the guide stays as it was.
-layer: golden
+layer: gate
 source:
   kind: synthetic
   from: docs/kition-onboarding-core-scenarios.csv (AI-SCENE-001)
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

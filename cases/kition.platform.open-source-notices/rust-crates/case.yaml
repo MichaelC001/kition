@@ -5,11 +5,11 @@ intent: >-
   The Rust notices follow only the crates linked into the app (not dev or build dependencies),
   embed the licence texts each crate ships or the canonical text when it ships none, state the
   source of MPL-2.0 crates, and refuse a GPL crate; the committed notices list tauri and serde.
-layer: golden
+layer: gate
 source:
   kind: synthetic
   from: scripts/lib/rustCrateNotices.spec.ts
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

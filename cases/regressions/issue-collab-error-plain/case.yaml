@@ -5,11 +5,11 @@ intent: >-
   The co-editing dialogs (share, open a link, sync) say what went wrong in plain words for every
   failure, including a malformed link, a busy server and a kind of document this build cannot open,
   and never show the raw error; any failure they did not name used to show its raw message.
-layer: golden
+layer: gate
 source:
   kind: probe
   from: error-state review, 2026-11-03
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

@@ -7,11 +7,11 @@ intent: >-
   carries data (a long or encoded query or path part), waits for the person's approval, which is given
   once and never saved as a rule. So an injected document cannot send workspace content out in a URL.
 layer: unit
-direction: security
+dimension: security
 source:
   kind: probe
   from: commercial security review 2026-11-06 (web_fetch reached any public address without approval)
-  licence: owned
+  license: owned
 input: []
 steps:
   - cargo-test: { package: kition-agent, test: agent_flow, filter: "fetch" }

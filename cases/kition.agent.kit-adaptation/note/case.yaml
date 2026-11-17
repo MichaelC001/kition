@@ -4,12 +4,12 @@ feature: kition.agent.kit-adaptation
 intent: >-
   Note agent edits use their own undo/redo, errors preserve state, a draft never
   saves over the live file, and read-only access rejects both commands and batches.
-layer: golden
-direction: ai
+layer: gate
+dimension: ai
 source:
   kind: synthetic
   from: e2e/interaction/agent-adaptation.spec.ts
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

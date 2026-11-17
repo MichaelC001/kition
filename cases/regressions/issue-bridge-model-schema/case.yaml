@@ -6,11 +6,11 @@ intent: >-
   kit-editor answers the object model of an engine that does not describe its own schema (Design,
   Vector) only with one, so without it every design_query and design_batch on an open design failed with
   "the kit's engine does not describe its schema".
-layer: golden
+layer: gate
 source:
   kind: issue
   from: src/features/kits/kition/kitBridgeModel.spec.ts
-  licence: owned
+  license: owned
   note: Found while integrating Design on engine contract 2 (e2e/collab-design.spec.ts); KitDraftReview already sent the schema for draft compare and merge.
 input: []
 steps:

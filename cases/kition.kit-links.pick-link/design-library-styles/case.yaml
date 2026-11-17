@@ -6,12 +6,12 @@ intent: >-
   variables as well as its components (schema kit.design v3, styles.libraries): the fill's style
   picker lists the library's paint style under the library's name ("Design System", the style in
   its folder "Brand") and its colour variables as "Design System · Theme".
-layer: golden
-direction: function
+layer: gate
+dimension: function
 source:
   kind: synthetic
   from: e2e/design-embedded.spec.ts
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

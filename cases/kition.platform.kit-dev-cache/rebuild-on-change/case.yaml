@@ -10,11 +10,11 @@ intent: >-
   in target/kit-dev-cache.json, and make kit-dev builds every part. One build runs at a time: a
   second is refused while the first runs, a lock left by an ended build is taken over, and the
   lock is released when a build fails.
-layer: golden
+layer: gate
 source:
   kind: probe
   from: scripts/kit-dev-build.spec.ts
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

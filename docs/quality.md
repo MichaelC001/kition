@@ -6,14 +6,14 @@ This file is the entry point for testing Kition. It applies to people and to AI 
 is the reference.
 
 Tests are the spec. The feature catalogue (`features.yaml`) and each case's `intent` say how
-this repository must behave. When code and a case disagree, the case wins unless the owner
+this repository must behave. When code and a case disagree, the case wins unless a maintainer
 approves changing it.
 
-## Five directions
+## Five dimensions
 
-Every feature and every case belongs to one or more of these directions.
+Every feature and every case belongs to one or more of these dimensions.
 
-| Direction | What is tested | Source of truth |
+| Dimension | What is tested | Source of truth |
 |---|---|---|
 | `function` | Every command (menu item, shortcut, tool) works, takes the right parameters, and can be undone; interactions (click, drag, type, select) | The command's design and the expected state after the interaction |
 | `conversion` | Open and save without loss (round trip); conversion between formats | Round trip: the document model (KDM) before and after; across formats: the reference tool's output |
@@ -29,9 +29,9 @@ Every feature and every case belongs to one or more of these directions.
 | `layer` | Runs | Budget | Failing means |
 |---|---|---|---|
 | `unit` | Not executed by the case runner: the case points at an existing test (`cargo-test` or `exec` step) that `pnpm -s typecheck && pnpm -s lint` already runs. The runner only checks the test exists, so the catalogue links to it | (inside `pnpm -s typecheck && pnpm -s lint`) | The commit is refused by `pnpm -s typecheck && pnpm -s lint` |
-| `golden` | Every commit, every PR, before an agent ends a task (`cargo xtask golden --affected`; all before merge) | The whole kit ≤ `golden_budget_s` (600) on the owner's machine | Not done; cannot merge |
-| `corpus` | Weekly, on the owner's machine at night | Hours | Weekly report; important failures become issues and then regression cases |
-| `ai` | Only when the owner starts it (`cargo xtask ai`, F-QA-16): never from a hook, golden, the pre-finish check, a schedule, CI, or by an agent on its own | Tokens are recorded, not capped | Success rate per kit and model in the run's report; the matrix reads the latest owner run |
+| `gate` | Every commit, every PR, before an agent ends a task (`cargo xtask gate --affected`; all before merge) | The whole kit ≤ `gate_budget_s` (600) on a maintainer's machine | Not done; cannot merge |
+| `corpus` | Weekly, on a maintainer's machine at night | Hours | Weekly report; important failures become issues and then regression cases |
+| `eval` | Only when a maintainer starts it (`cargo xtask eval`, F-QA-16): never from a hook, the gate, the pre-finish check, a schedule, CI, or by an agent on its own | Tokens are recorded, not capped | Success rate per kit and model in the run's report; the matrix reads the latest maintainer run |
 
 ## How to run
 
@@ -40,8 +40,8 @@ pnpm -s typecheck && pnpm -s lint
 ```
 
 Run it before you finish any task; the task is not done until it exits 0. Report the real exit
-code, not the exit code of a wrapper shell. When the golden case runner arrives, this section
-names `cargo xtask golden --affected` (the golden cases of the features you touched) as well.
+code, not the exit code of a wrapper shell. When the gate runner arrives, this section
+names `cargo xtask gate --affected` (the gate cases of the features you touched) as well.
 
 Claude Code runs this command through the Stop hook in `.claude/settings.json`
 (`.claude/hooks/quality-gate.sh`). For an emergency bypass in one session only, start it with
@@ -56,7 +56,7 @@ Codex has no blocking Stop hook. Before you report a task as done:
    the task is not done.
 3. Run `node <kition-sdk>/tools/check-expected.mjs origin/main..HEAD` from the repository root
    (`<kition-sdk>` is your kition-sdk checkout). If it lists anything, name each entry in your
-   final message so the owner can review it.
+   final message so the maintainers can review it.
 
 ## Where things are
 
@@ -73,18 +73,18 @@ cases/
   regressions/
     issue-<n>/         a case from an issue in this repository
     issue-<repo>-<n>/  a case from an issue in another repository
-  waivers.yaml         owner-approved, dated exceptions to requirement rows
+  waivers.yaml         maintainer-approved, dated exceptions to requirement rows
 conformance/           the agent conformance fixtures (cases refer to them, never copy them)
 corpus/                the corpus (gitignored; fetched at pinned commits)
 ```
 
-Outputs of a run go to `target/golden/<case-id>/`, never into `cases/`; a case calls that
+Outputs of a run go to `target/gate/<case-id>/`, never into `cases/`; a case calls that
 directory `out/`.
 
 - **Requirements**: a feature may name requirement rows in `requirements`. Keep the
   applicable requirements alongside the kit that implements them.
 - **Waivers**: `cases/waivers.yaml`. A waiver defers a row until a date; it never relaxes the
-  row and never permits a compatibility layer. Only the owner approves one; agents may propose
+  row and never permits a compatibility layer. Only a maintainer approves one; agents may propose
   one with `approved_on: null`.
 
 ## How to add a case
@@ -116,9 +116,9 @@ Tool tokens: `WPS`, `WORD`, `EXCEL`, `POWERPOINT`, `ACROBAT`, `PHOTOSHOP`, `M365
 | `id` | string | yes | Case id (see Names). Must equal the case's path under `cases/` |
 | `feature` | string | yes | Feature id; must exist in `features.yaml`. A regression case names the feature it protects |
 | `intent` | string | yes | One or two sentences: what this case guarantees and why it matters. The most important line; the reviewer and the AI read it before touching the behaviour |
-| `layer` | enum `unit` \| `golden` \| `corpus` \| `ai` | yes | When it runs (see Four layers). Regression cases are `golden` unless the owner moves them |
-| `direction` | enum, see `features.yaml` | no | Defaults to the feature's first direction; set it when this case tests another one |
-| `source` | map | yes | Where the case comes from: `kind` (enum `synthetic` \| `golden-sample` \| `corpus` \| `issue` \| `probe` \| `user-file`), `from` (string: sample path, corpus file, issue `<owner>/<repo>#<n>`, report path), `licence` (SPDX id or `owned`), `note` (string, optional). A `user-file` needs the owner's consent recorded in `note`; files that cannot be published are rebuilt as `synthetic` instead |
+| `layer` | enum `unit` \| `gate` \| `corpus` \| `eval` | yes | When it runs (see Four layers). Regression cases are `gate` unless a maintainer moves them |
+| `dimension` | enum, see `features.yaml` | no | Defaults to the feature's first dimension; set it when this case tests another one |
+| `source` | map | yes | Where the case comes from: `kind` (enum `synthetic` \| `golden-sample` \| `corpus` \| `issue` \| `probe` \| `user-file`), `from` (string: sample path, corpus file, issue `<owner>/<repo>#<n>`, report path), `license` (SPDX id or `owned`), `note` (string, optional). A `user-file` needs the file owner's consent recorded in `note`; files that cannot be published are rebuilt as `synthetic` instead |
 | `input` | list<string> | yes (may be empty) | Input files. Paths relative to the case directory (`input/…`); `repo:<path>` for a file elsewhere in the repository (for example `repo:conformance/basic.docx`); `corpus:<set>/<glob>` only in `corpus` cases |
 | `steps` | list<step> | yes | What to do, in order (see Steps). Each step is a map with one key |
 | `expected` | list<expectation> | yes | What must hold afterwards (see Expectations). At least one entry |
@@ -126,8 +126,8 @@ Tool tokens: `WPS`, `WORD`, `EXCEL`, `POWERPOINT`, `ACROBAT`, `PHOTOSHOP`, `M365
 | `tolerance` | map | no | Defaults per compare kind for this case (see Tolerance); an expectation may override its own |
 | `tags` | list<string> | no | Free labels for selection: `cjk`, `rtl`, `large`, `browser`, `slow`, `security`, `platform-macos` … |
 | `since` | string, `YYYY-MM-DD` (quoted) | yes | Date the case was added (or the expected result last approved) |
-| `requires` | list<string> | no | External tools the runner needs (`ooxml-validator`, `poppler`, `qpdf`, `verapdf`, `chromium`, `webkit`, `kition-server`). In a `golden` case a missing tool is a failure, never a skip, except a private tool (see Private tools) |
-| `timeout_s` | int | no | Default 20; hard cap 60 for `golden` |
+| `requires` | list<string> | no | External tools the runner needs (`ooxml-validator`, `poppler`, `qpdf`, `verapdf`, `chromium`, `webkit`, `kition-server`). In a `gate` case a missing tool is a failure, never a skip, except a private tool (see Private tools) |
+| `timeout_s` | int | no | Default 20; hard cap 60 for `gate` |
 
 ### Private tools
 
@@ -135,7 +135,7 @@ The private tools are `kition-server`, Kition's sync server, which is not open s
 sync server it provides through the environment, such as `KITION_SYNC_SERVER`. A case or test
 that needs a private tool and does not find it is skipped, not passed and not failed: it must
 print `SKIP: <reason>`, where the reason names the missing private tool, and be counted as
-skipped. Any other missing tool in a `golden` case is still a failure.
+skipped. Any other missing tool in a `gate` case is still a failure.
 
 - A case names the private tool in `requires` (`requires: [kition-server]`). When the tool is
   missing, the runner prints the `SKIP:` line and counts the case as skipped without running
@@ -168,7 +168,7 @@ headless executable alike.
 | `cargo-test` | `{ package, test?, filter?, features?, env? }`: run an existing test; `env` values starting with `expected/`, `out/` or `corpus/` are resolved to real paths | exit status and, through `env`, report files |
 | `exec` | `{ cmd: [..], env? }`: run a repository tool (for example `khp-agent-conformance`) | exit status, stdout |
 | `flow` | `{ spec, scenario, browsers }`: a scenario of the kit's `web/tests/flow.mjs` | exit status, screenshots |
-| `task` | `{ prompt, files, models, max_turns }`: `ai` layer only | the agent's output files and a transcript with token counts |
+| `task` | `{ prompt, files, models, max_turns }`: `eval` layer only | the agent's output files and a transcript with token counts |
 
 Names given with `as` are referred to in `expected` as `out:<name>`; saved files as `out/<file>`.
 
@@ -214,11 +214,11 @@ Larger files belong to the corpus.
 
 ### The 10-minute budget
 
-- Golden inputs are small: a few pages, a few hundred cells, images under 512 × 512, timelines under 3 seconds at 320 × 180. Large files belong to the corpus.
-- Golden cases run in-process by default; the headless executable is exercised by the conformance suite and a few `golden` cases tagged `headless`.
-- At most about ten `flow` cases per kit are `golden`; the rest are `corpus` (weekly).
-- No `golden` case measures performance against a tight time budget on this shared machine; performance budgets (Q9) use generous limits in `golden` and the real numbers in the weekly report.
-- Film exports in `golden` are a few frames, not a full export.
+- Gate inputs are small: a few pages, a few hundred cells, images under 512 × 512, timelines under 3 seconds at 320 × 180. Large files belong to the corpus.
+- Gate cases run in-process by default; the headless executable is exercised by the conformance suite and a few `gate` cases tagged `headless`.
+- At most about ten `flow` cases per kit are `gate`; the rest are `corpus` (weekly).
+- No `gate` case measures performance against a tight time budget on this shared machine; performance budgets (Q9) use generous limits in `gate` and the real numbers in the weekly report.
+- Film exports in `gate` are a few frames, not a full export.
 
 ## The feature catalogue: `features.yaml`
 
@@ -232,7 +232,7 @@ Top level:
 | `format` | int, `1` | yes | Version of this format |
 | `kit` | string | yes | Canonical kit name (`doc`, `sheet`, `photo`, …) |
 | `updated` | string, `YYYY-MM-DD` | yes | Last edit |
-| `golden_budget_s` | int | yes | Wall-clock cap for all `golden` cases of the kit on the owner's machine; default and maximum `600` |
+| `gate_budget_s` | int | yes | Wall-clock cap for all `gate` cases of the kit on a maintainer's machine; default and maximum `600` |
 | `sources` | map<string, string> | no | Files the catalogue was generated from (`commands: crates/engine/engine/src/catalog.rs`, `parity: web/parity/photo-status.json`) |
 | `protected` | list<string> | no | Extra globs treated like `cases/**/expected/` (see Expected results are protected): committed goldens and floors that live next to existing tests |
 | `features` | list<feature> | yes | The catalogue |
@@ -243,7 +243,7 @@ Each feature:
 |---|---|---|---|
 | `id` | string | yes | Feature id (see Names) |
 | `title` | string | yes | Short English title |
-| `direction` | list<enum> | yes | `function`, `conversion`, `ai`, `collab`, `fidelity` (the five directions), and for tests outside those five: `compat` (saved files open in the target application), `performance`, `robustness`, `data-safety`, `platform`, `security` |
+| `dimension` | list<enum> | yes | `function`, `conversion`, `ai`, `collab`, `fidelity` (the five dimensions), and for tests outside those five: `compat` (saved files open in the target application), `performance`, `robustness`, `data-safety`, `platform`, `security` |
 | `priority` | enum `P0` \| `P1` \| `P2` | yes | P0 = must have for the kit's launch tier |
 | `status` | enum `has` \| `partial` \| `missing` | yes | `has` = works end to end in the editor and survives save and reopen |
 | `commands` | list<string> | no | Engine command ids the feature uses |
@@ -256,22 +256,22 @@ Each feature:
 | `corpus_files` | int | generated | Files in the corpus that exercise the feature (weekly run) |
 | `since` | string, `YYYY-MM-DD` | yes | Date added |
 
-Rules: a `P0` feature with `status: has` needs 1–3 `golden` cases (requirement Q2); a `missing` feature has none; a `partial` one has cases for what works.
+Rules: a `P0` feature with `status: has` needs 1–3 `gate` cases (requirement Q2); a `missing` feature has none; a `partial` one has cases for what works.
 
 ## Expected results are protected
 
-- Only the owner approves changes to expected results. "Expected results" are:
+- Only a maintainer approves changes to expected results. "Expected results" are:
   1. every file under `cases/**/expected/` (added, changed, deleted or renamed);
   2. every path matched by `protected` in `features.yaml` (committed goldens and floors next to existing tests);
-  3. in an existing `case.yaml`: any change to `expected`, `tolerance`, `reference`, `input`, or `steps`, a move from `golden` to another layer, and deleting or moving the case directory;
+  3. in an existing `case.yaml`: any change to `expected`, `tolerance`, `reference`, `input`, or `steps`, a move from `gate` to another layer, and deleting or moving the case directory;
   4. in `features.yaml`: removing a feature that has cases, or lowering its priority.
 - Never change an expected result to make a test pass. If you believe one is wrong, stop and explain why in the task's findings.
-- `external` references (made by a target application or an independent reader) are never regenerated by a tool. Only `self` references may be blessed, with `cargo xtask golden --bless <case-id>`, and only in a commit whose message has one line per case: `Expected-Change: <case-id>: <reason>`.
-- New cases are listed too: the owner (or, if the owner decides, the second AI reviewer) checks that each new expected result comes from the reference the case names.
+- `external` references (made by a target application or an independent reader) are never regenerated by a tool. Only `self` references may be blessed, with `cargo xtask gate --bless <case-id>`, and only in a commit whose message has one line per case: `Expected-Change: <case-id>: <reason>`.
+- New cases are listed too: a maintainer (or, if the maintainers decide, the second AI reviewer) checks that each new expected result comes from the reference the case names.
 - A bug fix starts with the failing case under `cases/regressions/issue-<n>/`: the pull request shows the case failing before the fix and passing after it.
 
 kition-sdk's `tools/check-expected.mjs` lists, for a range of commits, every added, changed or
 deleted expected result and every weakened test (deleted assertions or tests, added
 `#[ignore]`, `.skip`, `.only` or `.todo`). Reviewers run it on every candidate;
-anything it lists goes to the owner and is never merged automatically.
+anything it lists goes to the maintainers and is never merged automatically.
 <!-- kition-quality:end -->

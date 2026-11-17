@@ -7,11 +7,11 @@ intent: >-
   runtime's reason (not-allowed, unsupported, quota, io-error), any other failure as io-error, so
   the kit can tell the person why a pasted picture was not kept.
 layer: unit
-direction: function
+dimension: function
 source:
   kind: synthetic
   from: src/api/kits.spec.ts, src/features/kits/kition/kitFetchImage.spec.ts
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

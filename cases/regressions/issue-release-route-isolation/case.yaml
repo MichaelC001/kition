@@ -2,11 +2,11 @@ format: 1
 id: regressions/issue-release-route-isolation
 feature: kition.platform.release-checks
 intent: Each removed route redirects to the document workspace in an independent browser test, without sharing navigation state or a timeout with other routes.
-layer: golden
+layer: gate
 source:
   kind: probe
   from: e2e/app-shell.spec.ts
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

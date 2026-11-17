@@ -4,11 +4,11 @@ feature: kition.platform.release-checks
 intent: >-
   Settings previews a theme live while the person moves between panes, but closing
   Settings without saving puts the saved theme and display back, so unsaved choices never stick.
-layer: golden
+layer: gate
 source:
   kind: probe
   from: UI design review, 2026-11-04
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

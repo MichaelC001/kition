@@ -4,12 +4,12 @@ feature: kition.agent.kit-adaptation
 intent: >-
   The Layout package supports agent discovery, execution, undo/redo, object-model
   reads, save/reopen, preview and read-only refusals through the live editor bridge.
-layer: golden
-direction: ai
+layer: gate
+dimension: ai
 source:
   kind: synthetic
   from: e2e/interaction/agent-adaptation.spec.ts
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

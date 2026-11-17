@@ -4,11 +4,11 @@ feature: kition.platform.release-checks
 intent: >-
   A notice raised while Settings is open (here a failed first-run setup) shows above Settings'
   action bar, covering neither the pane's title nor Save, at the smallest supported window.
-layer: golden
+layer: gate
 source:
   kind: probe
   from: UI design review, 2026-11-04
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

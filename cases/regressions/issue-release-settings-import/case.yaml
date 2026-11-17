@@ -2,11 +2,11 @@ format: 1
 id: regressions/issue-release-settings-import
 feature: kition.platform.release-checks
 intent: Settings behavior tests finish without leaking an asynchronous module import into the next test's React root.
-layer: golden
+layer: gate
 source:
   kind: probe
   from: src/features/settings/DesktopSettingsPage.spec.tsx
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

@@ -5,12 +5,12 @@ intent: >-
   KitFrame serves links/pick only to an editable document (never a read-only one or a preview), and
   its picker lists only visible workspace files of accept, not the document, with no import, and
   answers the chosen workspace path without writing anything.
-layer: golden
-direction: security
+layer: gate
+dimension: security
 source:
   kind: synthetic
   from: src/features/kits/kition/KitFrame.spec.tsx
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

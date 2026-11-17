@@ -4,11 +4,11 @@ feature: kition.agent.kit-object-model
 intent: >-
   The host supplies Layout's registered object-model schema to agent describe and
   batch requests, so the open editor can answer without describing its own schema.
-layer: golden
+layer: gate
 source:
   kind: probe
   from: e2e/interaction/agent-adaptation.spec.ts
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

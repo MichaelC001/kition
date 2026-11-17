@@ -6,11 +6,11 @@ intent: >-
   step, never a raw error, and the window stays usable: an empty workspace, a failed Getting
   Started setup, an unreachable file service, an editor engine that cannot load, a damaged file, a
   save the disk refuses, and the agent without a model.
-layer: golden
+layer: gate
 source:
   kind: probe
   from: error-state review, 2026-11-03
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

@@ -4,11 +4,11 @@ feature: kition.kit-collab.sheet
 intent: >-
   The workbook collaboration scenario must open the classic ribbon before using its
   Insert menu, then retain every formula, convergence, and latency assertion.
-layer: golden
+layer: gate
 source:
   kind: probe
   from: e2e/collab-sheet.spec.ts
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

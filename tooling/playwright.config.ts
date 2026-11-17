@@ -26,7 +26,7 @@ const LIVE_SERVICE_SPECS = [
   '**/readme-assets.spec.ts',
 ]
 // The kit interaction suite (e2e/interaction/) is expensive: it runs only through
-// `pnpm test:interaction:e2e`, when the owner asks for it, never in the sweep.
+// `pnpm test:interaction:e2e`, when a maintainer asks for it, never in the sweep.
 const ON_DEMAND_SPECS = ['**/interaction/**']
 const quarantine = JSON.parse(
   readFileSync(resolve(repositoryDir, 'tooling/e2e-quarantine.json'), 'utf8'),

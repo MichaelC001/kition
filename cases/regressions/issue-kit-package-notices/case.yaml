@@ -7,11 +7,11 @@ intent: >-
   anyone embedding the package. scripts/build-kit-ui.sh now writes THIRD_PARTY_NOTICES.txt from
   the modules the Vite build bundled and the engine's wasm32 crate graph, grouping the licence and
   NOTICE files of each, and fails when one ships no licence text or an unaccepted licence.
-layer: golden
+layer: gate
 source:
   kind: issue
   from: "license audit 2026-11-17 (npm F2, Rust FIX 1): kit packages carry no third-party notices"
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

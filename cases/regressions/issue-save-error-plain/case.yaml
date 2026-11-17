@@ -5,11 +5,11 @@ intent: >-
   When Kition cannot write a kit's file (a full disk, a file it may not write, its file service
   unreachable), the kit is told why in plain words and what to do, never the system's error; the
   kit used to show "No space left on device (os error 28)".
-layer: golden
+layer: gate
 source:
   kind: probe
   from: error-state review, 2026-11-03
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

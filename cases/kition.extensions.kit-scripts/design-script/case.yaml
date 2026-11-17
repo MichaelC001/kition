@@ -5,11 +5,11 @@ intent: >-
   A workspace script run from the palette on an open design reads its layer tree, renames the
   page and adds a rectangle with a kit command through the kit.design object model Kition registers,
   answers what it read, and the editor shows both edits unsaved.
-layer: golden
+layer: gate
 source:
   kind: synthetic
   from: e2e/extensions.spec.ts
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

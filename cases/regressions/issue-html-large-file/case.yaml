@@ -5,11 +5,11 @@ intent: >-
   When a kit refuses a file as larger than it opens (its reason starts with `too-large:`), the
   notice says the file is larger than the kit's limit, naming the limit when the reason gives one,
   and that it is unchanged; it does not call the file damaged.
-layer: golden
+layer: gate
 source:
   kind: probe
   from: performance baseline, 2026-11-06 (a 2.3 MB HTML page was called damaged)
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

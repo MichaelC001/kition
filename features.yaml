@@ -1,11 +1,11 @@
 format: 1
 kit: kition
 updated: "2026-11-10"
-golden_budget_s: 600
+gate_budget_s: 600
 features:
   - id: kition.kits.doc-page-view
     title: Document pages open at reading scale with visible margin corner guides
-    direction: [function, fidelity, data-safety]
+    dimension: [function, fidelity, data-safety]
     priority: P1
     status: has
     paths: [e2e/doc-page-view.spec.ts]
@@ -13,7 +13,7 @@ features:
     since: "2026-11-01"
   - id: kition.kits.doc-scroll
     title: Word documents scroll within their page bounds without moving onto empty canvas
-    direction: [function, data-safety]
+    dimension: [function, data-safety]
     priority: P1
     status: has
     paths:
@@ -25,7 +25,7 @@ features:
     since: "2026-11-01"
   - id: kition.kits.signed-files
     title: Desktop kit files open through correctly signed runtime URLs at every filename length
-    direction: [function, security]
+    dimension: [function, security]
     priority: P0
     status: has
     paths:
@@ -38,7 +38,7 @@ features:
     since: "2026-10-31"
   - id: kition.workspace.organize-files
     title: Every workspace file renames and moves from the tree, a kit's too, without losing unsaved edits
-    direction: [function, data-safety]
+    dimension: [function, data-safety]
     priority: P1
     status: has
     paths:
@@ -55,7 +55,7 @@ features:
     since: "2026-11-10"
   - id: kition.agent.kit-adaptation
     title: Every installed kit accepts agent edits while preserving saved files, drafts and read-only access
-    direction: [ai, function, data-safety, security]
+    dimension: [ai, function, data-safety, security]
     priority: P0
     status: has
     paths:
@@ -74,7 +74,7 @@ features:
     since: "2026-10-31"
   - id: kition.kits.html-preview
     title: HTML previews run canvas interactions after the edited source is ready
-    direction: [function, data-safety, security]
+    dimension: [function, data-safety, security]
     priority: P1
     status: has
     paths:
@@ -85,7 +85,7 @@ features:
     since: "2026-10-31"
   - id: kition.kit-collab.sheet
     title: Workbook collaboration preserves formulas and merges offline cell edits
-    direction: [collab, data-safety]
+    dimension: [collab, data-safety]
     priority: P1
     status: has
     paths:
@@ -96,7 +96,7 @@ features:
     since: "2026-10-31"
   - id: kition.kit-collab.slide
     title: Shared slide viewers see remote edits while their documents remain read-only
-    direction: [collab, security]
+    dimension: [collab, security]
     priority: P1
     status: has
     paths:
@@ -109,7 +109,7 @@ features:
     since: "2026-10-31"
   - id: kition.platform.development-server
     title: The development server watches sources without traversing build artifacts
-    direction: [performance, robustness]
+    dimension: [performance, robustness]
     priority: P1
     status: has
     paths:
@@ -120,7 +120,7 @@ features:
     since: "2026-10-31"
   - id: kition.platform.kit-dev-cache
     title: make kit-dev-cache rebuilds only the kits whose checkout changed since their recorded build
-    direction: [performance, platform]
+    dimension: [performance, platform]
     priority: P2
     status: has
     paths:
@@ -132,7 +132,7 @@ features:
     since: "2026-11-10"
   - id: kition.platform.release-checks
     title: Release checks preserve repository and document-store invariants across platforms
-    direction: [platform, robustness, data-safety]
+    dimension: [platform, robustness, data-safety]
     priority: P0
     status: has
     paths:
@@ -168,7 +168,7 @@ features:
     since: "2026-10-31"
   - id: kition.agent.kit-export
     title: The agent exports a kit document to a new file (KHP A41)
-    direction: [ai, function]
+    dimension: [ai, function]
     priority: P1
     status: partial
     commands: [file.export]
@@ -182,7 +182,7 @@ features:
     since: "2026-10-28"
   - id: kition.agent.kit-preview
     title: The agent previews a part or a diagnostic's target with the kit's own render command (KHP A39)
-    direction: [ai]
+    dimension: [ai]
     priority: P1
     status: has
     commands: [file.render]
@@ -194,7 +194,7 @@ features:
     since: "2026-10-28"
   - id: kition.kit-protocol.command-output
     title: A kit command may declare the shape of its result (`output`, KHP A1)
-    direction: [function]
+    dimension: [function]
     priority: P2
     status: has
     paths:
@@ -205,7 +205,7 @@ features:
     since: "2026-10-28"
   - id: kition.shell.theme
     title: The app follows the system's light or dark appearance until the person picks one
-    direction: [function]
+    dimension: [function]
     priority: P1
     status: has
     paths:
@@ -217,7 +217,7 @@ features:
     since: "2026-11-05"
   - id: kition.shell.error-states
     title: Empty and error states say what happened in plain words and offer a next step
-    direction: [function, robustness]
+    dimension: [function, robustness]
     priority: P0
     status: has
     paths:
@@ -237,7 +237,7 @@ features:
     since: "2026-11-06"
   - id: kition.kit-protocol.theme
     title: Kits follow Kition's colour scheme at open and on every switch (`ui/theme`, UI-H6)
-    direction: [function, fidelity]
+    dimension: [function, fidelity]
     priority: P1
     status: has
     paths:
@@ -249,7 +249,7 @@ features:
     since: "2026-11-04"
   - id: kition.agent.kit-object-model
     title: The agent reads and edits a kit document through its object model (`<prefix>_query`, `<prefix>_batch`), headless and in the open editor
-    direction: [ai, function]
+    dimension: [ai, function]
     priority: P1
     status: has
     commands: [model.describe, model.batch]
@@ -268,7 +268,7 @@ features:
     since: "2026-10-28"
   - id: kition.kit-collab.design
     title: People co-edit a design live and across going offline (engine contract 2), and its replica is kept in Kition's store
-    direction: [collab]
+    dimension: [collab]
     priority: P1
     status: has
     paths:
@@ -280,7 +280,7 @@ features:
     since: "2026-10-28"
   - id: kition.extensions.kit-scripts
     title: A workspace script edits the open kit document through the object model of the kit's registered schema (`src/lib/script/kits/`)
-    direction: [function]
+    dimension: [function]
     priority: P1
     status: has
     paths:
@@ -302,7 +302,7 @@ features:
     since: "2026-10-28"
   - id: kition.kit-links.pick-link
     title: A kit links an existing workspace file where it is (`links/pick`, Kit UI protocol 2.5) and reads it by its document-relative path
-    direction: [function, security]
+    dimension: [function, security]
     priority: P1
     status: has
     paths:
@@ -323,7 +323,7 @@ features:
     since: "2026-10-28"
   - id: kition.platform.open-source-notices
     title: The desktop app ships and shows the licence texts of the npm packages, Rust crates and kit packages it includes
-    direction: [platform, function]
+    dimension: [platform, function]
     priority: P0
     status: has
     paths:
@@ -355,7 +355,7 @@ features:
     since: "2026-10-31"
   - id: kition.kits.table-host
     title: Host features (scenarios, triggers, attachments) read and write table files through the Table kit's commands
-    direction: [function, data-safety]
+    dimension: [function, data-safety]
     priority: P1
     status: has
     paths: [crates/kition-tableclient/**]
@@ -363,7 +363,7 @@ features:
     since: "2026-11-05"
   - id: kition.agent.tool-policy
     title: The agent's shell runs read-only commands without asking only inside the workspace, and its URL tools (web_fetch, web_article_save, save_image_asset) reach only sites the person named without asking
-    direction: [security, ai]
+    dimension: [security, ai]
     priority: P0
     status: has
     paths:
@@ -383,7 +383,7 @@ features:
     since: "2026-11-06"
   - id: kition.kits.file-writes
     title: Kit editors write files only inside the workspace
-    direction: [security, data-safety]
+    dimension: [security, data-safety]
     priority: P0
     status: has
     paths:
@@ -394,7 +394,7 @@ features:
     since: "2026-11-06"
   - id: kition.kits.host-protocol
     title: Kition hosts kits on Kit Process Protocol 2, naming files to them only by handles
-    direction: [security, data-safety]
+    dimension: [security, data-safety]
     priority: P0
     status: has
     paths:
@@ -404,7 +404,7 @@ features:
     since: "2026-11-10"
   - id: kition.kits.fetch-image
     title: A kit keeps a picture pasted by its web address; Kition's runtime downloads it from public addresses only (Kit UI protocol host/fetchImage)
-    direction: [security, data-safety]
+    dimension: [security, data-safety]
     priority: P1
     status: has
     paths:
@@ -419,7 +419,7 @@ features:
     since: "2026-11-10"
   - id: kition.onboarding.ai-fields
     title: The onboarding tables' AI fields run on request for the asked cell, from that row
-    direction: [ai, function, data-safety]
+    dimension: [ai, function, data-safety]
     priority: P0
     status: has
     paths:
@@ -436,7 +436,7 @@ features:
     since: "2026-11-06"
   - id: kition.onboarding.ai-scenarios
     title: The onboarding agent and extraction scenarios stay bound to the open file and write nothing unasked
-    direction: [ai, data-safety, security]
+    dimension: [ai, data-safety, security]
     priority: P0
     status: has
     paths:

@@ -2,11 +2,11 @@ format: 1
 id: regressions/issue-release-active-kit-palette
 feature: kition.extensions.kit-scripts
 intent: Activating an already connected kit refreshes its extension commands and Run script entry, including activation after the command palette has opened.
-layer: golden
+layer: gate
 source:
   kind: probe
   from: src/features/extensions/extensionService.spec.ts
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:

@@ -1,6 +1,6 @@
 /**
  * Shared conventions of the kit interaction suite (e2e/interaction/). The suite is expensive and
- * runs only through `pnpm test:interaction:e2e`, when the owner asks for it; the CI sweep ignores
+ * runs only through `pnpm test:interaction:e2e`, when a maintainer asks for it; the CI sweep ignores
  * this folder (tooling/playwright.config.ts).
  *
  * Each spec is `<kit>.spec.ts` and tags every test with its kit, its host-matrix row and, for a

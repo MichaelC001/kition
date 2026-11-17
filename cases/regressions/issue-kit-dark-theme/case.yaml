@@ -5,11 +5,11 @@ intent: >-
   An open kit takes Kition's scheme and the theme tokens Kition's stylesheet gives it, and each
   switch between light and dark reaches it as `ui/theme` (Kit UI protocol section 4, UI-H6);
   before, every kit editor stayed white in dark mode because the host sent a fixed light theme once.
-layer: golden
+layer: gate
 source:
   kind: probe
   from: UI design review, 2026-11-04
-  licence: owned
+  license: owned
 input: []
 steps:
   - exec:
