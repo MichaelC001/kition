@@ -24,6 +24,15 @@ export function kitEngine<T>(kit: string, module: string) {
 }
 
 /**
+ * Fails the test, never skips it, unless `ready`; `problem` says what `public/kits/<kit>-ui` lacks.
+ * A kit package is public (pinned in kits/kits.lock.json), not a private tool, so a missing or
+ * outdated one is a failure (QUALITY.md, Private tools), and the message says how to get it.
+ */
+export function requireKitPackage(kit: string, ready: boolean, problem: string) {
+  expect(ready, `${problem}: run make kit-fetch (the packages pinned in kits/kits.lock.json), or build it with scripts/build-kit-ui.sh ${kit}`).toBe(true)
+}
+
+/**
  * Serves the workspace's files as the runtime's file services do (ETag, Last-Modified):
  * `/workspace-files/` for Kition, and `/kit-files/` for kits, which never serves a hidden path
  * (`.kition/`, rule LR2).

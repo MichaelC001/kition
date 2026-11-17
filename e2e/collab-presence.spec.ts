@@ -1,7 +1,7 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs'
 import path from 'node:path'
 import { expect, test, type FrameLocator } from '@playwright/test'
-import { kitEngine, openInKitFrame, openKitWorkspace } from './helpers/embeddedKit'
+import { kitEngine, openInKitFrame, openKitWorkspace, requireKitPackage } from './helpers/embeddedKit'
 import { DEV_PRINCIPALS, kitionServerSkipReason, kitPackageHasReplicaInfo, openSharedLink, sameReplicas, shareFromTab, signedIn, startKitionServer, useSyncServer } from './helpers/kitionServer'
 
 /**
@@ -37,9 +37,9 @@ const canvas = (kit: FrameLocator) =>
   kit.getByTestId('slides-canvas-region').screenshot({ animations: 'disabled', mask: [kit.owner().page().getByTestId('agent-floating-launcher')] })
 
 test('Bob sees the shape Alice selected on a shared slide, outlined with her name', async ({ browser, baseURL }, testInfo) => {
-  test.skip(!engine.built, 'the Slide kit editor is not built into public/kits/slide-ui')
-  test.skip(!kitPackageHasReplicaInfo('slide', 'kition_slide_kit'), 'the Slide kit package predates replica/info (Kit UI 1.3); build it locally with scripts/build-kit-ui.sh slide')
-  test.skip(!kitPackageSharesPresence(), 'the Slide kit package predates presence (Kit UI 1.7); build it locally with scripts/build-kit-ui.sh slide')
+  requireKitPackage('slide', engine.built, 'the Slide kit editor is not built into public/kits/slide-ui')
+  requireKitPackage('slide', kitPackageHasReplicaInfo('slide', 'kition_slide_kit'), 'the Slide kit package predates replica/info (Kit UI 1.3)')
+  requireKitPackage('slide', kitPackageSharesPresence(), 'the Slide kit package predates presence (Kit UI 1.7)')
   const unavailable = kitionServerSkipReason()
   test.skip(Boolean(unavailable), unavailable ?? '')
   test.setTimeout(300_000)

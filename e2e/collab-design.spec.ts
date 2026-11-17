@@ -2,7 +2,7 @@ import { existsSync } from 'node:fs'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { expect, test, type FrameLocator, type Page, type Route } from '@playwright/test'
-import { kitEngine, openInKitFrame, openKitWorkspace } from './helpers/embeddedKit'
+import { kitEngine, openInKitFrame, openKitWorkspace, requireKitPackage } from './helpers/embeddedKit'
 import { DEV_PRINCIPALS, kitionServerSkipReason, kitPackageHasReplicaInfo, openSharedLink, openTabMenu, recordWebSockets, replicaCounters, sameReplicas, shareFromTab, signedIn, startKitionServer, syncNetwork, useSyncServer } from './helpers/kitionServer'
 
 /**
@@ -15,7 +15,7 @@ import { DEV_PRINCIPALS, kitionServerSkipReason, kitPackageHasReplicaInfo, openS
 
 type NodeDesignDocument = { execute(command: string, params: string): string; inspect(): string; save(): Uint8Array; free(): void }
 const engine = kitEngine<{ DesignDocument: { create(name: string, width: number, height: number): NodeDesignDocument; open(name: string, bytes: Uint8Array): NodeDesignDocument } }>('design', 'kition_design_kit')
-const missing = 'the Design kit is not built into public/kits/design-ui (scripts/build-kit-ui.sh design)'
+const missing = 'the Design kit is not built into public/kits/design-ui'
 
 /** A design made by the engine the page runs: the starter frame and a rectangle on it. */
 async function screenFixture() {
@@ -113,8 +113,8 @@ function agentBridge() {
 const call = (id: number, file: string, tool: string, args: Record<string, unknown>) => ({ jsonrpc: '2.0', id, method: 'kit/call', params: { path: file, kit: 'kit.design', tool, arguments: args } })
 
 test('co-edits a design between two windows: live, and merging edits made offline', async ({ browser, baseURL }, testInfo) => {
-  test.skip(!engine.built, missing)
-  test.skip(!kitPackageHasReplicaInfo('design', 'kition_design_kit'), 'the Design kit package predates engine contract 2; build it with scripts/build-kit-ui.sh design')
+  requireKitPackage('design', engine.built, missing)
+  requireKitPackage('design', kitPackageHasReplicaInfo('design', 'kition_design_kit'), 'the Design kit package predates engine contract 2')
   const unavailable = kitionServerSkipReason()
   test.skip(Boolean(unavailable), unavailable ?? '')
   test.setTimeout(300_000)
@@ -192,8 +192,8 @@ test('co-edits a design between two windows: live, and merging edits made offlin
 })
 
 test("the agent reads and edits an open design through its object model, and each Undo takes back only its own side's step", async ({ page, baseURL }) => {
-  test.skip(!engine.built, missing)
-  test.skip(!kitPackageHasReplicaInfo('design', 'kition_design_kit'), 'the Design kit package predates engine contract 2; build it with scripts/build-kit-ui.sh design')
+  requireKitPackage('design', engine.built, missing)
+  requireKitPackage('design', kitPackageHasReplicaInfo('design', 'kition_design_kit'), 'the Design kit package predates engine contract 2')
   test.setTimeout(180_000)
   // A sync server is configured, but nobody is signed in: co-editing stays off.
   await useSyncServer(page, 'ws://127.0.0.1:9/v1/sync')

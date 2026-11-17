@@ -2,7 +2,7 @@ import { existsSync } from 'node:fs'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import { expect, test, type FrameLocator, type Page } from '@playwright/test'
-import { kitEngine, openInKitFrame, openKitWorkspace } from './helpers/embeddedKit'
+import { kitEngine, openInKitFrame, openKitWorkspace, requireKitPackage } from './helpers/embeddedKit'
 import { filmAddEdit, filmClips } from './helpers/film'
 import { DEV_PRINCIPALS, kitionServerSkipReason, kitPackageHasReplicaInfo, openSharedLink, openTabMenu, recordWebSockets, replicaCounters, sameReplicas, shareFromTab, signedIn, startKitionServer, syncNetwork, useSyncServer } from './helpers/kitionServer'
 
@@ -44,8 +44,8 @@ async function cutAt(page: Page, kit: FrameLocator, at: number) {
 }
 
 test('co-edits a Film project between two windows: live, and merging edits made offline', async ({ browser, baseURL }, testInfo) => {
-  test.skip(!engine.built, 'the Film kit editor is not built into public/kits/film-ui')
-  test.skip(!kitPackageHasReplicaInfo('film', 'kition_film_kit'), 'the Film kit package predates replica/info (Kit UI 1.3); build it locally with scripts/build-kit-ui.sh film')
+  requireKitPackage('film', engine.built, 'the Film kit editor is not built into public/kits/film-ui')
+  requireKitPackage('film', kitPackageHasReplicaInfo('film', 'kition_film_kit'), 'the Film kit package predates replica/info (Kit UI 1.3)')
   const unavailable = kitionServerSkipReason()
   test.skip(Boolean(unavailable), unavailable ?? '')
   test.setTimeout(300_000)
@@ -116,7 +116,7 @@ test('co-edits a Film project between two windows: live, and merging edits made 
 })
 
 test('without a signed-in Kition account a Film project opens and edits as before, with no sync connection', async ({ page, baseURL }) => {
-  test.skip(!engine.built, 'the Film kit editor is not built into public/kits/film-ui')
+  requireKitPackage('film', engine.built, 'the Film kit editor is not built into public/kits/film-ui')
   test.setTimeout(120_000)
   await useSyncServer(page, 'ws://127.0.0.1:9/v1/sync')
   const sockets = recordWebSockets(page)

@@ -2,12 +2,13 @@
  * Host matrix row H13 (co-editing) for the kits without a collab-<kit> spec: Alice shares a file,
  * Bob opens the link, an edit goes each way live, then both edit while Bob is offline and the two
  * windows converge when he is back. It needs a kition-server checkout beside Kition (or
- * KITION_SERVER_REPO) and Rust, and skips plainly without them.
+ * KITION_SERVER_REPO) and Rust. Only a missing kition-server checkout (a private tool) is a skip;
+ * a missing kit package or Rust toolchain fails the test.
  */
 import path from 'node:path'
 import { existsSync } from 'node:fs'
 import { expect, test, type FrameLocator, type Page } from '@playwright/test'
-import { openInKitFrame, openKitWorkspace, type KitModes } from '../helpers/embeddedKit'
+import { openInKitFrame, openKitWorkspace, requireKitPackage, type KitModes } from '../helpers/embeddedKit'
 import { DEV_PRINCIPALS, kitionServerSkipReason, kitPackageHasReplicaInfo, openSharedLink, sameReplicas, shareFromTab, signedIn, startKitionServer, syncNetwork, useSyncServer } from '../helpers/kitionServer'
 import { tags } from './support'
 
@@ -33,7 +34,7 @@ const activeKit = (page: Page) => page.frameLocator('[data-testid="kit-frame"][d
 
 export function coEditing(c: CoEditCase) {
   test(`H13: a ${c.kit} file co-edited in two windows converges, live and after an offline edit`, tags(c.kit, ['H13'], true), async ({ browser, baseURL }, testInfo) => {
-    test.skip(!kitPackageHasReplicaInfo(c.kit, c.module), `the ${c.kit} kit package has no replica info`)
+    requireKitPackage(c.kit, kitPackageHasReplicaInfo(c.kit, c.module), `the ${c.kit} kit package in public/kits/${c.kit}-ui is missing or has no replica info`)
     const unavailable = kitionServerSkipReason()
     test.skip(Boolean(unavailable), unavailable ?? '')
     test.setTimeout(360_000)

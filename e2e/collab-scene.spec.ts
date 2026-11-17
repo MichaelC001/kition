@@ -1,7 +1,7 @@
 import { existsSync } from 'node:fs'
 import path from 'node:path'
 import { expect, test, type FrameLocator, type Page } from '@playwright/test'
-import { kitEngine, openInKitFrame, openKitWorkspace } from './helpers/embeddedKit'
+import { kitEngine, openInKitFrame, openKitWorkspace, requireKitPackage } from './helpers/embeddedKit'
 import { DEV_PRINCIPALS, kitionServerSkipReason, kitPackageHasReplicaInfo, openSharedLink, openTabMenu, recordWebSockets, replicaCounters, sameReplicas, shareFromTab, signedIn, startKitionServer, syncNetwork, useSyncServer } from './helpers/kitionServer'
 
 type NodeSceneDocument = { save(): Uint8Array; free(): void }
@@ -42,8 +42,8 @@ async function settledVersion(page: Page, path: string) {
 }
 
 test('co-edits a 3D scene between two windows: live, and merging edits made offline', async ({ browser, baseURL }, testInfo) => {
-  test.skip(!engine.built, 'the Scene kit editor is not built into public/kits/scene-ui')
-  test.skip(!kitPackageHasReplicaInfo('scene', 'kition_scene_kit'), 'the Scene kit package predates engine contract 2; build it with scripts/build-kit-ui.sh scene')
+  requireKitPackage('scene', engine.built, 'the Scene kit editor is not built into public/kits/scene-ui')
+  requireKitPackage('scene', kitPackageHasReplicaInfo('scene', 'kition_scene_kit'), 'the Scene kit package predates engine contract 2')
   const unavailable = kitionServerSkipReason()
   test.skip(Boolean(unavailable), unavailable ?? '')
   test.setTimeout(300_000)
@@ -124,7 +124,7 @@ test('co-edits a 3D scene between two windows: live, and merging edits made offl
 })
 
 test('without a signed-in Kition account a 3D scene opens, edits, and saves as before, with no sync connection', async ({ page, baseURL }) => {
-  test.skip(!engine.built, 'the Scene kit editor is not built into public/kits/scene-ui')
+  requireKitPackage('scene', engine.built, 'the Scene kit editor is not built into public/kits/scene-ui')
   test.setTimeout(120_000)
   // A sync server is configured, but nobody is signed in: co-editing stays off.
   await useSyncServer(page, 'ws://127.0.0.1:9/v1/sync')
