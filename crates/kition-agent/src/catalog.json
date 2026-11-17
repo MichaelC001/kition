@@ -319,65 +319,6 @@
       "permission": "read-only"
     },
     {
-      "name": "image_generation",
-      "description": "Generate one image via the runtime's native image_generation tool.\n\nWHEN TO INVOKE\n- Any request to create / generate / draw / design / render / illustrate /\n  produce an image, cover, banner, illustration, poster, header.\n- Follow-ups: \"another one\" / \"different style\" / \"next 3\" also trigger this\n  tool. Never claim an image was produced without actually calling this tool —\n  that is a hallucination.\n\nHOW TO WRITE THE prompt PARAMETER (load-bearing)\nUse this labeled-line scaffold verbatim; do NOT collapse into one paragraph:\n\n  Use case: <one of cover_illustration | inline_illustration |\n              infographic_diagram | product_showcase | icon_brand | other>\n  Primary request: <user-facing concept; do NOT augment if user was specific>\n  Asset type: <intended use, e.g. blog hero cover 16:9>\n  Style: <visual language; for series, copy STYLE LOCK verbatim from anchor>\n  Composition: <framing, negative space, focal point>\n  Lighting: <mood, color temperature>\n  Constraints: <hard rules; default include \"no readable text\" except in\n                infographic_diagram where labels are verbatim-rendered from\n                quoted text>\n  Avoid: <ban generic-AI-illustration tropes (blob shapes, gradient halos,\n          cyberpunk neon), purple-everywhere unless cover_illustration, emoji>\n\nUSE-CASE CLASSIFICATION CHEAT-SHEET\n- cover_illustration  : single hero, brand palette (purple-led), generous left\n                        margin for title text\n- inline_illustration : story beat for one paragraph, no brand palette preset\n- infographic_diagram : flow / hierarchy / comparison; verbatim labels allowed\n                        from Primary request's quoted text only\n- product_showcase    : UI / device / packaging mockup, neutral background\n- icon_brand          : single symbol, scalable silhouette, generous padding\n- other               : fall-through, minimal scaffolding\n\nSERIES CONSISTENCY CONTRACT (most important rule)\nWhen the user asks for N>1 images in one turn:\n  1. BEFORE the first image_generation call, draft a STYLE LOCK paragraph\n     covering: palette (hex codes), geometry rule, material / finish,\n     lighting, and layout grid.\n  2. In the FIRST image's prompt, place STYLE LOCK between the literal\n     markers <<STYLE LOCK>> and <<END STYLE LOCK>> inside the Style field.\n     The STYLE LOCK content supersedes the top-level Lighting field for\n     series — write lighting choices INSIDE the lock, not in the separate\n     Lighting field, so they propagate verbatim to every subsequent call.\n  3. In EVERY subsequent image_generation call in this turn, copy that\n     block — the markers and the content — VERBATIM, character for\n     character. Then write the per-image Primary request and Composition.\n  4. Do NOT rewrite the lock, do NOT translate it, do NOT \"improve\" it\n     between calls. Any drift here is the failure mode this contract\n     was added to prevent.\n\nITERATION DISCIPLINE\n- If a result misses the spec, change ONE thing in the next call and\n  re-state STYLE LOCK verbatim.\n- Never silently swap the model or the size mid-series.\n\nAFTER THE CALL\n- The saved workspace-relative path arrives as a system follow-up. Quote\n  it verbatim in your reply so the user can click it.",
-      "category": "artifact",
-      "input_schema": {
-        "type": "object",
-        "properties": {
-          "prompt": {
-            "type": "string",
-            "description": "Image generation prompt; follow the labeled-line scaffold and SERIES CONSISTENCY CONTRACT in the tool description."
-          }
-        }
-      },
-      "permission": "workspace-write"
-    },
-    {
-      "name": "image_search",
-      "description": "Generate one image via the runtime's native image_generation tool.\n\nWHEN TO INVOKE\n- Any request to create / generate / draw / design / render / illustrate /\n  produce an image, cover, banner, illustration, poster, header.\n- Follow-ups: \"another one\" / \"different style\" / \"next 3\" also trigger this\n  tool. Never claim an image was produced without actually calling this tool —\n  that is a hallucination.\n\nHOW TO WRITE THE prompt PARAMETER (load-bearing)\nUse this labeled-line scaffold verbatim; do NOT collapse into one paragraph:\n\n  Use case: <one of cover_illustration | inline_illustration |\n              infographic_diagram | product_showcase | icon_brand | other>\n  Primary request: <user-facing concept; do NOT augment if user was specific>\n  Asset type: <intended use, e.g. blog hero cover 16:9>\n  Style: <visual language; for series, copy STYLE LOCK verbatim from anchor>\n  Composition: <framing, negative space, focal point>\n  Lighting: <mood, color temperature>\n  Constraints: <hard rules; default include \"no readable text\" except in\n                infographic_diagram where labels are verbatim-rendered from\n                quoted text>\n  Avoid: <ban generic-AI-illustration tropes (blob shapes, gradient halos,\n          cyberpunk neon), purple-everywhere unless cover_illustration, emoji>\n\nUSE-CASE CLASSIFICATION CHEAT-SHEET\n- cover_illustration  : single hero, brand palette (purple-led), generous left\n                        margin for title text\n- inline_illustration : story beat for one paragraph, no brand palette preset\n- infographic_diagram : flow / hierarchy / comparison; verbatim labels allowed\n                        from Primary request's quoted text only\n- product_showcase    : UI / device / packaging mockup, neutral background\n- icon_brand          : single symbol, scalable silhouette, generous padding\n- other               : fall-through, minimal scaffolding\n\nSERIES CONSISTENCY CONTRACT (most important rule)\nWhen the user asks for N>1 images in one turn:\n  1. BEFORE the first image_generation call, draft a STYLE LOCK paragraph\n     covering: palette (hex codes), geometry rule, material / finish,\n     lighting, and layout grid.\n  2. In the FIRST image's prompt, place STYLE LOCK between the literal\n     markers <<STYLE LOCK>> and <<END STYLE LOCK>> inside the Style field.\n     The STYLE LOCK content supersedes the top-level Lighting field for\n     series — write lighting choices INSIDE the lock, not in the separate\n     Lighting field, so they propagate verbatim to every subsequent call.\n  3. In EVERY subsequent image_generation call in this turn, copy that\n     block — the markers and the content — VERBATIM, character for\n     character. Then write the per-image Primary request and Composition.\n  4. Do NOT rewrite the lock, do NOT translate it, do NOT \"improve\" it\n     between calls. Any drift here is the failure mode this contract\n     was added to prevent.\n\nITERATION DISCIPLINE\n- If a result misses the spec, change ONE thing in the next call and\n  re-state STYLE LOCK verbatim.\n- Never silently swap the model or the size mid-series.\n\nAFTER THE CALL\n- The saved workspace-relative path arrives as a system follow-up. Quote\n  it verbatim in your reply so the user can click it.\n\nADAPTER NOTES FOR image_search:\n- Reuse the same style/composition/lighting descriptors verbatim across queries when fulfilling a multi-image set.\n- Do NOT change art style, palette, or mood between consecutive queries for the same series.\n- If you can't find a coherent set, fall back to image_generation rather than mixing styles.\n",
-      "category": "artifact",
-      "input_schema": {
-        "type": "object",
-        "properties": {
-          "query": {
-            "type": "string",
-            "description": "Image search query; apply the SERIES CONSISTENCY CONTRACT — reuse style/composition/lighting descriptors verbatim across consecutive queries for a multi-image set."
-          },
-          "limit": {
-            "type": "integer",
-            "minimum": 1,
-            "maximum": 5,
-            "description": "Number of images to generate, default 1"
-          },
-          "title": {
-            "type": "string",
-            "description": "Image title or filename prefix"
-          },
-          "folder": {
-            "type": "string",
-            "description": "Relative folder inside the Kition document workspace; defaults to the current document folder or Agent"
-          },
-          "width": {
-            "type": "integer",
-            "minimum": 256,
-            "maximum": 2048,
-            "description": "Image width, default 1024"
-          },
-          "height": {
-            "type": "integer",
-            "minimum": 256,
-            "maximum": 2048,
-            "description": "Image height, default 1024"
-          }
-        },
-        "required": [
-          "query"
-        ]
-      },
-      "permission": "workspace-write"
-    },
-    {
       "name": "register_artifact",
       "description": "Register a non-Office file that was just written under the workspace as an Agent artifact so it appears in the workspace document list and chat trace. Use this for existing PDF, HTML, image, Markdown, or plain-text deliverables. DOCX, XLSX, and PPTX creation or registration are not supported by generic Agent tools. The file must already exist at the given relative path.",
       "category": "artifact",
@@ -880,7 +821,6 @@
       "tools": [
         "web_search",
         "web_fetch",
-        "image_search",
         "document_search",
         "document_list",
         "document_write",
@@ -926,26 +866,6 @@
         "fs_stat"
       ],
       "system_prompt": "Enable the document-writer skill.\nOutputs must be clear, complete, and editable Markdown.\nIf the user refers to the current document, incorporate that document context first."
-    },
-    {
-      "name": "visual-assets",
-      "description": "Generate AI visuals, save visual assets, and use them in documents and slides.",
-      "triggers": [
-        "image",
-        "visual",
-        "illustration",
-        "artwork",
-        "asset"
-      ],
-      "tools": [
-        "image_search",
-        "web_search",
-        "document_read",
-        "document_list",
-        "document_write",
-        "artifact_write"
-      ],
-      "system_prompt": "Enable the visual-assets skill.\nUse image_search to generate and save AI images; do not require third-party image service setup.\nIf the user asks for illustrations or supporting visuals, derive prompts directly from the document context and call image_search.\nDo not claim an image is saved unless the tool result confirms success."
     },
     {
       "name": "document-review",

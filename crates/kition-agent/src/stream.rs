@@ -112,14 +112,6 @@ impl TurnStream {
         self.emitter.finish();
     }
 
-    /// Ends the stream of a request that had nothing to run (a repeated
-    /// image request): `running`, then `idle`.
-    pub fn close_unchanged(&self) {
-        self.status(true);
-        self.status(false);
-        self.emitter.finish();
-    }
-
     /// The sink the turn's durable events and assistant-stream frames go
     /// through. Events are sent as `session.event` (provider-native items
     /// left out, as `GET /session-events` serves them) and fire the user's

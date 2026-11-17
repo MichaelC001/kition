@@ -1,13 +1,10 @@
 import { useTranslation } from 'react-i18next'
-import { getGeneratedImageToolOutputPaths, isGeneratedImageArtifact } from '@/features/media-generation/public'
 import { CheckIcon as Check, ChevronDownIcon as ChevronDown, ChevronRightIcon as ChevronRight, Clock3Icon as Clock3, FileImageIcon as FileImage, FileSpreadsheetIcon as FileSpreadsheet, FileTextIcon as FileText, FileTypeCornerIcon as FileType2, FileVideoCameraIcon as FileVideo2, LoaderCircleIcon as LoaderCircle, PresentationIcon as Presentation, SparklesIcon as Sparkles, Volume2Icon as Volume2, XIcon as X, type IconComponent } from '@kition/tessera-icons/react'
 import { Fragment, useEffect, useState } from 'react'
 import type { AgentShellApprovalDecision, AgentShellApprovalRequest } from '@/api/agent'
 import { InteractiveAgentMarkdown } from './InteractiveAgentMarkdown'
 import { PlanCard } from './PlanCard'
 import { AgentShellApprovalCard } from './AgentShellApprovalCard'
-import { AgentImageResultCards, type AgentImageResultActions } from './AgentImageResultCards'
-import { imageJobOf } from '../lib/agentImageJob'
 import { agentModifiedDocumentPaths } from '../lib/agentEventEffects'
 import {
   pendingApprovalOf,
@@ -26,6 +23,8 @@ import {
   type AgentRunLogItem, type AgentTimelineLocale, type AgentToolImageResult,
 } from '../lib/agentTimeline'
 import { getAgentTimelineDict } from '../lib/agentTimelineI18n'
+
+const IMAGE_PATH = /\.(?:png|jpe?g|webp|gif|avif)$/i
 
 /** The files the session's turns changed, with the name each delivery gave them. */
 export function AgentChangedFilesCard({
@@ -84,7 +83,6 @@ function approvalRequestOf(view: AgentSessionView): AgentShellApprovalRequest | 
 export function AgentConversation({
   view,
   pendingUserText = '',
-  imageActions,
   busy,
   onOpenPath,
   onOpenArtifact,
@@ -93,7 +91,6 @@ export function AgentConversation({
   view: AgentSessionView
   /** The visible message just sent, until its turn is logged. */
   pendingUserText?: string
-  imageActions?: AgentImageResultActions
   busy: boolean
   onOpenPath: (path: string) => void
   onOpenArtifact: (path: string) => void
@@ -114,7 +111,6 @@ export function AgentConversation({
         const isActiveTurn = turnIndex === view.turns.length - 1
         const turnBusy = isActiveTurn && busy && !turn.end && !pendingUserText
         const live = isActiveTurn && view.live?.turn === turn.turn ? view.live : null
-        const job = imageJobOf(turn)
         return (
           <Fragment key={`turn-${turn.turn}`}>
             {turn.source === 'user' && turn.userText ? (
@@ -123,13 +119,11 @@ export function AgentConversation({
             <AgentInlineActivity
               turn={turn}
               live={live}
-              hiddenImagePaths={job?.artifacts.map((artifact) => artifact.path) ?? []}
               busy={turnBusy}
               onOpenArtifact={onOpenArtifact}
               shellApprovalRequest={isActiveTurn ? shellApprovalRequest : null}
               onShellApprovalDecision={isActiveTurn ? onShellApprovalDecision : undefined}
             />
-            {job ? <AgentImageResultCards job={job} busy={busy} onOpen={onOpenArtifact} {...imageActions} /> : null}
             {turn.reply ? <AgentMessageBubble role="assistant" content={turn.reply} onOpenPath={onOpenPath} /> : null}
             {!turn.reply && turn.partialReply && !live?.text ? (
               <AgentMessageBubble role="assistant" content={turn.partialReply} onOpenPath={onOpenPath} />
@@ -158,7 +152,6 @@ function AgentThinking({ locale }: { locale: AgentTimelineLocale }) {
 function AgentInlineActivity({
   turn,
   live,
-  hiddenImagePaths,
   busy,
   onOpenArtifact,
   shellApprovalRequest,
@@ -166,7 +159,6 @@ function AgentInlineActivity({
 }: {
   turn: AgentTurnView
   live: AgentLiveAttempt | null
-  hiddenImagePaths: string[]
   busy: boolean
   onOpenArtifact: (path: string) => void
   shellApprovalRequest?: AgentShellApprovalRequest | null
@@ -187,21 +179,17 @@ function AgentInlineActivity({
     locale,
   })
   const modifiedPaths = agentModifiedDocumentPaths(turn.toolRuns)
-  const shownImages = new Set(hiddenImagePaths)
+  const shownImages = new Set<string>()
   const imageTools = turn.toolRuns
-    .map((run) => ({ id: run.callId, images: [
-      ...extractAgentToolImageResults(run.output),
-      ...getGeneratedImageToolOutputPaths({ tool_name: run.name, status: run.status, output_data: run.output })
-        .map((url) => ({ url })),
-    ].filter((image) => {
+    .map((run) => ({ id: run.callId, images: extractAgentToolImageResults(run.output).filter((image) => {
       if (shownImages.has(image.url)) return false
       shownImages.add(image.url)
       return true
     }) }))
     .filter((entry) => entry.images.length > 0)
-  const deliverables = turn.deliverables.filter((file) => !hiddenImagePaths.includes(file.path))
+  const deliverables = turn.deliverables
   const deliveredImages = deliverables
-    .filter((file) => isGeneratedImageArtifact({ path: file.path }) && !shownImages.has(file.path))
+    .filter((file) => IMAGE_PATH.test(file.path) && !shownImages.has(file.path))
     .map((file) => ({ url: file.path, title: file.description }))
 
   if (!busy && !runLogItems.length && !turn.todos && !shellApprovalRequest && !imageTools.length && !deliverables.length) {

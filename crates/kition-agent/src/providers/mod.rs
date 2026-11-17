@@ -5,7 +5,6 @@
 mod core;
 mod document;
 mod gallery;
-mod images;
 mod kits;
 mod mcp;
 mod sources;
@@ -26,7 +25,6 @@ pub struct TurnFacts {
     pub prompt_context: String,
     pub skills: Vec<SkillDef>,
     pub hosted_web_search: bool,
-    pub hosted_images: bool,
     /// The session's last eight delivered images, oldest first.
     pub recent_images: Vec<String>,
 }
@@ -66,7 +64,7 @@ pub type ToolFactory = Arc<dyn Fn(&ToolSpec, &ToolShape) -> Option<ToolDef> + Se
 
 /// Tools a provider other than `CoreProvider` offers.
 pub fn owned_elsewhere(name: &str) -> bool {
-    matches!(name, "document_write" | "image_search")
+    name == "document_write"
         || crate::sources::CORE_TOOLS.contains(&name)
         || crate::sources::GIT_TOOLS.contains(&name)
         || crate::tools::kits::tool_defs()
@@ -85,7 +83,6 @@ pub async fn providers(
     vec![
         Arc::new(core::CoreProvider::load(run, facts, factory).await),
         Arc::new(document::DocumentProvider::new(factory)),
-        Arc::new(images::ImagesProvider::new(facts, factory)),
         Arc::new(gallery::GalleryProvider),
         Arc::new(sources::LocalSourcesProvider::new(run, factory)),
         Arc::new(kits::KitsProvider::new(run, factory)),
@@ -166,7 +163,6 @@ pub(crate) mod testing {
             upload_dir: dirs[1].path().to_path_buf(),
             policy_path: Some(dirs[2].path().join("execpolicy.toml")),
             hooks: None,
-            portal_base_url: String::new(),
             mcp_path: None,
             kits,
         });
@@ -232,23 +228,13 @@ mod tests {
 
     #[test]
     fn tools_owned_by_a_pane_provider_are_not_core_tools() {
-        for name in [
-            "document_write",
-            "image_search",
-            "source_read",
-            "source_git_log",
-        ] {
+        for name in ["document_write", "source_read", "source_git_log"] {
             assert!(owned_elsewhere(name), "{name}");
         }
         for tool in crate::tools::kits::tool_defs() {
             assert!(owned_elsewhere(&tool.name), "{}", tool.name);
         }
-        for name in [
-            "document_read",
-            "web_search",
-            "image_generation",
-            "exec_command",
-        ] {
+        for name in ["document_read", "web_search", "exec_command"] {
             assert!(!owned_elsewhere(name), "{name}");
         }
     }

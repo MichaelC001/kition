@@ -1,6 +1,6 @@
 //! The model seam of a turn: each engine call, its streamed deltas and
 //! retries forwarded to the harness sink, and the model's hosted tool calls
-//! (web search, image generation) returned for the log. Remembers the last
+//! (web search) returned for the log. Remembers the last
 //! reply for the session title.
 
 use std::sync::atomic::{AtomicUsize, Ordering};
@@ -15,7 +15,6 @@ use kition_harness::llm::{
 use serde_json::json;
 
 use crate::run::Run;
-use crate::tools::images;
 
 /// Message parts as harness content blocks; parts with nothing to show are
 /// dropped.
@@ -112,14 +111,7 @@ impl Llm for AgentLlm {
                 .await
                 .map_err(|error| error.to_string())?;
             let id_prefix = call_id_prefix(index);
-            let mut hosted = hosted_searches(&result, &id_prefix);
-            let (images, follow_up) = images::save_hosted_images(
-                run,
-                &result.wire_api,
-                &id_prefix,
-                &result.hosted_image_generation_calls,
-            );
-            hosted.extend(images);
+            let hosted = hosted_searches(&result, &id_prefix);
             let reply = LlmReply {
                 content: result.content.trim().to_owned(),
                 tool_calls: normalize_calls(&result.tool_calls, &id_prefix),
@@ -127,7 +119,7 @@ impl Llm for AgentLlm {
                 provider: run.provider_route.clone(),
                 model: result.model.clone(),
                 raw_items: result.response_items.clone(),
-                follow_up: blocks(&follow_up),
+                follow_up: Vec::new(),
                 hosted,
                 usage: Some(TokenUsage::from_engine(&result.usage)),
             };

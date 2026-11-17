@@ -254,27 +254,7 @@
         },
         {
           "type": "object",
-          "description": "One image variant of an image composer request; artifact is the artifact of agent-image-generation.schema.json.",
-          "required": [
-            "kind",
-            "request_id",
-            "artifact"
-          ],
-          "properties": {
-            "kind": {
-              "const": "image_generation.variant"
-            },
-            "request_id": {
-              "type": "string"
-            },
-            "artifact": {
-              "type": "object"
-            }
-          }
-        },
-        {
-          "type": "object",
-          "description": "A call the provider ran itself (hosted web search or image generation).",
+          "description": "A call the provider ran itself (hosted web search).",
           "required": [
             "hosted"
           ],
@@ -575,7 +555,7 @@
         },
         "provider": {
           "type": "string",
-          "description": "The provider route that answered (DeepSeek Harness message.source.provider); kition for the image composer."
+          "description": "The provider route that answered (DeepSeek Harness message.source.provider)."
         },
         "model": {
           "type": "string"
@@ -693,7 +673,7 @@
         },
         "hosted": {
           "type": "boolean",
-          "description": "The provider ran the call itself (hosted web search, hosted image generation, the image composer); not model history."
+          "description": "The provider ran the call itself (hosted web search); not model history."
         }
       }
     },
@@ -756,7 +736,7 @@
         },
         "hosted": {
           "type": "boolean",
-          "description": "The provider ran the call itself (hosted web search, hosted image generation, the image composer); not model history."
+          "description": "The provider ran the call itself (hosted web search); not model history."
         }
       }
     },

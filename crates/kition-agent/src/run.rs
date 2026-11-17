@@ -29,7 +29,6 @@ pub struct AgentConfig {
     pub upload_dir: PathBuf,
     pub policy_path: Option<PathBuf>,
     pub hooks: Option<HookDispatch>,
-    pub portal_base_url: String,
     pub mcp_path: Option<PathBuf>,
     /// Kits the agent can drive, such as the photo editor.
     pub kits: Option<kition_kits::KitManager>,
@@ -42,7 +41,6 @@ struct Inner {
     upload_dir: PathBuf,
     policy: RwLock<Policy>,
     hooks: Option<HookDispatch>,
-    portal_base_url: String,
     mcp: crate::mcp::Manager,
     kits: Option<kition_kits::KitManager>,
     /// One lock per session for its turns; session ids are unique only
@@ -72,7 +70,6 @@ impl Agent {
                 upload_dir: config.upload_dir,
                 policy: RwLock::new(Policy::load(config.policy_path)),
                 hooks: config.hooks,
-                portal_base_url: config.portal_base_url,
                 mcp: crate::mcp::Manager::new(config.mcp_path),
                 kits: config.kits,
                 turns: SessionLocks::default(),
@@ -120,10 +117,6 @@ impl Agent {
     /// The session's turn guard, or `None` while another turn of it runs.
     pub(crate) fn hold_turn(&self, session_id: i64) -> Option<TurnGuard> {
         hold(&self.inner.turns, session_id)
-    }
-
-    pub fn portal_base_url(&self) -> &str {
-        &self.inner.portal_base_url
     }
 
     pub fn mcp(&self) -> &crate::mcp::Manager {
@@ -435,7 +428,6 @@ mod tests {
             upload_dir: dirs[0].path().to_path_buf(),
             policy_path: None,
             hooks: None,
-            portal_base_url: String::new(),
             mcp_path: None,
             kits: None,
         })

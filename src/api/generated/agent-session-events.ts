@@ -90,10 +90,6 @@ export type AgentSessionEventsToolResultMeta = {
     decision: "allow"
   }
 } | {
-  kind: "image_generation.variant"
-  request_id: string
-  artifact: Record<string, unknown>
-} | {
   hosted: true
 } | Record<string, unknown>
 
@@ -194,7 +190,7 @@ export type AgentSessionEventsAssistantMessageEvent = {
   toolCalls?: AgentSessionEventsLoggedCall[]
   stopReason: string
   /**
-   * The provider route that answered (DeepSeek Harness message.source.provider); kition for the image composer.
+   * The provider route that answered (DeepSeek Harness message.source.provider).
    */
   provider: string
   model: string
@@ -241,7 +237,7 @@ export type AgentSessionEventsToolCallEvent = {
    */
   arguments: unknown
   /**
-   * The provider ran the call itself (hosted web search, hosted image generation, the image composer); not model history.
+   * The provider ran the call itself (hosted web search); not model history.
    */
   hosted: boolean
 }
@@ -268,7 +264,7 @@ export type AgentSessionEventsToolResultEvent = {
   isError: boolean
   meta?: AgentSessionEventsToolResultMeta
   /**
-   * The provider ran the call itself (hosted web search, hosted image generation, the image composer); not model history.
+   * The provider ran the call itself (hosted web search); not model history.
    */
   hosted: boolean
 }

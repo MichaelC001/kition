@@ -151,10 +151,10 @@ export function buildPrivateSectionTreeNodes(
   items: WorkspaceDocumentTreeItem[],
   metadata: WorkspaceTreeMetadata,
 ): WorkspaceTreeNode[] {
-  // Include media (images, videos) in the main tree so AI-generated artifacts
-  // like Agent/images/<session>/*.png are visible to the user. The earlier
-  // design routed media into a separate gallery section that was never wired
-  // up, leaving image folders silently invisible after image_generation runs.
+  // Include media (images, videos) in the main tree so saved artifacts are
+  // visible to the user. The earlier design routed media into a separate
+  // gallery section that was never wired up, leaving image folders silently
+  // invisible.
   return buildWorkspaceTreeNodes(items, metadata, '')
 }
 

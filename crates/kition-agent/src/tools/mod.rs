@@ -116,8 +116,6 @@ async fn dispatch(run: &Arc<Run>, name: &str, input: &Value) -> ToolResult {
         "web_fetch" => web::web_fetch(run, input).await,
         "web_article_save" => web::web_article_save(run, input).await,
         "web_search" => Err("web_search is provided as a hosted tool by the model; use its built-in web search instead of a function call".into()),
-        "image_generation" => Err("image_generation is hosted by the model runtime and must not be invoked as a function call".into()),
-        "image_search" => images::image_search(run, input).await,
         "save_image_asset" => images::save_image_asset(run, input).await,
         "exec_command" => exec::exec_command(run, input).await,
         other => crate::mcp::call(run, other, input).await,

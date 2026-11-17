@@ -321,19 +321,18 @@ const AGENT_SETTINGS = JSON.stringify({
 
 /**
  * A workspace whose Agent can send a turn, with one note open in the Note kit
- * (`AGENT_WORKSPACE_DOC_PATH`): a model is set up, and the runtime reports `capabilities`.
+ * (`AGENT_WORKSPACE_DOC_PATH`): a model is set up.
  * The workspace is the desktop host's, whose files kits read through Kition's file services.
  */
-export async function openAgentWorkspace(page: Page, options: { capabilities?: string[] } = {}) {
+export async function openAgentWorkspace(page: Page) {
   const baseURL = test.info().project.use.baseURL!
-  const capabilities = options.capabilities ?? []
   const { host } = await openKitWorkspace(page, baseURL, { [AGENT_WORKSPACE_DOC_PATH]: Buffer.from('# Launch notes\n\nThree ideas for the launch.\n') }, {
     desktop: {
       secureValues: { 'kition.desktop.settings.v1': AGENT_SETTINGS },
       overrides: {
         backend_status: () => ({
           base_url: 'http://127.0.0.1:18101/api', health_url: 'http://127.0.0.1:18101/health', running: true, last_error: '', logs: '',
-          log_file: '', launch_mode: 'managed', binary_path: '', config_path: '', working_dir: '', command: '', capabilities,
+          log_file: '', launch_mode: 'managed', binary_path: '', config_path: '', working_dir: '', command: '', capabilities: [],
         }),
       },
     },

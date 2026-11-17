@@ -1,12 +1,11 @@
 import { lazy, Suspense, type ComponentProps } from 'react'
 
 import type { getKitionAccountLinks, useKitionAccount } from '@/features/account/public'
-import { emptyAgentSessionView, type AgentTurnContext, type useWorkspaceAgent } from '@/features/agent/public'
+import { emptyAgentSessionView, type useWorkspaceAgent } from '@/features/agent/public'
 import type { WorkspaceAgentSidebar as WorkspaceAgentSidebarComponent } from '@/features/workspace/components/WorkspaceAgentSidebar'
 import { deriveAgentPaneContext } from '@/features/workspace/lib/agentPaneContext'
 import { formatWorkspaceTime, type WorkspaceTab } from '@/features/workspace/lib/workspace'
 import { isDesktopRuntime, openExternalURL } from '@/services/desktop'
-import type { AgentImageGenerationIntent } from '@/types/imageGeneration'
 
 const WorkspaceAgentSidebar = lazy(() =>
   import('@/features/workspace/components/WorkspaceAgentSidebar').then((module) => ({ default: module.WorkspaceAgentSidebar })),
@@ -19,7 +18,6 @@ export type WorkspaceAgentPaneProps = {
   rootPath: string
   agent: WorkspaceAgent
   session: WorkspaceAgent['agentSessions'][number] | null
-  imageContext: AgentTurnContext
   activeWorkspaceTab: WorkspaceTab | undefined
   activeWorkspaceDocumentPath: string
   documentContextPaths: string[]
@@ -28,7 +26,7 @@ export type WorkspaceAgentPaneProps = {
   kitionAccountLinks: ReturnType<typeof getKitionAccountLinks>
   onOpenSettingsSection?: (section: 'models') => void
   onAddLocalSource: () => void
-  onSend: (sessionId: number, intent?: AgentImageGenerationIntent) => void
+  onSend: (sessionId: number) => void
   onOpenDocument: (path: string) => void
   onReviewModifiedArtifact: (path: string) => void
   /** Imports dropped files as attachments and resolves to their workspace paths. */
@@ -48,7 +46,6 @@ export function WorkspaceAgentPane({
   rootPath,
   agent,
   session,
-  imageContext,
   activeWorkspaceTab,
   activeWorkspaceDocumentPath,
   documentContextPaths,
@@ -84,7 +81,7 @@ export function WorkspaceAgentPane({
       onAddDocumentContext: (path: string) => agent.addAgentDocumentContext(session.id, path, activeWorkspaceDocumentPath),
       onRemoveDocumentContext: (path: string) => agent.removeAgentDocumentContext(session.id, path),
       onRemoveLocalSource: (sourceId: string) => agent.removeAgentLocalSource(session.id, sourceId),
-      onSend: (intent) => onSend(session.id, intent),
+      onSend: () => onSend(session.id),
       onStop: () => agent.stopAgentMessage(session.id),
       onConfigureModel: onOpenSettingsSection ? () => onOpenSettingsSection('models') : () => {},
       onHostedAccountConnect: () => void kitionAccount.ensureReady(),
@@ -105,7 +102,6 @@ export function WorkspaceAgentPane({
     <Suspense fallback={null}>
       <WorkspaceAgentSidebar
         rootPath={rootPath}
-        imageContext={imageContext}
         panelProps={panelProps}
       />
     </Suspense>

@@ -8,14 +8,13 @@ import { useCallback } from 'react'
 import type { AgentLocalSource, AgentSession } from '@/api/agent'
 import { appendAgentLocalSource, extractAgentLocalPathReference } from '@/features/agent/public'
 import { chooseAgentAnalysisDirectory } from '@/services/desktop'
-import type { AgentImageGenerationIntent } from '@/types/imageGeneration'
 
 type UseWorkspaceAgentComposerOptions = {
   activeSession: AgentSession | null
   agentDrafts: Record<number, string>
   agentLocalSources: Record<number, AgentLocalSource[]>
   addAgentLocalSource: (sessionId: number, source: AgentLocalSource) => void
-  sendAiComposerMessage: (sessionId: number, localSources?: AgentLocalSource[], imageIntent?: AgentImageGenerationIntent) => void
+  sendAiComposerMessage: (sessionId: number, localSources?: AgentLocalSource[]) => void
   setError: (message: string) => void
 }
 
@@ -39,16 +38,16 @@ export function useWorkspaceAgentComposer({
     }
   }, [activeSession, addAgentLocalSource, setError])
 
-  const sendMessage = useCallback(async (sessionId: number, imageIntent?: AgentImageGenerationIntent) => {
+  const sendMessage = useCallback(async (sessionId: number) => {
     const sources = agentLocalSources[sessionId] || []
     const pathReference = extractAgentLocalPathReference(agentDrafts[sessionId] || '')
     if (!sources.length && pathReference) {
       const source = await addLocalAnalysisSource(pathReference)
       if (!source) return
-      sendAiComposerMessage(sessionId, appendAgentLocalSource(sources, source), imageIntent)
+      sendAiComposerMessage(sessionId, appendAgentLocalSource(sources, source))
       return
     }
-    sendAiComposerMessage(sessionId, undefined, imageIntent)
+    sendAiComposerMessage(sessionId)
   }, [addLocalAnalysisSource, agentDrafts, agentLocalSources, sendAiComposerMessage])
 
   return { addLocalAnalysisSource, sendMessage }

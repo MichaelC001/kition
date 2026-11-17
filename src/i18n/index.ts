@@ -7,7 +7,6 @@ import enWorkspace from './locales/en-US/workspace.json'
 import enWorkspaceLauncher from './locales/en-US/workspaceLauncher.json'
 import enAgent from './locales/en-US/agent.json'
 import enErrors from './locales/en-US/errors.json'
-import enImageGeneration from './locales/en-US/imageGeneration.json'
 import enHistory from './locales/en-US/history.json'
 
 import zhMetadata from './locales/zh-CN/metadata.json'
@@ -32,7 +31,6 @@ const resources = {
     workspaceLauncher: enWorkspaceLauncher,
     agent: enAgent,
     errors: enErrors,
-    imageGeneration: enImageGeneration,
     history: enHistory,
   },
 } as const

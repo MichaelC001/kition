@@ -52,7 +52,6 @@ fn app() -> Live {
         upload_dir: uploads.path().to_path_buf(),
         policy_path: Some(config.path().join("execpolicy.toml")),
         hooks: None,
-        portal_base_url: String::new(),
         mcp_path: None,
         kits: None,
     });

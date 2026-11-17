@@ -334,7 +334,7 @@ mod tests {
 
     #[test]
     fn catalog_loads_without_browser_tools() {
-        assert!(tools().len() > 30);
+        assert_eq!(tools().len(), 29);
         assert!(tool("document_write").is_some_and(|tool| tool.writes()));
         assert!(tool("document_read").is_some_and(|tool| !tool.writes()));
         assert!(

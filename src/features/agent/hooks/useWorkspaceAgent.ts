@@ -67,9 +67,6 @@ import {
 import { saveDesktopSettings } from '@/services/desktopSettings'
 import { notifyFromAgentEvent } from '@/services/desktopNotifications'
 import type { DesktopSettingsState } from '@/types/desktopSettings'
-import type {
-  AgentImageGenerationIntent,
-} from '@/types/imageGeneration'
 import { trackProductEventOnce } from '@/features/analytics/lib/productAnalytics'
 import { isWebPreviewMode } from '@/lib/runtimeMode'
 import { buildAgentShellApprovalFollowup } from '@/features/agent/lib/agentShellApproval'
@@ -531,7 +528,6 @@ export function useWorkspaceAgent({
       content?: string
       hideUserMessage?: boolean
       executionMode?: AgentExecutionMode
-      imageGenerationIntent?: AgentImageGenerationIntent
       localSources?: AgentLocalSource[]
       shellApproval?: AgentShellApprovalResponse
     },
@@ -726,7 +722,6 @@ export function useWorkspaceAgent({
         activeDocumentPath: requestActiveDocumentPath,
         paneContext: turnContext?.paneContext,
         taskMode: turnContext?.taskMode,
-        imageGenerationIntent: followup?.imageGenerationIntent,
         executionMode: followup?.executionMode,
         kitEditMode: getAgentKitEditMode(),
         shellApproval: followup?.shellApproval,
@@ -797,9 +792,8 @@ export function useWorkspaceAgent({
   const sendAiComposerMessage = useCallback((
     sessionId: number,
     localSources?: AgentLocalSource[],
-    imageGenerationIntent?: AgentImageGenerationIntent,
   ) => {
-    void sendAgentMessage(sessionId, { content: imageGenerationIntent?.instruction, imageGenerationIntent, localSources })
+    void sendAgentMessage(sessionId, { localSources })
   }, [sendAgentMessage])
 
   const respondToAgentShellApproval = useCallback((
@@ -822,14 +816,12 @@ export function useWorkspaceAgent({
     input: {
       content: string
       executionMode?: AgentExecutionMode
-      imageGenerationIntent?: AgentImageGenerationIntent
     },
   ) => {
     void sendAgentMessage(sessionId, {
       content: input.content,
       hideUserMessage: true,
       executionMode: input.executionMode,
-      imageGenerationIntent: input.imageGenerationIntent,
     })
   }, [sendAgentMessage])
 

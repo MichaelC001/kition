@@ -258,7 +258,6 @@ fn app_with(kits: impl FnOnce(&std::path::Path) -> Option<kition_kits::KitManage
         upload_dir: uploads.path().to_path_buf(),
         policy_path: Some(config.path().join("execpolicy.toml")),
         hooks: None,
-        portal_base_url: String::new(),
         mcp_path: None,
         kits: kits(workspace.path()),
     });
@@ -484,192 +483,6 @@ async fn a_second_turn_is_refused_while_the_first_runs() {
     assert_eq!(status, 200, "the session is free once the first turn ends");
 }
 
-/// A 1x1 PNG.
-const PIXEL_PNG: &str = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==";
-
-/// A provider whose image endpoint returns one pixel and whose `/responses`
-/// endpoint records each request and answers with plain text.
-async fn image_and_text_provider() -> (String, Bodies) {
-    let bodies = Bodies::default();
-    let recorded = bodies.clone();
-    let app = Router::new()
-        .route(
-            "/images/generations",
-            post(|| async { axum::Json(json!({ "data": [{ "b64_json": PIXEL_PNG }] })) }),
-        )
-        .route(
-            "/responses",
-            post(move |request: axum::body::Bytes| {
-                let recorded = recorded.clone();
-                async move {
-                    recorded
-                        .lock()
-                        .unwrap_or_else(PoisonError::into_inner)
-                        .push(serde_json::from_slice(&request).unwrap_or_default());
-                    (
-                        [(http::header::CONTENT_TYPE, "text/event-stream")],
-                        answer(&["It is a fox."]),
-                    )
-                }
-            }),
-        );
-    let listener = tokio::net::TcpListener::bind("127.0.0.1:0")
-        .await
-        .unwrap_or_else(|err| panic!("{err}"));
-    let addr = listener.local_addr().unwrap_or_else(|err| panic!("{err}"));
-    tokio::spawn(async move { axum::serve(listener, app).await });
-    (format!("http://{addr}"), bodies)
-}
-
-#[tokio::test(flavor = "multi_thread")]
-async fn an_image_exchange_is_history_for_the_next_turn() {
-    let Fixture { app, .. } = app();
-    let session_id = new_session(&app).await;
-    let (base_url, bodies) = image_and_text_provider().await;
-    // A first ordinary turn, so the session already has an event log.
-    let lines = stream(&app, session_id, &base_url, json!({ "content": "Hello" })).await;
-    assert_closed_idle(&lines);
-    let lines = stream(
-        &app,
-        session_id,
-        &base_url,
-        json!({
-            "content": "A red fox",
-            "image_generation_intent": {
-                "type": "image_generation.intent", "schema_version": 1, "request_id": "req-1",
-                "operation": "generate", "instruction": "A red fox", "locale": "en-US",
-                "aspect_ratio": "1:1", "quality": "low", "resolution": "1K", "variants": 1,
-                "text_mode": "no_text", "reference_paths": [], "surface": "chat",
-                "target": { "type": "image.target.chat" }, "placement_preference": "review",
-                "client_capability_version": 1,
-            },
-        }),
-    )
-    .await;
-    assert_closed_idle(&lines);
-    let reply = json!(reply(&lines));
-    assert_eq!(reply, "Generated 1 image(s) for review.");
-    let events = session_events(&app, session_id).await;
-    assert_eq!(
-        kinds(&events[events.len() - 11..]),
-        kinds(&self::events(&lines)),
-        "the stream carries the composer turn as logged"
-    );
-    let composer = events
-        .iter()
-        .rposition(|event| event["type"] == "turn/start")
-        .unwrap_or_default();
-    assert_eq!(
-        (&events[composer - 1]["type"], &events[composer + 1]["type"]),
-        (&json!("agent/inbox/spliced"), &json!("agent/inbox/spliced"))
-    );
-    let turn: Vec<&Value> = events[composer..]
-        .iter()
-        .filter(|event| event["type"] != "agent/inbox/spliced")
-        .collect();
-    assert_eq!(
-        events[composer - 1]["inserted"][0]["id"],
-        turn[2]["id"],
-        "the composer prompt is claimed under its inbox id"
-    );
-    let kinds: Vec<&str> = turn.iter().filter_map(|e| e["type"].as_str()).collect();
-    assert_eq!(
-        kinds,
-        [
-            "turn/start",
-            "step/start",
-            "user/message",
-            "tool/call",
-            "tool/result",
-            "deliverables/presented",
-            "assistant/message",
-            "step/end",
-            "turn/end",
-        ],
-        "{turn:?}"
-    );
-    assert_eq!(turn[0]["turn"], 2);
-    assert_eq!(turn[2]["content"][0]["text"], "A red fox");
-    assert_eq!(turn[2]["source"]["kind"], "user");
-    let call_id = turn[3]["callId"].as_str().unwrap_or_default();
-    assert!(
-        call_id.starts_with("img_") && call_id.ends_with("_0"),
-        "{call_id}"
-    );
-    assert_eq!(turn[3]["name"], "image_generation");
-    assert_eq!(turn[3]["arguments"]["request_id"], "req-1");
-    assert_eq!(turn[3]["arguments"]["variant_index"], 0);
-    assert_eq!(turn[3]["arguments"]["variant_count"], 1);
-    assert_eq!(turn[3]["arguments"]["reference_count"], 0);
-    assert_eq!(
-        turn[3]["arguments"]["intent_sha256"].as_str().map(str::len),
-        Some(64)
-    );
-    assert_eq!(turn[4]["callId"], call_id);
-    assert_eq!(turn[4]["isError"], false);
-    assert_eq!(turn[4]["meta"]["kind"], "image_generation.variant");
-    assert_eq!(turn[4]["meta"]["request_id"], "req-1");
-    assert_eq!(turn[4]["meta"]["artifact"]["call_id"], call_id);
-    assert_eq!(turn[4]["value"], turn[4]["meta"]["artifact"]);
-    let path = turn[4]["meta"]["artifact"]["path"].clone();
-    assert_eq!(turn[5]["files"][0]["path"], path);
-    assert_eq!(turn[6]["content"], reply);
-    assert_eq!(turn[8]["reason"], "completed");
-    check_image_contract("variantMeta", &turn[4]["meta"]);
-    check_image_contract("variantCall", &turn[3]["arguments"]);
-
-    let intent = json!({
-        "type": "image_generation.intent", "schema_version": 1, "request_id": "req-1",
-        "operation": "generate", "instruction": "A red fox", "locale": "en-US",
-        "aspect_ratio": "1:1", "quality": "low", "resolution": "1K", "variants": 1,
-        "text_mode": "no_text", "reference_paths": [], "surface": "chat",
-        "target": { "type": "image.target.chat" }, "placement_preference": "review",
-        "client_capability_version": 1,
-    });
-    let before = events.len();
-    let repeat = stream(
-        &app,
-        session_id,
-        &base_url,
-        json!({ "content": "A red fox", "image_generation_intent": intent }),
-    )
-    .await;
-    assert_closed_idle(&repeat);
-    assert_eq!(repeat.len(), 2, "a repeat streams running and idle only");
-    assert_eq!(
-        session_events(&app, session_id).await.len(),
-        before,
-        "a repeat appends nothing"
-    );
-    let mut changed = intent.clone();
-    changed["quality"] = json!("high");
-    let (status, _) = call(
-        &app,
-        "POST",
-        &format!("/agent/sessions/{session_id}/messages/stream"),
-        json!({ "content": "A red fox", "image_generation_intent": changed }),
-    )
-    .await;
-    assert_eq!(status, 409, "a request id names one set of settings");
-
-    let lines = stream(
-        &app,
-        session_id,
-        &base_url,
-        json!({ "content": "What did you draw?" }),
-    )
-    .await;
-    assert_closed_idle(&lines);
-    let bodies = bodies.lock().unwrap_or_else(PoisonError::into_inner);
-    assert_eq!(bodies.len(), 2, "two ordinary turns reach the model");
-    let history = Value::Array(conversation(&bodies[1])).to_string();
-    assert!(history.contains("A red fox"), "{history}");
-    assert!(
-        history.contains(reply.as_str().unwrap_or_default()),
-        "{history}"
-    );
-}
-
 #[tokio::test(flavor = "multi_thread")]
 async fn a_turn_stops_at_the_step_limit() {
     let Fixture { app, .. } = app();
@@ -686,124 +499,6 @@ async fn a_turn_stops_at_the_step_limit() {
         .filter(|event| event["type"] == "step/start")
         .count();
     assert_eq!(steps, 16);
-}
-
-/// A provider whose image endpoint signals `entered` and never answers,
-/// while `/responses` answers with plain text.
-async fn stuck_image_provider(entered: Arc<Notify>) -> String {
-    let app = Router::new()
-        .route(
-            "/images/generations",
-            post(move || {
-                let entered = entered.clone();
-                async move {
-                    entered.notify_one();
-                    std::future::pending::<()>().await;
-                    ""
-                }
-            }),
-        )
-        .route(
-            "/responses",
-            post(|| async {
-                (
-                    [(http::header::CONTENT_TYPE, "text/event-stream")],
-                    answer(&["Done."]),
-                )
-            }),
-        );
-    let listener = tokio::net::TcpListener::bind("127.0.0.1:0")
-        .await
-        .unwrap_or_else(|err| panic!("{err}"));
-    let addr = listener.local_addr().unwrap_or_else(|err| panic!("{err}"));
-    tokio::spawn(async move { axum::serve(listener, app).await });
-    format!("http://{addr}")
-}
-
-#[tokio::test(flavor = "multi_thread")]
-async fn a_disconnected_image_turn_releases_its_session() {
-    let Fixture { app, .. } = app();
-    let session_id = new_session(&app).await;
-    let entered = Arc::new(Notify::new());
-    let base_url = stuck_image_provider(entered.clone()).await;
-    let model = json!({ "provider_type": "custom", "model_name": "test-model", "base_url": base_url, "wire_api": "responses", "api_key": "k" });
-    let uri = format!("/agent/sessions/{session_id}/messages/stream");
-    let body = json!({
-        "content": "A red fox",
-        "runtime_model": model,
-        "image_generation_intent": {
-            "type": "image_generation.intent", "schema_version": 1, "request_id": "req-1",
-            "operation": "generate", "instruction": "A red fox", "locale": "en-US",
-            "aspect_ratio": "1:1", "quality": "low", "resolution": "1K", "variants": 1,
-            "text_mode": "no_text", "reference_paths": [], "surface": "chat",
-            "target": { "type": "image.target.chat" }, "placement_preference": "review",
-            "client_capability_version": 1,
-        },
-    });
-    let request = Request::builder()
-        .method("POST")
-        .uri(&uri)
-        .header(http::header::CONTENT_TYPE, "application/json")
-        .body(Body::from(body.to_string()))
-        .unwrap_or_else(|err| panic!("{err}"));
-    let response = app
-        .clone()
-        .oneshot(request)
-        .await
-        .unwrap_or_else(|err| panic!("{err}"));
-    assert_eq!(response.status(), 200);
-    tokio::time::timeout(std::time::Duration::from_secs(10), entered.notified())
-        .await
-        .unwrap_or_else(|err| panic!("the image call never started: {err}"));
-    drop(response);
-
-    let retry = json!({ "content": "And now text", "runtime_model": model });
-    let mut status = 0;
-    for _ in 0..20 {
-        status = call(&app, "POST", &uri, retry.clone()).await.0;
-        if status != 409 {
-            break;
-        }
-        tokio::time::sleep(std::time::Duration::from_millis(50)).await;
-    }
-    assert_eq!(status, 200, "the session stays busy after the client left");
-    let events = session_events(&app, session_id).await;
-    let of_image_turn = |kind: &str| -> Vec<&Value> {
-        events
-            .iter()
-            .filter(|e| e["type"] == kind && e["turn"] == 1)
-            .collect()
-    };
-    assert_eq!(of_image_turn("turn/start").len(), 1, "{events:?}");
-    let ends = of_image_turn("turn/end");
-    assert_eq!(ends.len(), 1, "{events:?}");
-    assert_eq!(ends[0]["reason"], "cancelled", "{events:?}");
-    assert_eq!(of_image_turn("step/end").len(), 1, "{events:?}");
-    let stopped = events
-        .iter()
-        .find(|e| e["type"] == "tool/result" && e["name"] == "image_generation")
-        .cloned()
-        .unwrap_or_default();
-    assert_eq!(stopped["isError"], true, "{events:?}");
-}
-
-/// Validates `instance` against one `$defs` entry of the image generation contract.
-fn check_image_contract(def: &str, instance: &Value) {
-    let mut schema: Value = serde_json::from_str(include_str!(
-        "../../../contracts/runtime/agent-image-generation.schema.json"
-    ))
-    .unwrap_or_else(|err| panic!("{err}"));
-    schema["$ref"] = json!(format!("#/$defs/{def}"));
-    let validator = jsonschema::validator_for(&schema).unwrap_or_else(|err| panic!("{err}"));
-    let errors: Vec<String> = validator
-        .iter_errors(instance)
-        .map(|error| format!("{error} at {}", error.instance_path()))
-        .collect();
-    assert!(
-        errors.is_empty(),
-        "{def}: {}\n{instance}",
-        errors.join("; ")
-    );
 }
 
 #[tokio::test(flavor = "multi_thread")]
@@ -950,14 +645,12 @@ async fn requests_without_a_usable_model_are_refused_before_streaming() {
 }
 
 #[tokio::test(flavor = "multi_thread")]
-async fn hosted_search_and_image_calls_are_logged() {
-    let Fixture { app, workspace, .. } = app();
+async fn hosted_search_calls_are_logged() {
+    let Fixture { app, .. } = app();
     let session_id = new_session(&app).await;
     let output = json!([
         { "type": "web_search_call", "id": "ws_1", "status": "completed",
           "action": { "type": "search", "query": "fox facts" } },
-        { "type": "image_generation_call", "id": "ig_1", "status": "completed",
-          "result": PIXEL_PNG, "size": "1024x1024" },
         { "type": "message", "role": "assistant", "content": [{ "type": "output_text", "text": "Here is a fox." }] },
     ]);
     let hosted = sse(&[
@@ -969,7 +662,7 @@ async fn hosted_search_and_image_calls_are_logged() {
         &app,
         session_id,
         &base_url,
-        json!({ "content": "Draw a fox" }),
+        json!({ "content": "Find fox facts" }),
     )
     .await;
     let events = session_events(&app, session_id).await;
@@ -979,16 +672,8 @@ async fn hosted_search_and_image_calls_are_logged() {
         .position(|kind| *kind == "assistant/message")
         .unwrap_or_else(|| panic!("{kinds:?}"));
     assert_eq!(
-        &kinds[message..message + 7],
-        [
-            "assistant/message",
-            "tool/call",
-            "tool/result",
-            "tool/call",
-            "tool/result",
-            "deliverables/presented",
-            "user/message",
-        ],
+        &kinds[message..message + 3],
+        ["assistant/message", "tool/call", "tool/result"],
         "{events:?}"
     );
     let search = &events[message + 1];
@@ -999,12 +684,6 @@ async fn hosted_search_and_image_calls_are_logged() {
     assert_eq!(search["arguments"]["query"], "fox facts");
     assert_eq!(events[message + 2]["meta"]["hosted"], true);
     assert_eq!(events[message + 2]["isError"], false);
-    assert_eq!(events[message + 3]["name"], "image_generation");
-    let image = &events[message + 5];
-    assert_eq!(image["callId"], "ig_1");
-    let path = image["files"][0]["path"].as_str().unwrap_or_default();
-    assert!(workspace.path().join(path).is_file(), "{path}");
-    assert_eq!(events[message + 6]["source"]["kind"], "tool-follow-up");
 }
 
 /// The session's logged events through `GET /session-events`, each checked
@@ -1273,17 +952,6 @@ async fn approval_resolves_by_call_id_from_the_log() {
     let (status, _) = call(&app, "POST", &uri, bad_source).await;
     assert_eq!(status, 400);
     assert_eq!(policy(), saved, "no rule saved for a bad local source");
-    let mut with_image = approve(&call_id, "allow_always");
-    with_image["hide_user_message"] = json!(false);
-    with_image["image_generation_intent"] = json!({ "prompt": "A fox" });
-    let (status, body) = call(&app, "POST", &uri, with_image).await;
-    assert_eq!(status, 400);
-    assert!(
-        String::from_utf8_lossy(&body).contains("shell approval"),
-        "{}",
-        String::from_utf8_lossy(&body)
-    );
-    assert_eq!(policy(), saved, "no rule saved for a rejected request");
 
     let allow = approve(&call_id, "allow_once");
     check_shell_approval_contract("response", &allow["shell_approval"]);
@@ -1356,7 +1024,7 @@ fn check_shell_approval_contract(def: &str, instance: &Value) {
 }
 
 /// The offered tools as `{ name, description, parameters }`, sorted by
-/// name. Hosted tools (`web_search`, `image_generation` on Responses) carry
+/// name. Hosted tools (`web_search` on Responses) carry
 /// their type instead of a name and keep their whole object. Reads
 /// Responses and Chat Completions tool shapes.
 fn tools(body: &Value) -> Vec<Value> {
@@ -1771,8 +1439,7 @@ async fn panes_offer_the_expected_tools_and_prompt() {
             extra: attached.clone(),
         });
     }
-    // Chat Completions has no hosted search or images, so `image_search`
-    // is offered outside the gallery and `web_search` is not.
+    // Chat Completions has no hosted search, so `web_search` is not offered.
     for pane in ["document", "gallery"] {
         scenarios.push(scenario(
             &format!("{pane}-chat-completions"),

@@ -11,7 +11,6 @@ export const SUPPORTED_NAMESPACES = [
   'workspaceLauncher',
   'agent',
   'errors',
-  'imageGeneration',
   'history',
 ] as const
 

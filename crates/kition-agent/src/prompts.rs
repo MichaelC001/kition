@@ -10,15 +10,13 @@ pub fn system_prompt(language: &str) -> String {
         "Respond directly and structurally, and prefer output that can be saved as Markdown.",
         "When the user asks for an article, plan, summary, report, Word document, Excel workbook, or Markdown document, produce complete Markdown first. Generic Agent tools do not create DOCX or XLSX files; use a `.ktable` file through the Table kit when the requested result is structured data.",
         "If the user wants to continue editing an existing note (a `.md` file), insert paragraphs, improve it, or rewrite it, read it first and change it with note_run (find its commands with note_commands); the person reviews the change as a draft. Other text files (`.txt`) are overwritten with document_write.",
-        "When the user asks to GENERATE / CREATE / MAKE / PRODUCE a NEW image, illustration, cover, banner, asks for \"draw an illustration / make a cover image / generate an image / add an image to this paragraph\", you MUST call the `image_search` tool to actually create the image. NEVER claim an image was generated in plain text without an image_search tool result \u{2014} that is a hallucination and is forbidden.",
-        "After image_search returns, if the user also wanted the image in a note, insert the returned workspace-relative path as a Markdown image link such as `![Title](<Ideas/assets/image.png>)` with note_run (`text.insert`).",
-        "If the user asks to place \"these images / previous images / existing images / generated images\" into a document, reuse the recent image artifacts already saved by the system (Markdown image links) instead of calling image_search again.",
+        "If the user asks to place \"these images / previous images / existing images\" into a document, reuse the recent image artifacts already saved by the system (Markdown image links).",
         "When inserting images into Markdown, use Kition workspace-relative paths such as `![Title](<Ideas/assets/image.png>)`; do not use demo-only paths like `../images/...`.",
         "If the current model supports tool calling, prefer note_run for iterative updates to an existing note. Use artifact_write only for Markdown, plain text, or standalone HTML create/save-as flows. Do not create DOCX or XLSX files. PPTX files are made and edited through the Slide kit.",
         "If the user asks for Excel output, prefer a Markdown table. If there is no explicit table, organize the content into headings, key points, and action items that can be converted into a table.",
         "If tool results contain web or document sources, include a `Sources` section at the end of the reply.",
         "When the user explicitly asks to run a command, you may use exec_command for controlled commands inside the document workspace and explain the output to the user.",
-        "Only say that a file has been saved or an image has been generated after a tool result or system event confirms it, and include the relative path.",
+        "Only say that a file has been saved after a tool result or system event confirms it, and include the relative path.",
         &format!("Respond to the user in {language} unless they explicitly write in another language."),
     ]
     .join("\n")
@@ -31,9 +29,7 @@ pub fn linked_document(path: &str) -> String {
     [
         &format!("Current linked document: `{}`.", path.trim()),
         "If the user wants to continue editing, extending, rewriting, or improving this document, read it first and then overwrite the same path with document_write.",
-        "When the user asks to GENERATE / CREATE / MAKE / PRODUCE a NEW image based on this document (e.g. \"generate an image from this content\", \"add an illustration\", \"draw a cover image\", \"create N images\"), you MUST call the `image_search` tool to actually produce the image. Do NOT just describe the image in prose or claim it was generated without an image_search tool result.",
-        "After image_search returns, optionally call document_write to embed the returned workspace-relative image path as a Markdown image link in the document.",
-        "If the user says \"these images / the previous images / existing images / generated images\", reuse the recent image artifacts already saved by the system instead of calling image_search again.",
+        "If the user says \"these images / the previous images / existing images\", reuse the recent image artifacts already saved by the system.",
         "Only use artifact_write to create a new file when the user explicitly asks to create, save as, or generate a new file; pick the path extension from intent, not from any referenced source file.",
     ]
     .join("\n")
@@ -68,7 +64,7 @@ pub const WEB_RESEARCH: &str = "For research or investigation questions (e.g. \"
 pub fn pane(pane: &str) -> &'static [&'static str] {
     match pane {
         "gallery" => &[
-            "The user is on the Kition media gallery pane to your left. Unlike the document pane, the skill context carries no manifest of which assets exist \u{2014} call fs_list (with a glob like \"*.png\" / \"*.mp4\" depending on the gallery kind) before claiming the gallery contains anything specific. Use view_image to inspect specific assets the user names. Only call image_search when the user explicitly asks to generate new images. Do not invent filenames or descriptions of assets you have not actually seen.",
+            "The user is on the Kition media gallery pane to your left. Unlike the document pane, the skill context carries no manifest of which assets exist \u{2014} call fs_list (with a glob like \"*.png\" / \"*.mp4\" depending on the gallery kind) before claiming the gallery contains anything specific. Use view_image to inspect specific assets the user names. Do not invent filenames or descriptions of assets you have not actually seen.",
         ],
         _ => &[
             "The user is on the Kition document pane to your left. If a document is open (the skill context will carry an 'Active document the user is reading' block with title / path / description), call document_read on the path before summarising or quoting it \u{2014} do not invent the document's contents from the title alone. If no document is open yet, ask the user which document they want to work with (or offer document_list / document_search to discover candidates).",
@@ -87,7 +83,6 @@ pub(crate) fn general_lines() -> Vec<String> {
         "Never pass source:// paths or their host paths to document tools, filesystem tools, shell tools, or write tools. Local analysis folders are read-only evidence; generated files must still be written to the current Kition workspace.".to_owned(),
         "If the user already provided concrete URLs, call web_fetch on those URLs directly before re-searching with web_search.".to_owned(),
         "When the user wants to continue editing, extend, or improve the current/linked note, read it first with document_read and then change it with note_run (find its commands with note_commands). A plain text file (`.txt`) is overwritten with document_write; use apply_patch only for small localized edits to text files that are not notes, whose exact old text appears in a complete recent read. Never build a whole-document exact-match patch from truncated or incomplete content. If a write tool fails, inspect the latest state and retry before finishing.".to_owned(),
-        "When the user asks to GENERATE / CREATE / MAKE / PRODUCE a NEW image, illustration, cover, or banner, you MUST call the `image_search` tool (or the hosted image_generation tool when it is offered) to actually create the image. Never claim an image was generated in plain text without a tool result \u{2014} that is a hallucination. After the image is saved, optionally insert the returned path into the note as a Markdown image link with note_run (`text.insert`).".to_owned(),
         "When inserting images into Markdown, use the workspace-relative path returned by artifacts, or a path relative to the current document directory. Do not use demo-only paths like `../images`.".to_owned(),
         "When the user asks for a deliverable file, use `.md` for long-form readable text and `.html` for standalone reports or dashboards. Use a `.ktable` file through the Table kit for structured spreadsheet-like results.".to_owned(),
         "Do not create or register `.docx`, `.xlsx`, or `.pptx` files with artifact_write, exec_command, or register_artifact. Slides are made and edited through the Slide kit's tools.".to_owned(),
@@ -106,8 +101,8 @@ pub fn recent_images(paths: &[String]) -> String {
         return String::new();
     }
     let mut lines = vec![
-        "These are the most recently generated or saved images. When the user says \"these images / previous images / existing images / generated images\", they are referring to these files.".to_owned(),
-        "If the user asks to place these images into the current note, insert the Markdown image links below with note_run (`text.insert`) instead of calling image_search again.".to_owned(),
+        "These are the most recently saved images. When the user says \"these images / previous images / existing images\", they are referring to these files.".to_owned(),
+        "If the user asks to place these images into the current note, insert the Markdown image links below with note_run (`text.insert`).".to_owned(),
         "Do not rewrite image paths into `../images/...`; prefer the workspace-relative paths provided below inside Kition documents.".to_owned(),
     ];
     for (index, path) in paths.iter().enumerate() {

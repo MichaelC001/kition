@@ -25,7 +25,6 @@ export function useWorkspaceAgentTurnContext() {
   const getTurnContext = useCallback(async (): Promise<AgentTurnContext> => turnContextRef.current, [])
 
   return {
-    turnContextRef,
     updateTurnContext,
     getTurnContext,
   }

@@ -2563,8 +2563,6 @@
     @apply relative w-full max-w-4xl rounded-xl border bg-card p-3 text-left;
     border-color: hsl(var(--border));
     box-shadow: var(--shadow-soft);
-    container-type: inline-size;
-    container-name: agent-composer;
   }
 
   .agent-ai-composer.is-compact {
@@ -2788,36 +2786,10 @@
     @apply inline-flex h-8 min-w-8 items-center justify-center gap-1.5 rounded-lg px-2 text-xs text-muted-foreground outline-none transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:bg-muted/50 disabled:text-muted-foreground;
   }
 
-  .agent-composer-image {
-    @apply inline-flex shrink-0 items-center rounded-lg;
-  }
-
-  .agent-composer-image.is-active {
-    @apply bg-accent text-accent-foreground;
-  }
-
-  .agent-composer-image.is-active .agent-composer-tool {
-    @apply text-accent-foreground;
-  }
-
-  .agent-composer-image__exit {
-    @apply min-w-6 rounded-l-none px-1;
-  }
-
   .agent-composer-popover {
     @apply rounded-xl border border-border bg-popover text-popover-foreground;
     max-width: calc(100vw - 24px);
     box-shadow: var(--shadow-floating);
-  }
-
-  .agent-image-popover {
-    @apply flex min-h-0 flex-col overflow-hidden p-0;
-    container: agent-image-panel / inline-size;
-    max-height: calc(100dvh - 24px);
-  }
-
-  @container agent-composer (max-width: 280px) {
-    .agent-composer-image__label { display: none; }
   }
 
   .agent-chat-input-shell {

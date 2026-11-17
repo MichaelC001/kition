@@ -118,7 +118,6 @@ module.exports = {
         'src/features/emailProviders/EmailProvidersPane.tsx',
         'src/features/settings/AiModelsPane.tsx',
         'src/features/settings/NetworkSettings.tsx',
-        'src/features/media-generation/components/ImageStudio.tsx',
         'src/features/workspace/components/WorkspaceAgentTabBar.tsx',
         'src/features/workspace/components/WorkspaceLauncherScreen.tsx',
         'src/features/workspace/components/WorkspaceScreen.tsx',

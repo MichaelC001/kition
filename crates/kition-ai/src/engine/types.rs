@@ -95,17 +95,6 @@ impl RuntimeModel {
             _ => false,
         }
     }
-
-    /// Whether the provider generates images itself: OpenAI-style providers
-    /// (or GPT models) on the Responses wire.
-    pub fn supports_hosted_images(&self) -> bool {
-        let provider = self.provider_type.trim().to_lowercase();
-        self.wire_api.trim() == "responses"
-            && (matches!(
-                provider.as_str(),
-                "openai" | "openai-oauth2" | "custom" | KITION_CLOUD_PROVIDER
-            ) || self.model_name.to_lowercase().contains("gpt"))
-    }
 }
 
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
@@ -206,22 +195,6 @@ pub struct HostedWebSearchCall {
     pub action: Option<serde_json::Map<String, Value>>,
 }
 
-/// A hosted `image_generation` result; `result` is base64 PNG data.
-#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
-pub struct HostedImageGenerationCall {
-    pub id: String,
-    #[serde(default, skip_serializing_if = "String::is_empty")]
-    pub status: String,
-    #[serde(default, skip_serializing_if = "String::is_empty")]
-    pub result: String,
-    #[serde(default, skip_serializing_if = "String::is_empty")]
-    pub mime_type: String,
-    #[serde(default, skip_serializing_if = "String::is_empty")]
-    pub size: String,
-    #[serde(default, skip_serializing_if = "String::is_empty")]
-    pub revised_prompt: String,
-}
-
 /// The outcome of one model call.
 #[derive(Debug, Clone, Default, PartialEq)]
 pub struct ChatResult {
@@ -230,7 +203,6 @@ pub struct ChatResult {
     pub hosted_web_search_calls: Vec<HostedWebSearchCall>,
     /// Only the Anthropic wire reports result entries directly.
     pub hosted_web_search_results: Vec<HostedWebSearchResult>,
-    pub hosted_image_generation_calls: Vec<HostedImageGenerationCall>,
     /// Provider-native output items, replayed on the next turn.
     pub response_items: Vec<Value>,
     pub stop_reason: String,
@@ -315,24 +287,18 @@ mod tests {
         };
         let anthropic = model("anthropic", "anthropic_messages", "");
         assert!(anthropic.supports_hosted_web_search());
-        assert!(!anthropic.supports_hosted_images());
         let claude = model("gateway", "anthropic_messages", "Claude-Sonnet");
         assert!(claude.supports_hosted_web_search());
         let openai = model(" OpenAI ", "responses", "");
         assert!(openai.supports_hosted_web_search());
-        assert!(openai.supports_hosted_images());
         let cloud = model(KITION_CLOUD_PROVIDER, "responses", "");
         assert!(cloud.supports_hosted_web_search());
-        assert!(cloud.supports_hosted_images());
         let gpt = model("gateway", "responses", "GPT-5");
         assert!(gpt.supports_hosted_web_search());
-        assert!(gpt.supports_hosted_images());
         let other = model("gateway", "responses", "other");
         assert!(!other.supports_hosted_web_search());
-        assert!(!other.supports_hosted_images());
         let chat = model("openai", "chat_completions", "gpt-5");
         assert!(!chat.supports_hosted_web_search());
-        assert!(!chat.supports_hosted_images());
     }
 
     #[test]

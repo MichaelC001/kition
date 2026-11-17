@@ -1,7 +1,4 @@
-import { AgentImageComposerControls, AgentImageComposerSummary } from './AgentImageComposerControls'
-import { useAgentImageMode } from '../hooks/useAgentImageMode'
 import type { AgentSessionView } from '../lib/agentSessionView'
-import type { AgentImageGenerationIntent, AgentImageTarget } from '@/types/imageGeneration'
 import { useEffect, useRef } from 'react'
 import type { KeyboardEvent as ReactKeyboardEvent, ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -43,12 +40,7 @@ type AgentChatPanelProps = {
   onAddDocumentContext?: (path: string) => void
   onRemoveDocumentContext?: (path: string) => void
   onRemoveLocalSource?: (sourceId: string) => void
-  imageGeneration?: {
-    available: boolean
-    accessToken?: string
-    target?: AgentImageTarget
-  }
-  onSend: (intent?: AgentImageGenerationIntent) => void
+  onSend: () => void
   onStop: () => void
   onConfigureModel: () => void
   onHostedAccountConnect?: () => void
@@ -75,7 +67,6 @@ type AgentChatPanelProps = {
 }
 
 export function AgentChatPanel({
-  session,
   view,
   pendingUserText = '',
   draft,
@@ -107,22 +98,13 @@ export function AgentChatPanel({
   paneContext = 'document',
   emptyStateOverride,
   progressCard,
-  imageGeneration,
 }: AgentChatPanelProps) {
   const hostedAccountBusy = hostedAccountStatus === 'loading' || hostedAccountStatus === 'connecting'
   const hostedAccountBlocked = Boolean(hostedAccountStatus && !isKitionAccountUsable(hostedAccountStatus))
   const hostedAccountCreditsEmpty = hostedAccountStatus === 'credits_empty'
   const canSend = !busy && !hostedAccountBusy && !hostedAccountCreditsEmpty
-  const imageMode = useAgentImageMode({
-    sessionId: session.id, target: imageGeneration?.target,
-    available: Boolean(imageGeneration?.available), accessToken: imageGeneration?.accessToken,
-    referencePaths: documentContextPaths.filter((path) => /\.(png|jpe?g|webp)$/i.test(path)),
-    draft, busy, canSend: canSend && !needsModelConfig, onDraftChange, onSend,
-  })
-  const composerCanSend = canSend && !imageMode.preparing && (imageMode.enabled
-    ? Boolean(imageMode.instruction) && !imageMode.blockedReason
-    : draft.trim().length > 0)
-  const sendComposer = () => { if (composerCanSend && !needsModelConfig) void imageMode.send() }
+  const composerCanSend = canSend && draft.trim().length > 0
+  const sendComposer = () => { if (composerCanSend && !needsModelConfig) onSend() }
 
   const messagesContainerRef = useRef<HTMLDivElement | null>(null)
   const followLatestRef = useRef(true)
@@ -260,9 +242,6 @@ export function AgentChatPanel({
           )
         })() : (
           <AgentConversation
-            imageActions={imageGeneration ? {
-              onEdit: imageMode.edit, onRetry: imageMode.retry, canRetry: imageMode.canRetry,
-            } : undefined}
             view={view}
             pendingUserText={pendingUserText}
             busy={busy}
@@ -279,10 +258,6 @@ export function AgentChatPanel({
           onOpen={onReviewModifiedArtifact || onOpenArtifact}
         />
         <AgentAiComposer
-          imageControls={imageGeneration ? <AgentImageComposerControls mode={imageMode} busy={busy}
-            surface="document"
-            accessToken={imageGeneration.accessToken} /> : undefined}
-          imageSummary={imageGeneration ? <AgentImageComposerSummary mode={imageMode} busy={busy} /> : undefined}
           busy={busy}
           canSend={composerCanSend}
           compact

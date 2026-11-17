@@ -22,9 +22,7 @@ pub struct CoreProvider {
 
 /// Whether `CoreProvider` offers the catalog tool `name` for this model.
 fn offers(name: &str, facts: &TurnFacts) -> bool {
-    !owned_elsewhere(name)
-        && (name != "web_search" || facts.hosted_web_search)
-        && (name != "image_generation" || facts.hosted_images)
+    !owned_elsewhere(name) && (name != "web_search" || facts.hosted_web_search)
 }
 
 /// `exec_command` and the URL tools (`fetch_policy::URL_TOOLS`) present a
@@ -132,19 +130,16 @@ mod tests {
         let offered = names(&plain, &scene).await;
         assert!(offered.contains(&"document_read".to_owned()));
         assert!(!offered.contains(&"web_search".to_owned()));
-        assert!(!offered.contains(&"image_generation".to_owned()));
         assert!(
             !offered.iter().any(|name| owned_elsewhere(name)),
             "{offered:?}"
         );
         let hosted = Arc::new(TurnFacts {
             hosted_web_search: true,
-            hosted_images: true,
             ..TurnFacts::default()
         });
         let offered = names(&CoreProvider::load(&run, &hosted, &factory()).await, &scene).await;
         assert!(offered.contains(&"web_search".to_owned()));
-        assert!(offered.contains(&"image_generation".to_owned()));
     }
 
     #[test]

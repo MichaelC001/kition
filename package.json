@@ -138,8 +138,7 @@
     "typescript": "6.0.3",
     "vite": "^8.3.5",
     "vite-plugin-wasm": "^3.6.0",
-    "vitest": "^4.1.12",
-    "zod": "4.6.7"
+    "vitest": "^4.1.12"
   },
   "pnpm": {
     "overrides": {

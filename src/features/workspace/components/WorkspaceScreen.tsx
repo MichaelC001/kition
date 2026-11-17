@@ -137,7 +137,6 @@ export function WorkspaceScreen({
     modifiedPaths: new Set<string>(),
   })
   const agentTurn = useWorkspaceAgentTurnContext()
-  const agentTurnContextRef = agentTurn.turnContextRef
   const getAgentTurnContext = agentTurn.getTurnContext
   const {
     activeResourcePath,
@@ -358,7 +357,6 @@ export function WorkspaceScreen({
       rootPath={rootPath}
       agent={workspaceAgent}
       session={activeWorkspaceAgentSession}
-      imageContext={agentTurnContextRef.current}
       activeWorkspaceTab={activeWorkspaceTab}
       activeWorkspaceDocumentPath={activeWorkspaceDocumentPath}
       documentContextPaths={activeAgentDocumentContextPaths}
@@ -366,7 +364,7 @@ export function WorkspaceScreen({
       kitionAccountLinks={kitionAccountLinks}
       onOpenSettingsSection={onOpenSettingsSection}
       onAddLocalSource={() => void agentComposer.addLocalAnalysisSource()}
-      onSend={(sessionId, intent) => void agentComposer.sendMessage(sessionId, intent)}
+      onSend={(sessionId) => void agentComposer.sendMessage(sessionId)}
       onOpenDocument={(path) => void openDocument(path)}
       onReviewModifiedArtifact={(path) => void openDocument(path)}
       onImportFiles={(files, target) => importBrowserFiles(files, target)}

@@ -487,7 +487,7 @@ pub fn linked_file_prompt(path: &str) -> Option<String> {
                 "document_read extracts its text for reading; edit it only through the kit tools, never with document_write, fs_read, or apply_patch.".to_owned()
             } else if PLAIN_TEXT.contains(&extension.as_str()) {
                 format!(
-                    "document_read reads its text as it is; edit it only through the kit tools, never with document_write, fs_read, or apply_patch. To put a generated image in it, call image_search, then insert the returned workspace-relative path as a Markdown image link such as `![Title](<Ideas/assets/image.png>)` with {run} (`text.insert`)."
+                    "document_read reads its text as it is; edit it only through the kit tools, never with document_write, fs_read, or apply_patch. To put an image in it, insert its workspace-relative path as a Markdown image link such as `![Title](<Ideas/assets/image.png>)` with {run} (`text.insert`)."
                 )
             } else {
                 "Do not use document_read, document_write, fs_read, or apply_patch on this file: it is binary data.".to_owned()

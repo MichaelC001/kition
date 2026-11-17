@@ -6,7 +6,7 @@ const imagePath = 'Agent/images/46/Edited poster.png'
 const imageURL = 'http://127.0.0.1:18101/workspace-files/Agent/images/46/Edited%20poster.png'
 
 for (const source of ['workspace path', 'runtime URL'] as const) {
-  test(`opens the generated tool image from a ${source} inside the workspace`, async ({ page }, testInfo) => {
+  test(`opens the saved tool image from a ${source} inside the workspace`, async ({ page }, testInfo) => {
     await openAgentWorkspace(page)
     // After the workspace's own file service, so that this image wins over it.
     await page.route('**/workspace-files/Agent/images/46/Edited%20poster.png', (route) => route.fulfill({
@@ -25,8 +25,9 @@ for (const source of ['workspace path', 'runtime URL'] as const) {
     if (await newChat.isVisible().catch(() => false)) await newChat.click()
 
     await mockAgentTurn(page, (turn) => {
-      turn.tool('call_image', 'image_generation', {},
+      turn.tool('call_image', 'save_image_asset', { url: 'https://example.com/poster.png' },
         source === 'workspace path' ? { path: imagePath } : { images: [{ url: imageURL }] })
+      if (source === 'workspace path') turn.deliver('call_image', { path: imagePath, description: 'Edited poster' })
       turn.reply(`The edited image is saved at: \`${imagePath}\``)
     })
     const composer = page.getByPlaceholder('Plan, write, or ask anything…')

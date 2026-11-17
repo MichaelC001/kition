@@ -21,8 +21,6 @@ import {
 } from '@/features/agent/lib/documentMentions'
 
 type AgentAiComposerProps = {
-  imageControls?: ReactNode
-  imageSummary?: ReactNode
   busy: boolean
   canSend: boolean
   compact?: boolean
@@ -53,8 +51,6 @@ type AgentAiComposerProps = {
 }
 
 export function AgentAiComposer({
-  imageControls,
-  imageSummary,
   busy,
   canSend,
   compact = false,
@@ -380,7 +376,6 @@ export function AgentAiComposer({
           )}
         </div>
       ) : null}
-      {imageSummary}
       <div className="agent-ai-footer">
         <AgentContextAddMenu
           disabled={busy}
@@ -395,7 +390,6 @@ export function AgentAiComposer({
           onAddLocalSource={onAddLocalSource}
           onRequestDocumentReference={requestDocumentReference}
         />
-        {imageControls}
         <AgentKitEditModeToggle disabled={busy} />
         <AgentModelPicker
           className="agent-ai-model-picker"

@@ -146,96 +146,9 @@
   },
   {
     "type": "dependency",
-    "from": "src/features/agent/components/AgentImageTemplateBrowser.tsx",
-    "to": "src/features/media-generation/api/imageTemplates.ts",
-    "unresolvedTo": "@/features/media-generation/api/imageTemplates",
-    "dependencyTypes": [
-      "aliased",
-      "aliased-tsconfig",
-      "aliased-tsconfig-paths",
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-feature-internals"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/features/agent/components/AgentImageTemplateBrowser.tsx",
-    "to": "src/features/media-generation/components/ImageTemplateThumbnail.tsx",
-    "unresolvedTo": "@/features/media-generation/components/ImageTemplateThumbnail",
-    "dependencyTypes": [
-      "aliased",
-      "aliased-tsconfig",
-      "aliased-tsconfig-paths",
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-feature-internals"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/features/agent/components/AgentImageTemplateBrowser.tsx",
-    "to": "src/features/media-generation/lib/imageTemplateContract.ts",
-    "unresolvedTo": "@/features/media-generation/lib/imageTemplateContract",
-    "dependencyTypes": [
-      "aliased",
-      "aliased-tsconfig",
-      "aliased-tsconfig-paths",
-      "local",
-      "type-only",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-feature-internals"
-    }
-  },
-  {
-    "type": "dependency",
     "from": "src/features/agent/components/BuildProgressCard.tsx",
     "to": "src/features/scenario/types.ts",
     "unresolvedTo": "@/features/scenario/types",
-    "dependencyTypes": [
-      "aliased",
-      "aliased-tsconfig",
-      "aliased-tsconfig-paths",
-      "local",
-      "type-only",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-feature-internals"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/features/agent/hooks/useAgentImageMode.ts",
-    "to": "src/features/media-generation/api/imageTemplates.ts",
-    "unresolvedTo": "@/features/media-generation/api/imageTemplates",
-    "dependencyTypes": [
-      "aliased",
-      "aliased-tsconfig",
-      "aliased-tsconfig-paths",
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-feature-internals"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/features/agent/hooks/useAgentImageMode.ts",
-    "to": "src/features/media-generation/lib/imageTemplateContract.ts",
-    "unresolvedTo": "@/features/media-generation/lib/imageTemplateContract",
     "dependencyTypes": [
       "aliased",
       "aliased-tsconfig",
@@ -577,24 +490,6 @@
   },
   {
     "type": "dependency",
-    "from": "src/features/workspace/components/WorkspaceAgentSidebar.tsx",
-    "to": "src/features/agent/lib/agentTurnContext.ts",
-    "unresolvedTo": "@/features/agent/lib/agentTurnContext",
-    "dependencyTypes": [
-      "aliased",
-      "aliased-tsconfig",
-      "aliased-tsconfig-paths",
-      "local",
-      "type-only",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-feature-internals"
-    }
-  },
-  {
-    "type": "dependency",
     "from": "src/features/workspace/components/WorkspaceScreen.tsx",
     "to": "src/features/settings/DesktopSettingsPage.tsx",
     "unresolvedTo": "@/features/settings/DesktopSettingsPage",
@@ -701,58 +596,6 @@
     "from": "src/features/workspace/hooks/useWorkspaceEditorPanels.ts",
     "to": "src/features/agent/lib/agentConfig.ts",
     "unresolvedTo": "@/features/agent/lib/agentConfig",
-    "dependencyTypes": [
-      "aliased",
-      "aliased-tsconfig",
-      "aliased-tsconfig-paths",
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-feature-internals"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/features/workspace/hooks/useWorkspaceImageGeneration.ts",
-    "to": "src/features/agent/lib/agentTurnContext.ts",
-    "unresolvedTo": "@/features/agent/lib/agentTurnContext",
-    "dependencyTypes": [
-      "aliased",
-      "aliased-tsconfig",
-      "aliased-tsconfig-paths",
-      "local",
-      "type-only",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-feature-internals"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/features/workspace/hooks/useWorkspaceImageGeneration.ts",
-    "to": "src/features/media-generation/lib/imageGenerationCapabilities.ts",
-    "unresolvedTo": "@/features/media-generation/lib/imageGenerationCapabilities",
-    "dependencyTypes": [
-      "aliased",
-      "aliased-tsconfig",
-      "aliased-tsconfig-paths",
-      "local",
-      "import"
-    ],
-    "rule": {
-      "severity": "error",
-      "name": "no-feature-internals"
-    }
-  },
-  {
-    "type": "dependency",
-    "from": "src/features/workspace/hooks/useWorkspaceImageGeneration.ts",
-    "to": "src/features/settings/hooks/useDesktopSettings.ts",
-    "unresolvedTo": "@/features/settings/hooks/useDesktopSettings",
     "dependencyTypes": [
       "aliased",
       "aliased-tsconfig",

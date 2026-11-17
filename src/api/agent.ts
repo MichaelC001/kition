@@ -2,7 +2,6 @@ import request from './request'
 import { resolveApiURL } from '@/services/desktop'
 import { readAgentMessageStream, type AgentStreamNotification } from './agentStream'
 import type { RuntimeWritingModel } from '@/types'
-import type { AgentImageGenerationIntent } from '@/types/imageGeneration'
 import type { AgentSessionEventsPage } from './generated/agent-session-events'
 import type {
   AgentCapabilities,
@@ -155,7 +154,6 @@ export async function streamAgentMessage(options: {
   taskMode?: AgentTaskMode
   /** How kit tools edit open kit documents: live (the default) or as drafts to review. */
   kitEditMode?: AgentKitEditMode
-  imageGenerationIntent?: AgentImageGenerationIntent
   shellApproval?: AgentShellApprovalResponse
   modelId?: string
   runtimeModel?: RuntimeWritingModel
@@ -181,7 +179,6 @@ export async function streamAgentMessage(options: {
       execution_mode: options.executionMode || 'apply',
       task_mode: options.taskMode || 'auto',
       kit_edit_mode: options.kitEditMode || 'live',
-      image_generation_intent: options.imageGenerationIntent || undefined,
       shell_approval: options.shellApproval || undefined,
       model_id: options.modelId || '',
       runtime_model: options.runtimeModel || undefined,

@@ -65,7 +65,7 @@ describe('useWorkspaceAgentComposer', () => {
 
     expect(mockChooseDirectory).toHaveBeenCalledWith('/data/reports')
     expect(calls.addAgentLocalSource).toHaveBeenCalledWith(7, folder)
-    expect(calls.sendAiComposerMessage).toHaveBeenCalledWith(7, [folder], undefined)
+    expect(calls.sendAiComposerMessage).toHaveBeenCalledWith(7, [folder])
   })
 
   it('drops the send when the user cancels the folder picker', async () => {
@@ -79,13 +79,13 @@ describe('useWorkspaceAgentComposer', () => {
 
   it('sends plainly when a source is already attached or nothing is referenced', async () => {
     const attached = await mount({ agentLocalSources: { 7: [folder] } })
-    await act(async () => { await attached.api.sendMessage(7, { instruction: 'draw' } as never) })
+    await act(async () => { await attached.api.sendMessage(7) })
     expect(mockChooseDirectory).not.toHaveBeenCalled()
-    expect(attached.calls.sendAiComposerMessage).toHaveBeenCalledWith(7, undefined, { instruction: 'draw' })
+    expect(attached.calls.sendAiComposerMessage).toHaveBeenCalledWith(7)
 
     const plain = await mount({ agentDrafts: { 7: 'hello' } })
     await act(async () => { await plain.api.sendMessage(7) })
-    expect(plain.calls.sendAiComposerMessage).toHaveBeenCalledWith(7, undefined, undefined)
+    expect(plain.calls.sendAiComposerMessage).toHaveBeenCalledWith(7)
   })
 
   it('reports picker failures and ignores the request without a session', async () => {

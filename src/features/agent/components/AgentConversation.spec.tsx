@@ -59,17 +59,6 @@ describe('Agent conversation', () => {
     return onOpenArtifact
   }
 
-  it('opens completed tool output in the workspace', async () => {
-    const onOpenArtifact = await mount({ view: viewOf(toolRun('image_generation', { path: imagePath })) })
-    const thumbnail = container.querySelector<HTMLButtonElement>('button.agent-tool-image-thumb')!
-    expect(thumbnail).not.toBeNull()
-    expect(thumbnail.getAttribute('type')).toBe('button')
-    expect(thumbnail.querySelector('img')?.src).toBe('http://127.0.0.1:18102/workspace-files/Agent/images/46/Edited%20poster.png')
-    await act(async () => thumbnail.click())
-    expect(onOpenArtifact).toHaveBeenCalledExactlyOnceWith(imagePath)
-    expect(container.querySelector('a.agent-tool-image-thumb')).toBeNull()
-  })
-
   it('opens a runtime image URL using its decoded workspace path', async () => {
     const onOpenArtifact = await mount({ view: viewOf(toolRun('image_generation', { images: [{
       url: 'http://127.0.0.1:18102/workspace-files/Agent/images/46/Edited%20poster.png',

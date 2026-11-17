@@ -13,18 +13,12 @@ use super::transport::{
     validate_endpoint,
 };
 use super::types::{
-    ChatResult, HostedImageGenerationCall, HostedWebSearchCall, HostedWebSearchResult, Message,
-    RuntimeModel, StreamEvent, StreamHandler, ToolCall, ToolSpec,
+    ChatResult, HostedWebSearchCall, HostedWebSearchResult, Message, RuntimeModel, StreamEvent,
+    StreamHandler, ToolCall, ToolSpec,
 };
 
 pub(crate) fn hosted_web_search_tool() -> Value {
     json!({ "type": "web_search", "external_web_access": true, "search_context_size": "high" })
-}
-
-/// The hosted image tool always returns PNG; the model decides when to
-/// call it.
-pub(crate) fn hosted_image_generation_tool() -> Value {
-    json!({ "type": "image_generation", "output_format": "png" })
 }
 
 fn text_of(value: Option<&Value>) -> &str {
@@ -108,11 +102,10 @@ pub(crate) fn normalize_input(messages: &[Message]) -> (String, Vec<Value>) {
             }
             continue;
         }
-        // Hosted image output (`image_generation_call`) is saved to the
-        // workspace before the next turn; with store=false the provider item
-        // cannot be referenced again, so it is not a valid input item. When
-        // nothing replayable remains, the message is rebuilt from its
-        // content and tool calls below.
+        // With store=false, provider items other than those
+        // `valid_input_item` accepts cannot be referenced again, so they are
+        // not valid input items. When nothing replayable remains, the message
+        // is rebuilt from its content and tool calls below.
         let replayable: Vec<&Value> = message
             .raw_items
             .iter()
@@ -271,20 +264,6 @@ pub(crate) fn web_search_calls_from_output(raw: &[Value]) -> Vec<HostedWebSearch
         .collect()
 }
 
-pub(crate) fn image_generation_calls_from_output(raw: &[Value]) -> Vec<HostedImageGenerationCall> {
-    objects(raw)
-        .filter(|entry| as_str(&entry["type"]) == "image_generation_call")
-        .map(|entry| HostedImageGenerationCall {
-            id: trimmed(entry.get("id")),
-            status: trimmed(entry.get("status")),
-            result: text_of(entry.get("result")).to_owned(),
-            size: trimmed(entry.get("size")),
-            revised_prompt: trimmed(entry.get("revised_prompt")),
-            mime_type: "image/png".into(),
-        })
-        .collect()
-}
-
 pub(crate) fn text_from_output(raw: &[Value]) -> String {
     let mut parts = Vec::new();
     for entry in objects(raw).filter(|entry| as_str(&entry["type"]) == "message") {
@@ -389,18 +368,6 @@ fn emit_output_item_done(item: &Map<String, Value>, index: i64, stream: Option<&
                 arguments,
             ));
         }
-        "image_generation_call" => {
-            let arguments = json!({
-                "revised_prompt": trimmed(item.get("revised_prompt")),
-                "size": trimmed(item.get("size")),
-                "status": trimmed(item.get("status")),
-            });
-            stream(ready(
-                trimmed(item.get("id")),
-                "image_generation".into(),
-                arguments.to_string(),
-            ));
-        }
         _ => {}
     }
 }
@@ -421,7 +388,6 @@ fn function_tools(tools: &[ToolSpec]) -> Vec<Value> {
         }
         match tool.name.as_str() {
             "web_search" => payload.push(hosted_web_search_tool()),
-            "image_generation" => payload.push(hosted_image_generation_tool()),
             _ => {
                 let mut item = Map::new();
                 item.insert("type".into(), "function".into());
@@ -531,7 +497,6 @@ pub(crate) async fn call(
             usage: usage_from(data.get("usage"), &prompt, &content, started, false),
             tool_calls: tool_calls_from_output(&output),
             hosted_web_search_calls: web_search_calls_from_output(&output),
-            hosted_image_generation_calls: image_generation_calls_from_output(&output),
             response_items: output,
             stop_reason: text_of(data.get("status")).to_owned(),
             model: model_name.clone(),
@@ -708,7 +673,6 @@ async fn parse_stream(
         usage: usage_from(usage_raw.as_ref(), prompt, &content, started, false),
         tool_calls: tool_calls_from_output(&output),
         hosted_web_search_calls: web_search_calls_from_output(&output),
-        hosted_image_generation_calls: image_generation_calls_from_output(&output),
         response_items: output,
         stop_reason: status,
         model: model_name.to_owned(),
@@ -930,10 +894,6 @@ mod tests {
         let calls = tool_calls_from_output(&output);
         assert_eq!(calls[0].input, "{}");
         assert_eq!(web_search_calls_from_output(&output)[0].query, "rust");
-        assert_eq!(
-            image_generation_calls_from_output(&output)[0].mime_type,
-            "image/png"
-        );
         let results = web_search_results_from_output(&output, "summary");
         assert_eq!(results.len(), 2);
         assert_eq!(results[0].title, "Doc");

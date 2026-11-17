@@ -26,7 +26,6 @@ pub fn build(deps: &Deps) -> Agent {
         upload_dir: deps.upload_dir.clone(),
         policy_path: kition_agent::execpolicy::default_path(),
         hooks: Some(hooks),
-        portal_base_url: deps.config.portal_base_url.clone(),
         mcp_path: kition_agent::mcp::default_path(),
         kits: Some(deps.kits.clone()),
     });

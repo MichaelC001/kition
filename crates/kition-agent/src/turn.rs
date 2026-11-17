@@ -51,10 +51,9 @@ fn remember(notes: &Notes, call_id: &str, follow_up: &[MessagePart]) {
     }
 }
 
-/// Appends a call's follow-up (notes such as the `image_search` system
-/// follow-up, image captions, and images) to its result content, after the
-/// result itself, on success and failure alike. The logged value stays the
-/// tool's record alone.
+/// Appends a call's follow-up (notes such as image captions, and images)
+/// to its result content, after the result itself, on success and failure
+/// alike. The logged value stays the tool's record alone.
 struct FollowUp {
     notes: Notes,
 }

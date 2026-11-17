@@ -442,7 +442,7 @@ function formatAgentToolRunDetail(run: AgentToolRun, locale: AgentTimelineLocale
       return `${mcp.server} · ${mcp.tool}`
     }
   }
-  if ((run.name === 'web_search' || run.name === 'image_search') && input.query) {
+  if (run.name === 'web_search' && input.query) {
     return String(input.query)
   }
   if (run.name === 'web_fetch' && Array.isArray(input.urls)) {

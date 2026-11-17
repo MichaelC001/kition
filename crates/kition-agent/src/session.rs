@@ -9,7 +9,6 @@ use kition_harness::driver::{append_live, next_turn};
 use kition_harness::events::{ApprovalOutcome, EventBody};
 use kition_harness::log::SqliteLog;
 use serde::Deserialize;
-use serde_json::Value;
 
 use crate::catalog::{self, SkillDef};
 use crate::providers::TurnFacts;
@@ -17,7 +16,7 @@ use crate::run::{Agent, BUSY, Run, TurnGuard};
 use crate::sources::{self, LocalSourceInput};
 use crate::store::{self, AgentSession};
 use crate::stream::{Emitter, TurnStream};
-use crate::tools::{documents, exec, images};
+use crate::tools::{documents, exec};
 use crate::{attachments, log, prompts, turn};
 
 /// The user's answer to the command approval of the tool call `call_id`
@@ -41,7 +40,6 @@ pub struct StreamRequest {
     pub execution_mode: String,
     /// How the agent edits kit documents: `live` (the default) or `draft` (standard 2.0 A12).
     pub kit_edit_mode: String,
-    pub image_generation_intent: Option<Value>,
     pub shell_approval: Option<ShellApprovalInput>,
     pub model_id: String,
     pub runtime_model: Option<RuntimeModel>,
@@ -107,9 +105,6 @@ pub struct Prepared {
     request: StreamRequest,
     session: AgentSession,
     content: String,
-    image_intent: Option<images::ImageIntent>,
-    /// The image request was already logged with the same settings.
-    image_repeat: bool,
     approval: Option<exec::Approval>,
     local_sources: Vec<sources::LocalSource>,
     /// The inbox id of the turn's message: minted here, or the client's.
@@ -127,43 +122,16 @@ pub async fn prepare(
     request: StreamRequest,
 ) -> AppResult<Prepared> {
     let session = owned_session(agent, session_id, user_id).await?;
-    if request.shell_approval.is_some() && request.image_generation_intent.is_some() {
-        return Err(AppError::bad_request(
-            "a shell approval cannot carry an image generation intent",
-        ));
-    }
     // Taken here, not when the turn starts, so no second request can slip
-    // in between the check and the turn. Image requests hold it too.
+    // in between the check and the turn.
     let turn = agent
         .hold_turn(session_id)
         .ok_or_else(|| AppError::conflict(BUSY))?;
-    let image_intent = match &request.image_generation_intent {
-        Some(raw) => {
-            if request.hide_user_message {
-                return Err(AppError::bad_request(
-                    "image generation requires a visible user message",
-                ));
-            }
-            Some(images::parse_intent(raw).map_err(AppError::bad_request)?)
-        }
-        None => None,
-    };
     let content = request.content.trim().to_owned();
     if content.is_empty() {
         return Err(AppError::bad_request("Message content cannot be empty"));
     }
-    let image_repeat = match &image_intent {
-        Some(intent) => {
-            let events = log::read_session(agent, session.id)
-                .await
-                .map_err(AppError::internal)?;
-            !images::claim(&events, intent).map_err(AppError::conflict)?
-        }
-        None => {
-            check_model(request.runtime_model.as_ref()).map_err(AppError::bad_request)?;
-            false
-        }
-    };
+    check_model(request.runtime_model.as_ref()).map_err(AppError::bad_request)?;
     let local_sources =
         sources::normalize(&request.local_sources).map_err(AppError::bad_request)?;
     // Last: an `allow_always` decision saves a policy rule, which only an
@@ -185,8 +153,6 @@ pub async fn prepare(
         request,
         session,
         content,
-        image_intent,
-        image_repeat,
         approval,
         local_sources,
         message_id: uuid::Uuid::new_v4().to_string(),
@@ -246,18 +212,12 @@ async fn drive(agent: Agent, user_id: i64, prepared: Prepared, emitter: Emitter)
         request,
         mut session,
         content,
-        image_intent,
-        image_repeat,
         approval,
         local_sources,
         message_id,
         turn,
     } = prepared;
     let stream = TurnStream::new(emitter.clone(), session.id);
-    if image_repeat {
-        stream.close_unchanged();
-        return;
-    }
     stream.status(true);
     let mut active_document = request.active_document_path.trim().to_owned();
     if active_document.is_empty() {
@@ -305,25 +265,6 @@ async fn drive(agent: Agent, user_id: i64, prepared: Prepared, emitter: Emitter)
         source: message_source(approval.is_some(), request.hide_user_message),
         message_id,
     });
-    if let Some(intent) = image_intent {
-        // The whole request is logged as one turn under the session's turn
-        // guard. When the client leaves, the generation stops and the turn
-        // ends as cancelled, which releases the session.
-        match images::Composer::start(&run, &intent.request_id, &content) {
-            Ok(composer) => {
-                let portal = agent.portal_base_url().to_owned();
-                tokio::select! {
-                    () = images::stream_intent(&run, &portal, &intent, &composer) => {}
-                    () = emitter.closed() => composer.cancel(),
-                }
-            }
-            Err(error) => tracing::warn!(error = %error, "could not log the image request"),
-        }
-        finish(&run, session, None).await;
-        drop(turn);
-        stream.close();
-        return;
-    }
     if let Some(approval) = &approval {
         // The decision lands before the turn that resumes the paused call.
         let log = SqliteLog::new(agent.db().clone());
@@ -352,7 +293,6 @@ async fn drive(agent: Agent, user_id: i64, prepared: Prepared, emitter: Emitter)
         prompt_context: request.prompt_context,
         skills,
         hosted_web_search: run.model.supports_hosted_web_search(),
-        hosted_images: run.model.supports_hosted_images(),
         recent_images: {
             let mut images = log::recent_deliverables(&history, 0, 8, log::is_image_path);
             images.reverse();
