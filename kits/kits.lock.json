@@ -105,7 +105,7 @@
     "sha256": "8cec7e39b72c650f13ddd620098286ea688176c3c51b95c449d18fc792a3c70d",
     "commit": "fe934785abcbd0166cfbbe4781b10eb41ec02255",
     "sdkCommit": "30e2350a826b6f36888f058eb1eef8658489e3e6",
-    "tesseraCommit": "ed0a5aa6eee8d57b5c9c99bc554f48fe43498556",
+    "tesseraCommit": "832f61a5e4b4ac1a5083620bfdeeb92a86560694",
     "fontsCommit": "c01cc9cb9069001375627204d105d3cff96ed690"
   },
   "pdf": {
@@ -175,9 +175,9 @@
     "asset": "kition-table-0.1.0.tgz",
     "size": 15380601,
     "sha256": "d05ba5f023bb9914ce8b57b0020b5ffe6f85c12d595c3cd2b4d82b8c818d6711",
-    "commit": "ee1100867395ef9631891362ca67b24f33e9ac71",
+    "commit": "08a8d0e91d2c012e5093345475659b110996a06a",
     "sdkCommit": "30e2350a826b6f36888f058eb1eef8658489e3e6",
-    "tesseraCommit": "ed0a5aa6eee8d57b5c9c99bc554f48fe43498556",
+    "tesseraCommit": "832f61a5e4b4ac1a5083620bfdeeb92a86560694",
     "fontsCommit": "c01cc9cb9069001375627204d105d3cff96ed690"
   },
   "vector": {
