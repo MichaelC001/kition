@@ -73,7 +73,7 @@ function noticeFiles(dir) {
 }
 
 /** One bundled npm package: its identity and the texts of the licence and notice files it ships (or of its override). */
-export function readBundledPackage(dir) {
+function readBundledPackage(dir) {
   const manifest = JSON.parse(fs.readFileSync(path.join(dir, 'package.json'), 'utf8'))
   const repository = typeof manifest.repository === 'string' ? manifest.repository : manifest.repository?.url
   const override = npmLicenseOverride(manifest.name)
@@ -97,7 +97,7 @@ export function readBundledPackage(dir) {
 }
 
 /** The npm half: inventory and grouped texts. Throws for a package that ships no licence text. */
-export function renderNpmNotices(packages, divider, subject) {
+function renderNpmNotices(packages, divider, subject) {
   const missing = packages.filter((entry) => !entry.texts.length).map((entry) => `${entry.name} ${entry.version}`)
   if (missing.length) {
     throw new Error(`${subject} bundles npm packages that ship no licence text; add the text or drop the package:\n  ${missing.join('\n  ')}`)
