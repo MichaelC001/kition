@@ -23,7 +23,7 @@
     "active": true,
     "targets": ["app", "dmg", "nsis", "appimage"],
     "publisher": "Heartie Technology Limited",
-    "copyright": "Copyright © 2026 Heartie Technology Limited",
+    "copyright": "Copyright © 2026 the Kition authors",
     "category": "Productivity",
     "shortDescription": "Documents, tables, and AI agents",
     "longDescription": "Kition — documents, structured tables, and AI agents in one workspace.",

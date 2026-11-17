@@ -3,7 +3,7 @@ name = "kition-app"
 # The app version comes from package.json through tauri.conf.json.
 version = "0.0.0"
 description = "Kition desktop shell"
-authors = ["Heartie Technology Limited <support@kition.ai>"]
+authors = ["The Kition authors <support@kition.ai>"]
 license = "Apache-2.0"
 repository = "https://github.com/KitionAI/kition"
 edition = "2024"

@@ -23,7 +23,7 @@ pub fn build<R: Runtime>(app: &AppHandle<R>) -> tauri::Result<Option<Menu<R>>> {
             .name(Some("Kition Desktop"))
             .version(Some(app.package_info().version.to_string()))
             .copyright(Some(
-                "Copyright \u{a9} 2026 Heartie Technology Limited. All rights reserved.",
+                "Copyright \u{a9} 2026 the Kition authors. Licensed under the Apache License 2.0.",
             ))
             .comments(Some(
                 "Documents, data tables, and AI agents in one workspace.",
