@@ -62,57 +62,6 @@ requiring model credentials. Run that gate with `pnpm test:motion:e2e`, or all t
 `pnpm test:motion`. The proof movie has no soundtrack, voice-over, stock footage, or actual
 product screenshots. It is a reproducible workflow sample, not a finished campaign.
 
-## Product campaign example
-
-`node scripts/motion-promo/campaign.mjs --preview` builds a separate 24-second Kition campaign
-from the README's product claims and screenshots. It renders six shots at 1280 x 720, using
-editable typography, a vector brand symbol, moving screenshot layers, purple wipes, and an
-original synthesized 120 BPM score. Preview artifacts appear in `.cache/kition-campaign/`.
-The screenshots illustrate the product; they are not recordings of live interactions.
-
-`node scripts/motion-promo/campaign.mjs` additionally saves the project and media into a new
-timestamped `Campaigns/Kition-Launch-*` folder in the running Kition workspace and exports an
-H.264/AAC MP4 using Motion itself. It verifies media relinking on reopen, saved project bytes,
-decoded shot frames, frame count, duration, and audible, unclipped audio. The editable `.kmotion`
-and final MP4 are saved through `PUT /v1/kits/files`; the WAV is an ordinary generated media asset.
-No existing campaign is replaced. The report records repository-relative source provenance.
-
-The delivery runner defaults to the local macOS Kition profile and loopback API on port 18102.
-Set `KITION_API_URL` (including its trailing `/api/v1/`), `KITION_API_TOKEN_FILE`, and
-`KITION_CAMPAIGN_WORKSPACE` for another running profile. Tokens are read locally and never emitted
-in the artifact or command log. This is a production example, separate from the synthetic regression
-fixture above; it is not part of the default test suite and requires a running host to deliver.
-
-## Single-story direction study
-
-See [the implementation explanation](motion-agent-film-implementation.md) for the
-asset pipeline, native 3D rig, screenshot reveals, soundtrack, export checks,
-and the reasons this treatment still feels like an animated screenshot.
-
-`node scripts/motion-promo/agent-film.mjs --preview` builds a 12-second, 1920 x 1080
-study around the README's agent document-review capture. Run without `--preview` to
-deliver a new editable project and H.264/AAC movie through the running kit host.
-Artifacts and decoded-frame checks appear in `.cache/kition-agent-film/`.
-
-The recipe uses native Motion 3D layers, a parent rig, and a 35 mm camera to move
-from the request to the task trace, the changed text, and its review controls.
-It studies the macro framing and detail-to-overview movement of
-[Linear's Dashboards launch film](https://linear.app/changelog/2025-07-24-dashboards).
-No reference-film media is included in the project.
-
-This runner additionally requires the installed `video-shotcraft` skill's audio
-assets under `$CODEX_HOME/skills` (default `$HOME/.codex/skills`). It uses four
-Mixkit sound-effect cues, with exact source URLs recorded in `audio-cues.json`,
-and no music bed. The skill supplies guidance and sound assets; Motion builds
-and encodes the film without any other editor or Remotion.
-
-This is a direction study, not an accepted commercial-quality baseline. The
-task trace is revealed from a completed screenshot, not recorded live. Camera
-travel does not demonstrate a before/after edit or a review decision. Encoding,
-frame fidelity, audio levels, and save/reopen checks cannot establish persuasive
-storytelling or commercial production quality. Evaluate those separately at
-playback speed before expanding the treatment into a full campaign.
-
 ## From brief to an editable film
 
 1. Establish the product, audience, one central message, destination/aspect ratio, duration, CTA,
