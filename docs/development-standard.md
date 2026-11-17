@@ -29,6 +29,8 @@ Read the files that own the affected surface before editing:
 - `docs/kition-ui-development.md` for frontend ownership and file placement.
 - `contracts/runtime/` before changing client/runtime behavior.
 - `docs/runtime-development.md` for the runtime crates and their checks.
+- `docs/clipboard-debugging.md` when a copy or paste problem needs the
+  clipboard inspector.
 - `.github/SECURITY.md` before handling credentials, authentication, updates,
   or private reports.
 
