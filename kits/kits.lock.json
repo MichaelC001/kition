@@ -62,15 +62,15 @@
   },
   "html": {
     "repository": "KitionAI/kition-html",
-    "version": "0.2.0",
-    "tag": "package-v0.2.0",
-    "asset": "kition-html-0.2.0.tgz",
-    "size": 10392358,
-    "sha256": "5ba54baf665e96d1dbccc36ff75ebb7533c30bd770ccd544ed2c94f6d8e7bbf5",
-    "commit": "caf6f811c594d014017f9beae3085874207965fa",
-    "sdkCommit": "c9708628d6627ff570ad5375d1f40367983e233d",
-    "tesseraCommit": "d57182f27db977c243d358ecc29f7683475c1bc5",
-    "fontsCommit": "3ec72be7ffcc8b88fab081f9e0b01401a96d5eec"
+    "version": "0.1.0",
+    "tag": "package-v0.1.0",
+    "asset": "kition-html-0.1.0.tgz",
+    "size": 11300435,
+    "sha256": "0f52ebbb99d9c366f2aad791d3d7af29a106063117490b74908f703d6759ad68",
+    "commit": "423b0a05aefa12dca1e61f68d6bfe77fa8482c02",
+    "sdkCommit": "589770f999a634ff5c9390a23c75a7f844691065",
+    "tesseraCommit": "832f61a5e4b4ac1a5083620bfdeeb92a86560694",
+    "fontsCommit": "c01cc9cb9069001375627204d105d3cff96ed690"
   },
   "layout": {
     "repository": "KitionAI/kition-layout",
